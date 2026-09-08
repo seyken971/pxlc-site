@@ -1,6 +1,6 @@
 # pxlc.fr — site vitrine de PXLC
 
-Site vitrine de **PXLC**, médiation numérique portée par Andy Zébus à Les Abymes (Guadeloupe).  
+Site vitrine de **PXLC**, médiation numérique portée par Andy Zébus aux Abymes (Guadeloupe).  
 Déployé sur **https://pxlc.fr**.
 
 ## Stack
