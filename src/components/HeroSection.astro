@@ -5,6 +5,8 @@ import PxlcMark from './PxlcMark.astro'
 import PxlcDuo from './PxlcDuo.astro'
 
 interface Cta { label: string, href: string, external?: boolean }
+/** Lien texte discret à côté du CTA secondaire (ex. version web de la plaquette PDF). */
+interface AltLink { label: string, href: string, ariaLabel?: string }
 interface Pill { eyebrow: string, text: string }
 
 interface Props {
@@ -15,6 +17,7 @@ interface Props {
   lead?: string
   ctaPrimary?: Cta | null
   ctaSecondary?: Cta | null
+  ctaSecondaryAlt?: AltLink | null
   hint?: string | null
   /** Photo importée depuis src/assets (astro:assets génère les variantes webp). */
   photo?: ImageMetadata | null
@@ -29,6 +32,7 @@ const {
   lead = '',
   ctaPrimary = null,
   ctaSecondary = null,
+  ctaSecondaryAlt = null,
   hint = null,
   photo = null,
   photoAlt = '',
@@ -78,6 +82,10 @@ const {
               class="btn btn--ghost btn--lg btn--no-arrow"
               aria-label={`${ctaSecondary.label} (nouvel onglet)`}
             >{ctaSecondary.label}</a>
+          )}
+
+          {ctaSecondaryAlt && (
+            <a href={ctaSecondaryAlt.href} class="hero__alt" aria-label={ctaSecondaryAlt.ariaLabel}>{ctaSecondaryAlt.label}</a>
           )}
 
           {hint && <span class="hero__hint">{hint}</span>}

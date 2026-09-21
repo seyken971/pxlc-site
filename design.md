@@ -426,6 +426,7 @@ Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas
 - `.hero__lead`
 - `.hero__actions`
 - `.hero__hint`
+- `.hero__alt`
 - `.hero__media`
 - `.hero__media-img`
 - `.hero__pill`
