@@ -27,7 +27,7 @@ const markers = zone.map((nom, i) => ({ nom, num: i + 1, centroid: byName.get(no
   <svg viewBox={`0 0 ${width} ${height}`} role="img" aria-label={label}>
     <g>
       {data.communes.map(c => (
-        <path class:list={['commune-map__commune', { 'commune-map__commune--zone': zone.includes(c.nom) }]} d={c.d}>
+        <path class:list={['commune-map__commune', { 'commune-map__commune--zone': zone.includes(c.nom) }]} d={c.d} vector-effect="non-scaling-stroke">
           <title>{c.nom}</title>
         </path>
       ))}
@@ -55,11 +55,13 @@ const markers = zone.map((nom, i) => ({ nom, num: i + 1, centroid: byName.get(no
   .commune-map { margin: 0; background: var(--surface); }
   .commune-map svg { display: block; width: 100%; height: auto; }
 
-  /* Trait constant à l'écran quelle que soit la largeur rendue (non-scaling-stroke) :
-     la terre se détache de la mer (--surface) et les frontières restent nettes sur mobile. */
+  /* Trait constant à l'écran quelle que soit la largeur rendue : attribut SVG
+     vector-effect="non-scaling-stroke" sur chaque <path> (la propriété CSS est
+     refusée par le validateur W3C, RGAA 8.2). La terre se détache de la mer
+     (--surface) et les frontières restent nettes sur mobile. */
   .commune-map__commune {
     fill: var(--map-land); stroke: var(--map-stroke);
-    stroke-width: 1px; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+    stroke-width: 1px; stroke-linejoin: round;
   }
   .commune-map__commune--zone { fill: var(--pxlc-teal-mid); stroke: var(--map-zone-stroke); stroke-width: 1.5px; }
 
