@@ -108,6 +108,11 @@ function pick(vars, fn) {
   return Object.entries(vars).filter(([k]) => fn(k));
 }
 
+/** Échelle typographique : --fs-* (taille), --lh-* (interligne), --ls-* (interlettrage). */
+function isTypeScale(k) {
+  return /^--(fs|lh|ls)-/.test(k);
+}
+
 // ── YAML Frontmatter (google-labs-code/design.md standard) ────────────────
 
 function yamlKey(cssVar) {
@@ -133,6 +138,7 @@ function buildFrontmatter(root, dark) {
     (k) =>
       !k.startsWith("--pxlc-") &&
       !k.startsWith("--font-") &&
+      !isTypeScale(k) &&
       !k.startsWith("--space-") &&
       !k.startsWith("--radius-") &&
       !k.startsWith("--dur-") &&
@@ -154,7 +160,7 @@ function buildFrontmatter(root, dark) {
     }
   }
 
-  const fonts = pick(root, (k) => k.startsWith("--font-"));
+  const fonts = pick(root, (k) => k.startsWith("--font-") || isTypeScale(k));
   if (fonts.length) {
     lines.push("typography:");
     for (const [k, v] of fonts) {
@@ -307,8 +313,16 @@ const main = async () => {
       fonts.map(([k, v]) => [`\`${k}\``, `\`${v}\``]),
     ),
   );
+  md.push("\n### Échelle typographique (design system PXLC 2026)\n");
+  const scale = pick(root, isTypeScale);
   md.push(
-    "\n> Les tailles de titre utilisent `clamp()` défini localement dans chaque composant — pas de token `--fs-h1` global.",
+    table(
+      ["Token", "Valeur"],
+      scale.map(([k, v]) => [`\`${k}\``, `\`${v}\``]),
+    ),
+  );
+  md.push(
+    "\n> Taille `--fs-*`, interligne `--lh-*`, interlettrage `--ls-*`. Graisse : 700 pour title-1/2, 600 pour title-3, label et ui. Les chiffres d'affichage décoratifs (repères, frise, numéros d'étape) restent hors échelle.",
   );
 
   // ── Espacement ────────────────────────────────────────────────────────────
@@ -448,6 +462,7 @@ const main = async () => {
       "- Un seul CTA primaire par section",
       "- Jamais de texte blanc sur fond coral — utiliser `--on-child`",
       "- Pas de gradients, pas d'emoji en iconographie",
+      "- **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale",
       "- **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)",
       "- **Motif Duo** (`PxlcDuo`) : paires grand/petit, seul le dernier petit carré est corail — une fois par écran au plus ; la petite marque (`PxlcMark` 20 px) coiffe les cartes d'étape",
     ].join("\n"),

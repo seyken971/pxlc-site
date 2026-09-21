@@ -101,7 +101,7 @@ main[tabindex="-1"]:focus { outline: none; }
 /* Padding d'ouverture de page — aligné sur .hero pour cohérence visuelle */
 .section--page { padding: clamp(40px, 5vw, var(--space-7)) 0; }
 .section__head { max-width: 760px; margin-bottom: var(--space-6); }
-.section__head h2 { margin-bottom: var(--space-3); font-size: clamp(28px, 4.2vw, 40px); line-height: 1.1; letter-spacing: -0.025em; }
+.section__head h2 { margin-bottom: var(--space-3); font-size: var(--fs-title-2); line-height: var(--lh-title-2); letter-spacing: var(--ls-title-2); }
 .section__head .lead { max-width: 640px; }
 
 .grid { display: grid; gap: var(--space-3); }
@@ -114,13 +114,13 @@ main[tabindex="-1"]:focus { outline: none; }
 .grid--asym { grid-template-columns: 1fr; align-items: center; gap: clamp(32px, 5vw, 64px); }
 @media (min-width: 1024px) { .grid--asym { grid-template-columns: 1.5fr 1fr; } }
 
-.lead { font-size: clamp(16px, 2vw, 19px); line-height: 1.55; color: var(--ink-muted); }
+.lead { font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--ink-muted); }
 /* Sur-titre précédé du petit carré corail de l'enfant (design system
    PXLC 2026). Un par section. */
 .eyebrow {
   font-family: var(--font-label);
-  font-size: 11px; font-weight: 600;
-  letter-spacing: 0.18em; text-transform: uppercase;
+  font-size: var(--fs-label); font-weight: 600;
+  letter-spacing: var(--ls-label); text-transform: uppercase;
   color: var(--parent);
   display: flex; align-items: flex-start; gap: 10px; margin-bottom: var(--space-3);
   line-height: 1.6;
@@ -138,7 +138,7 @@ main[tabindex="-1"]:focus { outline: none; }
 .btn {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 15px;
+  font-size: var(--fs-ui);
   letter-spacing: -0.005em;
   padding: 12px 22px;
   border-radius: var(--radius-md);
@@ -435,12 +435,12 @@ main[tabindex="-1"]:focus { outline: none; }
    vs the previous cap, and the page still reads as "display" size. */
 .hero__title {
   font-family: var(--font-display); font-weight: 700;
-  font-size: clamp(36px, 5.4vw, 56px); line-height: 1.05; letter-spacing: -0.03em;
+  font-size: var(--fs-title-1); line-height: var(--lh-title-1); letter-spacing: var(--ls-title-1);
   margin: 0 0 20px; color: var(--ink); max-width: 760px;
 }
 .hero__lead {
-  font-family: var(--font-body); font-size: clamp(17px, 2vw, 19px);
-  line-height: 1.55; color: var(--ink-muted); max-width: 580px; margin: 0 0 24px;
+  font-family: var(--font-body); font-size: var(--fs-lead);
+  line-height: var(--lh-lead); color: var(--ink-muted); max-width: 580px; margin: 0 0 24px;
 }
 .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-2-5); align-items: center; }
 @media (max-width: 767px) {
@@ -596,13 +596,13 @@ main[tabindex="-1"]:focus { outline: none; }
 /* ── Typographic utility classes (semantic aliases) ──────── */
 /* Miroir des classes .pxlc-* du UI Kit — permettent de typer
    le rôle d'un élément sans surcharger les balises HTML. */
-.pxlc-h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 5.4vw, 56px); line-height: 1.05; letter-spacing: -0.03em; color: var(--ink); text-wrap: balance; }
-.pxlc-h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px, 4.2vw, 40px); line-height: 1.1; letter-spacing: -0.025em; color: var(--ink); text-wrap: balance; }
-.pxlc-h3 { font-family: var(--font-display); font-weight: 600; font-size: 24px; line-height: 1.2; letter-spacing: -0.01em; color: var(--ink); text-wrap: balance; }
-.pxlc-lead { font-family: var(--font-body); font-size: clamp(16px, 2vw, 19px); line-height: 1.55; color: var(--ink-muted); }
-.pxlc-body { font-family: var(--font-body); font-size: 16px; line-height: 1.6; color: var(--ink-muted); }
+.pxlc-h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title-1); line-height: var(--lh-title-1); letter-spacing: var(--ls-title-1); color: var(--ink); text-wrap: balance; }
+.pxlc-h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title-2); line-height: var(--lh-title-2); letter-spacing: var(--ls-title-2); color: var(--ink); text-wrap: balance; }
+.pxlc-h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); color: var(--ink); text-wrap: balance; }
+.pxlc-lead { font-family: var(--font-body); font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--ink-muted); }
+.pxlc-body { font-family: var(--font-body); font-size: var(--fs-body); line-height: var(--lh-body); color: var(--ink-muted); }
 .pxlc-body-sm { font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--ink-muted); }
-.pxlc-eyebrow { font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--parent); display: block; }
+.pxlc-eyebrow { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--parent); display: block; }
 .pxlc-kicker { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-quiet); }
 .pxlc-tag { font-family: var(--font-label); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-quiet); }
 .pxlc-mono { font-family: var(--font-label); font-size: 14px; }

@@ -259,15 +259,12 @@ const schemaGraph = pageGraph({
   /* Le hero de cette page n'a pas de carte latérale : une seule colonne. */
   .hero__inner--solo { grid-template-columns: 1fr; }
 
-  /* Page de liste : titre plafonné à 48px, la signature 64px reste
-     réservée à l’accueil. */
-  .hero__title { font-size: clamp(32px, 5.4vw, 48px); }
 
   /* ── Rubrique projets ── */
   .projets-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
   /* Une carte seule ne flotte pas dans une grille prévue pour plusieurs. */
   .projets-grid--solo { grid-template-columns: 1fr; max-width: 820px; }
-  .projet-card__name { font-size: 24px; }
+  .projet-card__name { font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); }
   .projet-card__place { font-size: 15px; line-height: 1.6; color: var(--ink-quiet); }
   .projet-card__summary { font-size: 15px; line-height: 1.6; }
   .projet-card__facts { display: grid; gap: var(--space-3); margin: 0; }

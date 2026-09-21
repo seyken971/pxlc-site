@@ -247,9 +247,9 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   /* ── Tête de page ────────────────────────────────────────────── */
   .contact-head { max-width: 640px; }
   .contact-title {
-    font-size: clamp(34px, 4.4vw, 52px);
-    line-height: 1.04;
-    letter-spacing: -0.03em;
+    font-size: var(--fs-title-1);
+    line-height: var(--lh-title-1);
+    letter-spacing: var(--ls-title-1);
     margin: 0 0 var(--space-3);
   }
   .contact-lead {
@@ -281,8 +281,9 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   /* ── Séparateur & titres de bloc ─────────────────────────────── */
   .contact-sep { border: 0; border-top: 1px solid var(--line); margin: var(--space-5) 0; }
   .contact-h2 {
-    font-size: 26px;
-    letter-spacing: -0.02em;
+    font-size: var(--fs-title-3);
+    line-height: var(--lh-title-3);
+    letter-spacing: var(--ls-title-3);
     margin: 0 0 var(--space-1);
   }
   .contact-note {

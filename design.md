@@ -104,6 +104,24 @@ typography:
   font-body: "\"Lora\", \"Lora Fallback\", Georgia, \"Times New Roman\", serif"
   font-label: "\"Plus Jakarta Sans\", \"Plus Jakarta Sans Fallback\", system-ui, sans-serif"
   font-code: "ui-monospace, \"SFMono-Regular\", Menlo, \"Courier New\", monospace"
+  fs-title-1: "clamp(36px, 5.4vw, 56px)"
+  lh-title-1: "1.05"
+  ls-title-1: "-0.03em"
+  fs-title-2: "clamp(28px, 4.2vw, 40px)"
+  lh-title-2: "1.1"
+  ls-title-2: "-0.025em"
+  fs-title-3: "24px"
+  lh-title-3: "1.2"
+  ls-title-3: "-0.01em"
+  fs-lead: "clamp(17px, 2vw, 19px)"
+  lh-lead: "1.55"
+  fs-body: "16px"
+  lh-body: "1.6"
+  fs-small: "14px"
+  lh-small: "1.5"
+  fs-label: "11px"
+  ls-label: "0.18em"
+  fs-ui: "15px"
 spacing:
   base: "8px"
   space-1: "4px"
@@ -255,7 +273,30 @@ Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.
 | `--font-label` | `"Plus Jakarta Sans", "Plus Jakarta Sans Fallback", system-ui, sans-serif` |
 | `--font-code` | `ui-monospace, "SFMono-Regular", Menlo, "Courier New", monospace` |
 
-> Les tailles de titre utilisent `clamp()` défini localement dans chaque composant — pas de token `--fs-h1` global.
+### Échelle typographique (design system PXLC 2026)
+
+| Token | Valeur |
+| --- | --- |
+| `--fs-title-1` | `clamp(36px, 5.4vw, 56px)` |
+| `--lh-title-1` | `1.05` |
+| `--ls-title-1` | `-0.03em` |
+| `--fs-title-2` | `clamp(28px, 4.2vw, 40px)` |
+| `--lh-title-2` | `1.1` |
+| `--ls-title-2` | `-0.025em` |
+| `--fs-title-3` | `24px` |
+| `--lh-title-3` | `1.2` |
+| `--ls-title-3` | `-0.01em` |
+| `--fs-lead` | `clamp(17px, 2vw, 19px)` |
+| `--lh-lead` | `1.55` |
+| `--fs-body` | `16px` |
+| `--lh-body` | `1.6` |
+| `--fs-small` | `14px` |
+| `--lh-small` | `1.5` |
+| `--fs-label` | `11px` |
+| `--ls-label` | `0.18em` |
+| `--fs-ui` | `15px` |
+
+> Taille `--fs-*`, interligne `--lh-*`, interlettrage `--ls-*`. Graisse : 700 pour title-1/2, 600 pour title-3, label et ui. Les chiffres d'affichage décoratifs (repères, frise, numéros d'étape) restent hors échelle.
 
 ## Espacement
 
@@ -501,6 +542,7 @@ Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas
 - Un seul CTA primaire par section
 - Jamais de texte blanc sur fond coral — utiliser `--on-child`
 - Pas de gradients, pas d'emoji en iconographie
+- **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale
 - **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)
 - **Motif Duo** (`PxlcDuo`) : paires grand/petit, seul le dernier petit carré est corail — une fois par écran au plus ; la petite marque (`PxlcMark` 20 px) coiffe les cartes d'étape
 
