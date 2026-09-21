@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import SiteBreadcrumb from '../components/SiteBreadcrumb.astro'
-import PxlcPixelCorner from '../components/PxlcPixelCorner.astro'
-import PxlcPixelStrip from '../components/PxlcPixelStrip.astro'
+import PxlcMark from '../components/PxlcMark.astro'
+import PxlcDuo from '../components/PxlcDuo.astro'
 import { PROJECTS } from '../config/projects'
 import { PROJECT_THEMES as themes } from '../config/project-themes'
 import { ID, pageGraph } from '../lib/schema'
@@ -78,7 +78,7 @@ const schemaGraph = pageGraph({
 
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
   <section class="hero hero--soft" aria-labelledby="hero-title">
-    <div class="hero__strip"><PxlcPixelCorner /></div>
+    <div class="hero__strip"><PxlcDuo /></div>
     <div class="container">
       <div class="hero__inner hero__inner--solo">
         <div>
@@ -108,7 +108,7 @@ const schemaGraph = pageGraph({
       <div class:list={['projets-grid', { 'projets-grid--solo': PROJECTS.length === 1 }]}>
         {PROJECTS.map(p => (
           <article class="card projet-card" id={p.slug}>
-            <div class="card__pixel"><PxlcPixelCorner /></div>
+            <div class="card__duo"><PxlcMark size={20} decorative /></div>
             <span class="badge badge--soft">{p.status} · {p.year}</span>
             <h3 class="projet-card__name mt-3">{p.name}</h3>
             <p class="projet-card__place">{p.localName && <Fragment>«&nbsp;{p.localName}&nbsp;» · </Fragment>}{p.place}</p>
@@ -138,7 +138,7 @@ const schemaGraph = pageGraph({
   </section>
 
   <section id="jouons-ensemble" class="leko-section" aria-labelledby="jouons-ensemble-title">
-    <PxlcPixelStrip class="leko-section__strip" count={7} accentAt={5} />
+    <PxlcDuo class="leko-section__strip" />
     <div class="container">
       <header class="section__head">
         <span class="eyebrow leko-eyebrow">Programme Parent-Écran-Enfant · SESSAD Lékoklaya · 2026</span>
@@ -162,7 +162,7 @@ const schemaGraph = pageGraph({
       <div class="grid grid--2 process-grid">
         {steps.map(s => (
           <article class="card card--method">
-            <div class="card__pixel"><PxlcPixelCorner /></div>
+            <div class="card__duo"><PxlcMark size={20} decorative /></div>
             <div class="card__step-num">ÉTAPE {s.num}</div>
             <h3>{s.title}</h3>
             <p>{s.detail}</p>
@@ -268,12 +268,12 @@ const schemaGraph = pageGraph({
   /* Une carte seule ne flotte pas dans une grille prévue pour plusieurs. */
   .projets-grid--solo { grid-template-columns: 1fr; max-width: 820px; }
   .projet-card__name { font-size: 24px; }
-  .projet-card__place { font-size: 15px; line-height: 1.6; color: var(--quiet); }
+  .projet-card__place { font-size: 15px; line-height: 1.6; color: var(--ink-quiet); }
   .projet-card__summary { font-size: 15px; line-height: 1.6; }
   .projet-card__facts { display: grid; gap: var(--space-3); margin: 0; }
   .projet-card__row {
     display: grid; gap: var(--space-1);
-    padding-bottom: var(--space-3); border-bottom: 1px dashed var(--rule);
+    padding-bottom: var(--space-3); border-bottom: 1px dashed var(--line);
   }
   .projet-card__row:last-child { border-bottom: 0; padding-bottom: 0; }
   .projet-card__row dd {
@@ -292,7 +292,7 @@ const schemaGraph = pageGraph({
 
   .framework-tag {
     display: inline-flex; align-items: center; gap: var(--space-2);
-    background: var(--bg); border: 1px solid var(--rule);
+    background: var(--surface); border: 1px solid var(--line);
     padding: 6px 12px; border-radius: var(--radius-sm); margin-bottom: var(--space-3);
   }
   .framework-tag__dot { width: 8px; height: 8px; background: var(--pxlc-coral); border-radius: 2px; }
@@ -304,9 +304,8 @@ const schemaGraph = pageGraph({
   .theme-desc { font-size: 15px; line-height: 1.6; }
 
   .framework-meta { display: block; }
-  .framework-meta--link { color: var(--teal-deep); transition: color var(--dur-fast); }
+  .framework-meta--link { color: var(--parent); transition: color var(--dur-fast); }
   .framework-meta--link:hover { color: var(--pxlc-coral); text-decoration: none; }
-  :global([data-theme="dark"]) .framework-meta--link { color: var(--cyan); }
 
   .indicator-title { font-size: 18px; }
 
@@ -314,8 +313,8 @@ const schemaGraph = pageGraph({
 
   .faq { display: grid; gap: var(--space-2-5); max-width: 820px; margin: 0 auto; }
   .faq__item {
-    border: 1px solid var(--rule); border-radius: var(--radius-md);
-    background: var(--bg-elev); padding: 16px 20px;
+    border: 1px solid var(--line); border-radius: var(--radius-md);
+    background: var(--surface-raised); padding: 16px 20px;
     transition: border-color var(--dur-fast);
   }
   .faq__item[open] { border-color: var(--pxlc-coral); }
@@ -331,7 +330,7 @@ const schemaGraph = pageGraph({
   .faq__item[open] .faq__q::after { content: "−"; }
   .faq__q::-webkit-details-marker { display: none; }
   .faq__a {
-    margin-top: var(--space-2-5); font-size: 15px; line-height: 1.6; color: var(--ink-quiet);
+    margin-top: var(--space-2-5); font-size: 15px; line-height: 1.6; color: var(--ink-muted);
   }
 
   /* Lekoklaya dark section — casse la monotonie des sections standard */

@@ -1,6 +1,6 @@
 ---
 import PxlcMark from './PxlcMark.astro'
-import PxlcPixelStrip from './PxlcPixelStrip.astro'
+import PxlcDuo from './PxlcDuo.astro'
 
 interface Props {
   /** Numéro de feuille, deux chiffres (« 02 »). */
@@ -26,7 +26,7 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
     <header class="pq-page__head">
       <div class="pq-page__logo">
         <PxlcMark size={22} decorative />
-        <span>PXLC<span class="coral-dot" aria-hidden="true">.</span></span>
+        <span>PXLC</span>
       </div>
       <div class="pq-page__nav">{label}</div>
     </header>
@@ -37,7 +37,7 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
   {!cover && (
     <footer class="pq-page__foot">
       <span>PXLC · Plaquette de présentation · {version} · {website}</span>
-      <PxlcPixelStrip count={7} accentAt={5} />
+      <PxlcDuo unit={6} />
       <span>{num} / {total}</span>
     </footer>
   )}
@@ -67,7 +67,7 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
     justify-content: space-between;
     align-items: center;
     padding-bottom: 6mm;
-    border-bottom: 1px solid var(--rule);
+    border-bottom: 1px solid var(--line);
     margin-bottom: 8mm;
   }
   .pq-page__logo {
@@ -87,7 +87,7 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
     font-size: 8pt;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--quiet);
+    color: var(--ink-quiet);
   }
 
   .pq-page__foot {
@@ -100,16 +100,16 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
     align-items: center;
     font-family: var(--font-label);
     font-size: 7.5pt;
-    color: var(--quiet);
+    color: var(--ink-quiet);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     padding-top: 4mm;
-    border-top: 1px solid var(--rule);
+    border-top: 1px solid var(--line);
     background: var(--pxlc-white);
   }
 
   @media screen {
-    .pq-page { box-shadow: var(--shadow-card-hover); border-radius: 2px; }
+    .pq-page { box-shadow: var(--shadow-card); border-radius: 2px; }
   }
   @media print {
     .pq-page { box-shadow: none; border-radius: 0; }

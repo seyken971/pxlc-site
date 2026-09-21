@@ -20,11 +20,10 @@ const F_SANS = 'Plus Jakarta Sans'
 const TAGLINE = 'Médiation numérique · Guadeloupe'
 
 const palette = {
-  bg: BRAND_HEX.bgLight,
+  bg: BRAND_HEX.ivory,
   ink: BRAND_HEX.textInk,
   accent: BRAND_HEX.tealDeep,
   muted: BRAND_HEX.textOnLight,
-  coral: BRAND_HEX.coral,
 }
 
 type OgNode = { type: string, props: Record<string, unknown> }
@@ -44,29 +43,29 @@ const markSvg = (size: number): OgNode => ({
     viewBox: '0 0 100 100',
     children: MARK_RECTS.map(r => ({
       type: 'rect',
-      props: { x: r.x, y: r.y, width: 29.33, height: 29.33, rx: 3.5, fill: r.fill },
+      props: { x: r.x, y: r.y, width: r.size, height: r.size, rx: r.rx, fill: r.fill },
     })),
   },
 })
 
-// Lockup « PXLC. » — point final coral.
+// Mot « PXLC » sans point : le petit carré corail de la marque en tient lieu.
 const lockup = (fontSize: string) => h('span', {
   fontFamily: F_SANS,
   fontWeight: 700,
   fontSize,
-  letterSpacing: '-0.03em',
+  letterSpacing: '-0.035em',
   color: palette.ink,
   lineHeight: 1,
-}, ['PXLC', h('span', { color: palette.coral }, '.')])
+}, 'PXLC')
 
-// Filigrane : marque pixel en bas à droite, faible opacité, inclinée -8°.
+// Filigrane : marque en bas à droite, 8 % d'opacité, inclinée -8° (seule rotation admise).
 const watermark = (size: number, offset: number) => h('div', {
   position: 'absolute',
   right: `${offset}px`,
   bottom: `${offset}px`,
   display: 'flex',
   transform: 'rotate(-8deg)',
-  opacity: 0.1,
+  opacity: 0.08,
 }, [markSvg(size)])
 
 // ── Carte de marque ─────────────────────────────────────────────

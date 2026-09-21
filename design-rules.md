@@ -38,7 +38,7 @@
 
 ### Nommage des composants
 
-- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`, `PxlcPixelCorner`, `PxlcPixelStrip`
+- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcDuo`, `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
 - **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PartnerStrip`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
 - Deux mots minimum par nom (style guide Vue — évite les collisions avec de futurs éléments HTML natifs)
@@ -47,8 +47,10 @@
 
 - Coral max **5 %** des pixels par page ou image
 - Un seul CTA primaire par section
-- Jamais de texte blanc sur fond coral — utiliser `--pxlc-text-ink`
+- Jamais de texte blanc sur fond coral — utiliser `--on-child`
 - Pas de gradients, pas d'emoji en iconographie
+- **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)
+- **Motif Duo** (`PxlcDuo`) : paires grand/petit, seul le dernier petit carré est corail — une fois par écran au plus ; la petite marque (`PxlcMark` 20 px) coiffe les cartes d'étape
 
 ### OG Images
 

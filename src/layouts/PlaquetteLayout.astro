@@ -43,7 +43,7 @@ type Props = Omit<HeadProps, 'colorScheme'>
     font-family: var(--font-body);
     font-size: 10.5pt;
     line-height: 1.55;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
     background: var(--pxlc-text-secondary);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
@@ -64,16 +64,14 @@ type Props = Omit<HeadProps, 'colorScheme'>
   .pq-body strong { color: var(--ink); font-weight: 600; }
   .pq-body em { font-style: italic; }
 
-  /* Les utilitaires globaux (.eyebrow, .kicker, .pixel-strip) sont en px
-     pour l'écran ; la plaquette les rejoue en pt / mm. */
+  /* Les utilitaires globaux (.eyebrow, .kicker) sont en px pour l'écran ;
+     la plaquette les rejoue en pt / mm. */
   .pq-body .eyebrow {
     font-size: 8.5pt;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.18em;
     margin-bottom: 5mm;
   }
   .pq-body .kicker { font-size: 7.5pt; font-weight: 600; }
-  .pq-body .pixel-strip { gap: 4px; }
-  .pq-body .pixel-strip span { width: 6px; height: 6px; }
 
   /* Aperçu écran : feuilles empilées sur fond neutre. */
   .pq-pages {

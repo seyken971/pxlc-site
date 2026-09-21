@@ -52,11 +52,11 @@ const markers = zone.map((nom, i) => ({ nom, num: i + 1, centroid: byName.get(no
 </figure>
 
 <style>
-  .commune-map { margin: 0; background: var(--bg); }
+  .commune-map { margin: 0; background: var(--surface); }
   .commune-map svg { display: block; width: 100%; height: auto; }
 
   /* Trait constant à l'écran quelle que soit la largeur rendue (non-scaling-stroke) :
-     la terre se détache de la mer (--bg) et les frontières restent nettes sur mobile. */
+     la terre se détache de la mer (--surface) et les frontières restent nettes sur mobile. */
   .commune-map__commune {
     fill: var(--map-land); stroke: var(--map-stroke);
     stroke-width: 1px; stroke-linejoin: round; vector-effect: non-scaling-stroke;
@@ -64,31 +64,31 @@ const markers = zone.map((nom, i) => ({ nom, num: i + 1, centroid: byName.get(no
   .commune-map__commune--zone { fill: var(--pxlc-teal-mid); stroke: var(--map-zone-stroke); stroke-width: 1.5px; }
 
   /* Marqueurs et puces de légende : même couple encre / fond, pour se lire comme un seul objet. */
-  .commune-map__marker circle { fill: var(--ink); stroke: var(--bg); stroke-width: 1.5; }
+  .commune-map__marker circle { fill: var(--ink); stroke: var(--surface); stroke-width: 1.5; }
   .commune-map__marker text {
     font-family: var(--font-label);
     font-size: 10.5px; font-weight: 700;
-    fill: var(--bg);
+    fill: var(--surface);
   }
 
   .commune-map__legend {
     display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
     gap: var(--space-2) var(--space-3);
     padding: var(--space-3) var(--space-4);
-    border-top: 1px solid var(--rule);
-    background: var(--bg-elev);
+    border-top: 1px solid var(--line);
+    background: var(--surface-raised);
   }
   .commune-map__keys {
     display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3);
     margin: 0; padding: 0; list-style: none;
-    font-family: var(--font-label); font-size: 12.5px; color: var(--ink-quiet);
+    font-family: var(--font-label); font-size: 12.5px; color: var(--ink-muted);
   }
   .commune-map__keys li { display: flex; align-items: center; gap: 7px; }
   .commune-map__keys i {
     display: grid; place-items: center;
     width: 15px; height: 15px; border-radius: var(--radius-pill);
-    background: var(--ink); color: var(--bg);
+    background: var(--ink); color: var(--surface);
     font-size: 9.5px; font-weight: 700; font-style: normal;
   }
-  .commune-map__credit { font-family: var(--font-label); font-size: 11px; color: var(--quiet); }
+  .commune-map__credit { font-family: var(--font-label); font-size: 11px; color: var(--ink-quiet); }
 </style>

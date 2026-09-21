@@ -2,44 +2,32 @@
 interface Props {
   size?: number
   decorative?: boolean
+  /** Force le parent en cyan sur une surface toujours sombre (footer, menu mobile). */
+  onDark?: boolean
+  /** Version une couleur, en encre. */
+  mono?: boolean
   class?: string
 }
-const { size = 36, decorative = false, class: className } = Astro.props
+const { size = 36, decorative = false, onDark = false, mono = false, class: className } = Astro.props
 
 /**
- * 3×3 brand mark: three teal columns left → mid → cyan, with a coral
- * "period" in the bottom-right cell mirroring the wordmark "PXLC.".
+ * Le logo PXLC (design system « PXLC 2026 ») : sur une grille 3×3, un
+ * grand carré (le parent, 2×2 cellules) et un petit carré (l'enfant, la
+ * cellule en bas à droite), face à face en diagonale. Le parent suit le
+ * thème (--parent : teal en clair, cyan en sombre) ; l'enfant est
+ * toujours --child (corail). Ne jamais inverser les rôles, recolorer
+ * l'enfant, déformer ni pivoter (seul le filigrane incliné à −8° l'est).
  *
- * Tiles are 29.33 sq, spaced on 2 / 35.33 / 68.67 with rx 3.5 for the
- * corner radius — these values are inherited from the original
- * pxlc-design-system spec and stay literal so the SVG renders pixel-
- * identical to the brand source.
- *
- * NB: the same geometry also lives in src/lib/og-mark.ts (MARK_RECTS,
- * hex fills) for the OG image renderer, which runs at build time outside
- * any CSS context and can't resolve var(--pxlc-*) custom properties.
- * Keep the two copies in sync when the mark evolves.
+ * NB: la même géométrie vit dans src/lib/og-mark.ts (MARK_RECTS, fills
+ * hex) pour la carte OG, rendue hors de tout contexte CSS. Garder les
+ * deux copies synchronisées.
  */
-const POS = [2, 35.33, 68.67] as const
-const TEAL = 'var(--pxlc-teal-deep)'
-const MID = 'var(--pxlc-teal-mid)'
-const CYAN = 'var(--pxlc-cyan)'
-const CORAL = 'var(--pxlc-coral)'
-const rects = [
-  { x: POS[0], y: POS[0], fill: TEAL },
-  { x: POS[1], y: POS[0], fill: MID },
-  { x: POS[2], y: POS[0], fill: CYAN },
-  { x: POS[0], y: POS[1], fill: TEAL },
-  { x: POS[1], y: POS[1], fill: MID },
-  { x: POS[2], y: POS[1], fill: CYAN },
-  { x: POS[0], y: POS[2], fill: TEAL },
-  { x: POS[1], y: POS[2], fill: MID },
-  { x: POS[2], y: POS[2], fill: CORAL },
-]
+const parentFill = mono ? 'var(--ink)' : onDark ? 'var(--cyan)' : 'var(--parent)'
+const childFill = mono ? 'var(--ink)' : 'var(--child)'
 ---
 
 <svg
-  class:list={['mark-svg', 'lockup__mark', className]}
+  class:list={['mark-svg', className]}
   viewBox="0 0 100 100"
   width={size}
   height={size}
@@ -47,14 +35,6 @@ const rects = [
   aria-label={decorative ? undefined : 'Logo PXLC'}
   aria-hidden={decorative ? 'true' : undefined}
 >
-  {rects.map(r => (
-    <rect
-      x={r.x}
-      y={r.y}
-      width="29.33"
-      height="29.33"
-      rx="3.5"
-      fill={r.fill}
-    />
-  ))}
+  <rect x="2" y="2" width="62.66" height="62.66" rx="7.5" fill={parentFill} />
+  <rect x="68.67" y="68.67" width="29.33" height="29.33" rx="3.5" fill={childFill} />
 </svg>

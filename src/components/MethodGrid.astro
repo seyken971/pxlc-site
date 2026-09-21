@@ -1,5 +1,5 @@
 ---
-import PxlcPixelCorner from './PxlcPixelCorner.astro'
+import PxlcMark from './PxlcMark.astro'
 
 export interface MethodStep { num: string, title: string, desc: string, tag?: string }
 interface Props { steps: MethodStep[] }
@@ -22,7 +22,7 @@ const { steps } = Astro.props
           data-num={s.num}
           style={`--anim-delay: ${i * 0.09}s`}
         >
-          <div class="card__pixel"><PxlcPixelCorner /></div>
+          <div class="card__duo"><PxlcMark size={20} decorative /></div>
           <div class="card__step-num">ÉTAPE {s.num}</div>
           <h3>{s.title}</h3>
           <p>{s.desc}</p>

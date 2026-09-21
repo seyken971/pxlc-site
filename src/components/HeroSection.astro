@@ -2,7 +2,7 @@
 import type { ImageMetadata } from 'astro'
 import { Image } from 'astro:assets'
 import PxlcMark from './PxlcMark.astro'
-import PxlcPixelStrip from './PxlcPixelStrip.astro'
+import PxlcDuo from './PxlcDuo.astro'
 
 interface Cta { label: string, href: string, external?: boolean }
 interface Pill { eyebrow: string, text: string }
@@ -38,7 +38,7 @@ const {
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero__strip"><PxlcPixelStrip count={8} accentAt={5} /></div>
+  <div class="hero__strip"><PxlcDuo /></div>
   {showBgMark && (
     <div class="hero__bg-mark" aria-hidden="true">
       <PxlcMark size={420} decorative />

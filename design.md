@@ -7,6 +7,11 @@ colors:
     pxlc-cyan: "#00D2C8"
     pxlc-coral: "#FF5E3A"
     pxlc-coral-deep: "#E8492A"
+    pxlc-coral-deep-dark: "#FF7A5C"
+    pxlc-teal-soft: "#DCEFED"
+    pxlc-teal-soft-dark: "#0F3D48"
+    pxlc-coral-soft: "#FFE3DA"
+    pxlc-coral-soft-dark: "#3A1D17"
     pxlc-bg-light: "#EAF6F4"
     pxlc-bg-dark: "#082B36"
     pxlc-bg-dark-soft: "#0C3340"
@@ -26,30 +31,52 @@ colors:
     pxlc-pattern-warm: "#D6CEBD"
     pxlc-pattern-warm-deep: "#CDC4B0"
   semantic:
-    bg:
-      light: "var(--pxlc-bg-light)"
-      dark: "var(--pxlc-bg-dark)"
-    bg-soft:
+    surface:
       light: "var(--pxlc-ivory)"
-      dark: "var(--pxlc-bg-dark-deep)"
-    bg-elev:
+      dark: "var(--pxlc-bg-dark)"
+    surface-raised:
       light: "var(--pxlc-white)"
       dark: "var(--pxlc-bg-dark-soft)"
-    bg-rule:
+    surface-soft:
+      light: "var(--pxlc-bg-light)"
+      dark: "var(--pxlc-bg-dark-deep)"
+    line:
       light: "var(--pxlc-border-soft)"
-      dark: "var(--pxlc-border-dark)"
+      dark: "var(--pxlc-border-dark-2)"
+    ink:
+      light: "var(--pxlc-text-ink)"
+      dark: "var(--pxlc-ivory)"
+    ink-muted:
+      light: "var(--pxlc-text-on-light)"
+      dark: "var(--pxlc-text-on-dark-soft)"
+    ink-quiet:
+      light: "var(--pxlc-text-secondary)"
+      dark: "var(--pxlc-text-quiet-dark)"
+    parent:
+      light: "var(--pxlc-teal-deep)"
+      dark: "var(--pxlc-cyan)"
+    parent-mid: "var(--pxlc-teal-mid)"
+    parent-soft:
+      light: "var(--pxlc-teal-soft)"
+      dark: "var(--pxlc-teal-soft-dark)"
+    on-parent:
+      light: "var(--pxlc-white)"
+      dark: "var(--pxlc-bg-dark)"
+    child: "var(--pxlc-coral)"
+    child-deep:
+      light: "var(--pxlc-coral-deep)"
+      dark: "var(--pxlc-coral-deep-dark)"
+    child-soft:
+      light: "var(--pxlc-coral-soft)"
+      dark: "var(--pxlc-coral-soft-dark)"
+    on-child: "var(--pxlc-text-ink)"
+    link: "var(--parent)"
     bg-glass:
-      light: "rgba(234, 246, 244, 0.92)"
+      light: "rgba(244, 241, 234, 0.92)"
       dark: "rgba(8, 43, 54, 0.92)"
     dot-grid:
       light: "rgba(8, 43, 54, 0.09)"
       dark: "rgba(255, 255, 255, 0.06)"
-    halo-cyan:
-      light: "rgba(0, 210, 200, 0.14)"
-      dark: "rgba(0, 210, 200, 0.08)"
-    badge-soft-bg:
-      light: "rgba(0, 210, 200, 0.12)"
-      dark: "rgba(0, 210, 200, 0.18)"
     hover-on-dark: "rgba(255, 255, 255, 0.06)"
     map-land:
       light: "var(--pxlc-white)"
@@ -60,39 +87,18 @@ colors:
     map-zone-stroke:
       light: "var(--pxlc-teal-deep)"
       dark: "var(--pxlc-cyan)"
-    ink:
-      light: "var(--pxlc-text-ink)"
-      dark: "var(--pxlc-ivory)"
-    ink-quiet:
-      light: "var(--pxlc-text-on-light)"
-      dark: "var(--pxlc-text-on-dark-soft)"
-    quiet:
-      light: "var(--pxlc-text-secondary)"
-      dark: "var(--pxlc-text-quiet-dark)"
-    rule:
-      light: "var(--pxlc-border)"
-      dark: "var(--pxlc-border-dark-2)"
     rule-accent: "rgba(1, 160, 157, 0.25)"
     teal-deep: "var(--pxlc-teal-deep)"
     teal-mid: "var(--pxlc-teal-mid)"
     cyan: "var(--pxlc-cyan)"
-    eyebrow:
-      light: "var(--pxlc-teal-deep)"
-      dark: "var(--pxlc-cyan)"
-    shadow-card-hover:
+    shadow-card:
       light: "0 8px 24px -12px rgba(8,43,54,.18)"
       dark: "0 8px 24px -12px rgba(0,0,0,.45)"
     shadow-header:
       light: "0 2px 14px -6px rgba(8,43,54,.14)"
       dark: "0 2px 14px -6px rgba(0,0,0,.45)"
-    shadow-btn-rest: "0 1px 0 rgba(8,43,54,.06)"
-    shadow-btn-coral: "0 8px 24px -12px rgba(255,94,58,.6)"
-    shadow-btn-teal: "0 8px 24px -12px rgba(3,110,115,.5)"
-    shadow-btn-cyan: "0 8px 24px -12px rgba(0,210,200,.4)"
-    ring-cyan: "0 0 0 3px rgba(0,210,200,.25)"
-    ring-teal: "0 0 0 3px rgba(3,110,115,.3)"
-    ring-teal-soft: "0 0 0 3px rgba(3,110,115,.2)"
-    ring-coral: "0 0 0 3px rgba(255,94,58,.3)"
+    focus-ring: "0 0 0 2px var(--surface), 0 0 0 4px var(--parent)"
+    focus-ring-on-dark: "0 0 0 2px var(--pxlc-bg-dark), 0 0 0 4px var(--pxlc-cyan)"
 typography:
   font-display: "\"Plus Jakarta Sans\", \"Plus Jakarta Sans Fallback\", system-ui, -apple-system, \"Segoe UI\", sans-serif"
   font-body: "\"Lora\", \"Lora Fallback\", Georgia, \"Times New Roman\", serif"
@@ -116,6 +122,7 @@ radius:
   radius-sm: "6px"
   radius-md: "8px"
   radius-lg: "14px"
+  radius-xl: "24px"
   radius-pill: "999px"
 motion:
   ease-step: "cubic-bezier(.6, 0, .2, 1)"
@@ -146,6 +153,11 @@ layout:
 | `--pxlc-cyan` | `#00D2C8` |
 | `--pxlc-coral` | `#FF5E3A` |
 | `--pxlc-coral-deep` | `#E8492A` |
+| `--pxlc-coral-deep-dark` | `#FF7A5C` |
+| `--pxlc-teal-soft` | `#DCEFED` |
+| `--pxlc-teal-soft-dark` | `#0F3D48` |
+| `--pxlc-coral-soft` | `#FFE3DA` |
+| `--pxlc-coral-soft-dark` | `#3A1D17` |
 | `--pxlc-bg-light` | `#EAF6F4` |
 | `--pxlc-bg-dark` | `#082B36` |
 | `--pxlc-bg-dark-soft` | `#0C3340` |
@@ -173,54 +185,66 @@ Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.
 
 | Token | Light | Dark |
 | --- | --- | --- |
-| `--bg` | `var(--pxlc-bg-light)` | `var(--pxlc-bg-dark)` |
-| `--bg-soft` | `var(--pxlc-ivory)` | `var(--pxlc-bg-dark-deep)` |
-| `--bg-elev` | `var(--pxlc-white)` | `var(--pxlc-bg-dark-soft)` |
-| `--bg-rule` | `var(--pxlc-border-soft)` | `var(--pxlc-border-dark)` |
-| `--bg-glass` | `rgba(234, 246, 244, 0.92)` | `rgba(8, 43, 54, 0.92)` |
-| `--dot-grid` | `rgba(8, 43, 54, 0.09)` | `rgba(255, 255, 255, 0.06)` |
-| `--halo-cyan` | `rgba(0, 210, 200, 0.14)` | `rgba(0, 210, 200, 0.08)` |
-| `--badge-soft-bg` | `rgba(0, 210, 200, 0.12)` | `rgba(0, 210, 200, 0.18)` |
-| `--hover-on-dark` | `rgba(255, 255, 255, 0.06)` | — |
+| `--surface` | `var(--pxlc-ivory)` | `var(--pxlc-bg-dark)` |
+| `--surface-raised` | `var(--pxlc-white)` | `var(--pxlc-bg-dark-soft)` |
+| `--surface-soft` | `var(--pxlc-bg-light)` | `var(--pxlc-bg-dark-deep)` |
 
 ### Texte
 
 | Token | Light | Dark |
 | --- | --- | --- |
 | `--ink` | `var(--pxlc-text-ink)` | `var(--pxlc-ivory)` |
-| `--ink-quiet` | `var(--pxlc-text-on-light)` | `var(--pxlc-text-on-dark-soft)` |
-| `--quiet` | `var(--pxlc-text-secondary)` | `var(--pxlc-text-quiet-dark)` |
+| `--ink-muted` | `var(--pxlc-text-on-light)` | `var(--pxlc-text-on-dark-soft)` |
+| `--ink-quiet` | `var(--pxlc-text-secondary)` | `var(--pxlc-text-quiet-dark)` |
+| `--link` | `var(--parent)` | — |
 
 ### Bordures
 
 | Token | Light | Dark |
 | --- | --- | --- |
-| `--rule` | `var(--pxlc-border)` | `var(--pxlc-border-dark-2)` |
+| `--line` | `var(--pxlc-border-soft)` | `var(--pxlc-border-dark-2)` |
 | `--rule-accent` | `rgba(1, 160, 157, 0.25)` | — |
 
-### Couleurs accent
+### Parent (grand carré du logo)
 
 | Token | Light | Dark |
 | --- | --- | --- |
+| `--parent` | `var(--pxlc-teal-deep)` | `var(--pxlc-cyan)` |
+| `--parent-mid` | `var(--pxlc-teal-mid)` | — |
+| `--parent-soft` | `var(--pxlc-teal-soft)` | `var(--pxlc-teal-soft-dark)` |
+| `--on-parent` | `var(--pxlc-white)` | `var(--pxlc-bg-dark)` |
+
+### Child (petit carré, accent unique)
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--child` | `var(--pxlc-coral)` | — |
+| `--child-deep` | `var(--pxlc-coral-deep)` | `var(--pxlc-coral-deep-dark)` |
+| `--child-soft` | `var(--pxlc-coral-soft)` | `var(--pxlc-coral-soft-dark)` |
+| `--on-child` | `var(--pxlc-text-ink)` | — |
+
+### Extensions du site
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--bg-glass` | `rgba(244, 241, 234, 0.92)` | `rgba(8, 43, 54, 0.92)` |
+| `--dot-grid` | `rgba(8, 43, 54, 0.09)` | `rgba(255, 255, 255, 0.06)` |
+| `--hover-on-dark` | `rgba(255, 255, 255, 0.06)` | — |
+| `--map-land` | `var(--pxlc-white)` | `var(--pxlc-bg-dark-soft)` |
+| `--map-stroke` | `var(--pxlc-text-secondary)` | `var(--pxlc-text-quiet-dark)` |
+| `--map-zone-stroke` | `var(--pxlc-teal-deep)` | `var(--pxlc-cyan)` |
 | `--teal-deep` | `var(--pxlc-teal-deep)` | — |
 | `--teal-mid` | `var(--pxlc-teal-mid)` | — |
 | `--cyan` | `var(--pxlc-cyan)` | — |
-| `--eyebrow` | `var(--pxlc-teal-deep)` | `var(--pxlc-cyan)` |
 
-### Ombres & rings
+### Ombres & focus
 
 | Token | Light | Dark |
 | --- | --- | --- |
-| `--shadow-card-hover` | `0 8px 24px -12px rgba(8,43,54,.18)` | `0 8px 24px -12px rgba(0,0,0,.45)` |
+| `--shadow-card` | `0 8px 24px -12px rgba(8,43,54,.18)` | `0 8px 24px -12px rgba(0,0,0,.45)` |
 | `--shadow-header` | `0 2px 14px -6px rgba(8,43,54,.14)` | `0 2px 14px -6px rgba(0,0,0,.45)` |
-| `--shadow-btn-rest` | `0 1px 0 rgba(8,43,54,.06)` | — |
-| `--shadow-btn-coral` | `0 8px 24px -12px rgba(255,94,58,.6)` | — |
-| `--shadow-btn-teal` | `0 8px 24px -12px rgba(3,110,115,.5)` | — |
-| `--shadow-btn-cyan` | `0 8px 24px -12px rgba(0,210,200,.4)` | — |
-| `--ring-cyan` | `0 0 0 3px rgba(0,210,200,.25)` | — |
-| `--ring-teal` | `0 0 0 3px rgba(3,110,115,.3)` | — |
-| `--ring-teal-soft` | `0 0 0 3px rgba(3,110,115,.2)` | — |
-| `--ring-coral` | `0 0 0 3px rgba(255,94,58,.3)` | — |
+| `--focus-ring` | `0 0 0 2px var(--surface), 0 0 0 4px var(--parent)` | — |
+| `--focus-ring-on-dark` | `0 0 0 2px var(--pxlc-bg-dark), 0 0 0 4px var(--pxlc-cyan)` | — |
 
 ## Typographie
 
@@ -259,6 +283,7 @@ Rythme 8 px.
 | `--radius-sm` | `6px` |
 | `--radius-md` | `8px` |
 | `--radius-lg` | `14px` |
+| `--radius-xl` | `24px` |
 | `--radius-pill` | `999px` |
 
 ## Motion
@@ -366,16 +391,18 @@ Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas
 - `.hero__pill-eyebrow`
 - `.hero__pill-text`
 
-### Pixel decorations
+### Motif Duo
 
-- `.pixel-strip`
-- `.pixel-corner`
+- `.duo`
+- `.duo__big`
+- `.duo__small`
+- `.duo--on-dark`
 
 ### Cards
 
 - `.card`
 - `.card--method`
-- `.card__pixel`
+- `.card__duo`
 - `.card__tag`
 
 ### Badges
@@ -383,6 +410,7 @@ Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas
 - `.badge`
 - `.badge--audience`
 - `.badge--soft`
+- `.badge--child`
 
 ### Footer
 
@@ -462,7 +490,7 @@ Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas
 
 ### Nommage des composants
 
-- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`, `PxlcPixelCorner`, `PxlcPixelStrip`
+- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcDuo`, `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
 - **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PartnerStrip`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
 - Deux mots minimum par nom (style guide Vue — évite les collisions avec de futurs éléments HTML natifs)
@@ -471,8 +499,10 @@ Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas
 
 - Coral max **5 %** des pixels par page ou image
 - Un seul CTA primaire par section
-- Jamais de texte blanc sur fond coral — utiliser `--pxlc-text-ink`
+- Jamais de texte blanc sur fond coral — utiliser `--on-child`
 - Pas de gradients, pas d'emoji en iconographie
+- **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)
+- **Motif Duo** (`PxlcDuo`) : paires grand/petit, seul le dernier petit carré est corail — une fois par écran au plus ; la petite marque (`PxlcMark` 20 px) coiffe les cartes d'étape
 
 ### OG Images
 

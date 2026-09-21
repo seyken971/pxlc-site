@@ -1,7 +1,7 @@
 ---
 import PxlcLockup from './PxlcLockup.astro'
 import PxlcMark from './PxlcMark.astro'
-import PxlcPixelStrip from './PxlcPixelStrip.astro'
+import PxlcDuo from './PxlcDuo.astro'
 import { NAV_ITEMS, isActive, navHref } from '../config/nav'
 import { IDENTITY } from '../config/identity'
 
@@ -16,19 +16,19 @@ const pathname = Astro.url.pathname
   aria-modal="true"
   aria-label="Menu de navigation"
 >
-  <!-- Decorative: PxlcMark watermark (bottom-right, 7 % opacity) -->
+  <!-- Decorative: PxlcMark watermark (bottom-right, 18 % opacity) -->
   <div class="mobile-menu__watermark">
-    <PxlcMark size={400} decorative={true} />
+    <PxlcMark size={400} decorative onDark />
   </div>
 
-  <!-- Decorative: pixel strip (top-right, 40 % opacity) -->
+  <!-- Decorative: motif Duo (top-right, 40 % opacity) -->
   <div class="mobile-menu__strip">
-    <PxlcPixelStrip count={7} accentAt={4} />
+    <PxlcDuo onDark />
   </div>
 
   <!-- Header row: lockup + close button -->
   <div class="mobile-menu__head">
-    <PxlcLockup />
+    <PxlcLockup onDark />
     <button
       type="button"
       class="mobile-menu__close"

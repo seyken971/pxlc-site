@@ -8,7 +8,7 @@ import '../styles/styles.css'
 import { SITE } from '../config/site'
 import { THEME_SCRIPT } from '../lib/theme-script'
 import PxlcLockup from '../components/PxlcLockup.astro'
-import PxlcPixelStrip from '../components/PxlcPixelStrip.astro'
+import PxlcDuo from '../components/PxlcDuo.astro'
 ---
 
 <html lang={SITE.lang}>
@@ -27,7 +27,7 @@ import PxlcPixelStrip from '../components/PxlcPixelStrip.astro'
     <main id="main" class="errpage">
       <div class="container errpage__inner">
         <PxlcLockup size="md" href="/" class="errpage__brand" />
-        <PxlcPixelStrip class="errpage__strip" />
+        <PxlcDuo class="errpage__strip" />
         <span class="eyebrow eyebrow--lg">Erreur 404</span>
         <h1 class="errpage__title">
           Page introuvable<span class="coral-dot" aria-hidden="true">.</span>
@@ -48,7 +48,7 @@ import PxlcPixelStrip from '../components/PxlcPixelStrip.astro'
     min-height: 80vh;
     display: flex;
     align-items: center;
-    background: var(--bg);
+    background: var(--surface);
     padding: clamp(48px, 8vw, 96px) 0;
     transition: background var(--dur-base);
   }

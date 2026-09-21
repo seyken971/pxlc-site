@@ -256,7 +256,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     font-family: var(--font-body);
     font-size: 17px;
     line-height: 1.6;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
     margin: 0;
     max-width: 52ch;
     text-wrap: pretty;
@@ -268,7 +268,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     gap: var(--space-2-5) var(--space-5);
     margin: var(--space-5) 0 0; padding: 0; list-style: none;
     font-family: var(--font-label); font-size: 13px;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
   }
   .contact-assure li { display: flex; align-items: center; gap: 9px; }
   .contact-assure li::before {
@@ -279,7 +279,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   }
 
   /* ── Séparateur & titres de bloc ─────────────────────────────── */
-  .contact-sep { border: 0; border-top: 1px solid var(--rule); margin: var(--space-5) 0; }
+  .contact-sep { border: 0; border-top: 1px solid var(--line); margin: var(--space-5) 0; }
   .contact-h2 {
     font-size: 26px;
     letter-spacing: -0.02em;
@@ -288,7 +288,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   .contact-note {
     font-family: var(--font-body);
     font-size: 14.5px;
-    color: var(--quiet);
+    color: var(--ink-quiet);
     margin: 0 0 var(--space-4);
   }
 
@@ -312,7 +312,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
 
   .form-legend {
     font-family: var(--font-label); font-size: 12px;
-    color: var(--quiet); margin: 0;
+    color: var(--ink-quiet); margin: 0;
   }
   .form-legend__req { color: var(--pxlc-coral); font-weight: 700; }
 
@@ -325,25 +325,20 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   .contact-chips label {
     display: flex; align-items: center;
     min-height: 38px; padding: 9px 15px;
-    border: 1px solid var(--rule); border-radius: var(--radius-pill);
+    border: 1px solid var(--line); border-radius: var(--radius-pill);
     font-family: var(--font-label); font-size: 13px; font-weight: 500;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
     white-space: nowrap;
     cursor: pointer;
     transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
   }
-  .contact-chips label:hover { border-color: var(--pxlc-teal-mid); }
+  .contact-chips label:hover { border-color: var(--parent-mid); }
   .contact-chips input:checked + label {
-    border-color: var(--pxlc-teal-deep);
-    color: var(--teal-deep);
-    background: var(--badge-soft-bg);
+    border-color: var(--parent);
+    color: var(--parent);
+    background: var(--parent-soft);
   }
-  .contact-chips input:focus-visible + label { box-shadow: var(--ring-teal); }
-  :global([data-theme="dark"]) .contact-chips input:checked + label {
-    border-color: var(--pxlc-cyan);
-    color: var(--cyan);
-  }
-  :global([data-theme="dark"]) .contact-chips input:focus-visible + label { box-shadow: var(--ring-cyan); }
+  .contact-chips input:focus-visible + label { box-shadow: var(--focus-ring); }
   @media (forced-colors: active) {
     .contact-chips input:focus-visible + label { outline: 2px solid ButtonText; outline-offset: 2px; }
   }
@@ -353,16 +348,16 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     gap: var(--space-3);
     margin-top: var(--space-1);
   }
-  .contact-submit-note { font-family: var(--font-label); font-size: 12.5px; color: var(--quiet); }
+  .contact-submit-note { font-family: var(--font-label); font-size: 12.5px; color: var(--ink-quiet); }
 
   /* ── Carte de statut (remplace le formulaire) ────────────────── */
   .contact-sent {
-    background: var(--bg-soft);
-    border: 1px solid var(--bg-rule);
+    background: var(--surface-soft);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: var(--space-4);
   }
-  .contact-sent:focus-visible { outline: none; box-shadow: var(--ring-coral); }
+  .contact-sent:focus-visible { outline: none; box-shadow: var(--focus-ring); }
   /* forced-colors (Windows HCM) supprime box-shadow — on restitue un outline système. */
   @media (forced-colors: active) {
     .contact-sent:focus-visible { outline: 2px solid ButtonText; outline-offset: 2px; }
@@ -371,42 +366,41 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     font-family: var(--font-label);
     font-size: 11px; font-weight: 600;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--eyebrow);
+    color: var(--parent);
     margin-bottom: var(--space-2-5);
   }
-  .contact-sent__text { font-size: 15px; color: var(--ink-quiet); margin: 0; }
+  .contact-sent__text { font-size: 15px; color: var(--ink-muted); margin: 0; }
   .contact-sent__fallback {
     display: flex; flex-wrap: wrap; align-items: center;
     gap: var(--space-2-5); margin-top: var(--space-3);
   }
   .contact-sent__link {
     font-family: var(--font-body); font-weight: 600; font-size: 15px;
-    color: var(--eyebrow);
+    color: var(--parent);
   }
   .contact-sent__copy {
     font-family: var(--font-label); font-size: 12px; font-weight: 600;
-    letter-spacing: 0.04em; color: var(--ink-quiet);
-    background: var(--bg-elev);
-    border: 1px solid var(--rule); border-radius: var(--radius-pill);
+    letter-spacing: 0.04em; color: var(--ink-muted);
+    background: var(--surface-raised);
+    border: 1px solid var(--line); border-radius: var(--radius-pill);
     padding: 0 var(--space-3); min-height: 44px; cursor: pointer;
     transition: color var(--dur-fast), border-color var(--dur-fast);
   }
-  .contact-sent__copy:hover { color: var(--eyebrow); border-color: var(--eyebrow); }
-  .contact-sent__copy:focus-visible { outline: none; box-shadow: var(--ring-teal); }
-  :global([data-theme="dark"]) .contact-sent__copy:focus-visible { box-shadow: var(--ring-cyan); }
+  .contact-sent__copy:hover { color: var(--parent); border-color: var(--parent); }
+  .contact-sent__copy:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 
   /* ── Bloc territoire (carte + coordonnées) ───────────────────── */
   .contact-terr {
-    border: 1px solid var(--rule);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     overflow: hidden;
-    background: var(--bg-elev);
+    background: var(--surface-raised);
   }
   @media (min-width: 961px) {
     /* Aligné sur scroll-padding-top (header sticky ≈ 81 px). */
     .contact-terr { position: sticky; top: 96px; }
   }
-  .contact-terr__side { padding: var(--space-4); border-top: 1px solid var(--rule); }
+  .contact-terr__side { padding: var(--space-4); border-top: 1px solid var(--line); }
 
   /* ── NAP (adresse visible + itinéraires) ─────────────────────── */
   .contact-nap { font-style: normal; }
@@ -419,30 +413,27 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   .contact-nap__line {
     font-family: var(--font-body);
     font-size: 14px; line-height: 1.55;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
     margin: 0;
   }
   .contact-nap__line--links { margin-top: var(--space-2-5); }
-  .contact-nap__link { color: var(--teal-deep); }
-  .contact-nap__link:hover { color: var(--pxlc-coral); }
-  :global([data-theme="dark"]) .contact-nap__link { color: var(--cyan); }
-  :global([data-theme="dark"]) .contact-nap__link:hover { color: var(--pxlc-coral); }
+  .contact-nap__link { color: var(--parent); }
+  .contact-nap__link:hover { color: var(--child); }
 
   .contact-maplinks { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
   .contact-maplinks__pill {
     display: inline-flex; align-items: center; gap: var(--space-2);
     flex: 0 0 auto;
     min-height: 40px; padding: 9px 15px;
-    border: 1px solid var(--rule); border-radius: var(--radius-pill);
+    border: 1px solid var(--line); border-radius: var(--radius-pill);
     font-family: var(--font-label); font-size: 13px; font-weight: 600;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
     white-space: nowrap;
     text-decoration: none;
     transition: color var(--dur-fast), border-color var(--dur-fast);
   }
-  .contact-maplinks__pill:hover { border-color: var(--eyebrow); color: var(--eyebrow); }
-  .contact-maplinks__pill:focus-visible { outline: none; box-shadow: var(--ring-teal); }
-  :global([data-theme="dark"]) .contact-maplinks__pill:focus-visible { box-shadow: var(--ring-cyan); }
+  .contact-maplinks__pill:hover { border-color: var(--parent); color: var(--parent); }
+  .contact-maplinks__pill:focus-visible { outline: none; box-shadow: var(--focus-ring); }
   .contact-maplinks :global(.contact-maplinks__icon) { width: 15px; height: 15px; flex: 0 0 auto; }
 
   /* ── Ce qui se passe ensuite ─────────────────────────────────── */
@@ -451,11 +442,11 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin: 0; padding: 0; list-style: none;
-    border-top: 1px solid var(--rule);
+    border-top: 1px solid var(--line);
   }
   .contact-step {
     padding: var(--space-4) var(--space-5) var(--space-4) 0;
-    border-right: 1px solid var(--rule);
+    border-right: 1px solid var(--line);
   }
   .contact-step + .contact-step { padding-left: var(--space-5); }
   .contact-step:last-child { border-right: 0; }
@@ -464,19 +455,19 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     font-family: var(--font-label);
     font-size: 11px; font-weight: 600;
     letter-spacing: 0.18em;
-    color: var(--eyebrow);
+    color: var(--parent);
     margin-bottom: var(--space-2-5);
   }
   .contact-step h3 { font-size: 16px; margin: 0 0 var(--space-1-5); }
   .contact-step p {
     font-family: var(--font-body);
     font-size: 14px; line-height: 1.55;
-    color: var(--quiet);
+    color: var(--ink-quiet);
     margin: 0; max-width: 30ch;
   }
   @media (max-width: 760px) {
     .contact-steps__grid { grid-template-columns: 1fr; }
-    .contact-step { padding: var(--space-4) 0; border-right: 0; border-bottom: 1px solid var(--rule); }
+    .contact-step { padding: var(--space-4) 0; border-right: 0; border-bottom: 1px solid var(--line); }
     .contact-step + .contact-step { padding-left: 0; }
     .contact-step:last-child { border-bottom: 0; }
   }

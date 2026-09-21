@@ -246,31 +246,38 @@ const main = async () => {
     "Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.\n",
   );
 
+  // Noms du design system « PXLC 2026 » (surface, ink, parent, child…),
+  // puis les extensions propres au site.
   const semanticGroups = [
     [
       "Surfaces",
+      (k) => ["--surface", "--surface-raised", "--surface-soft"].includes(k),
+    ],
+    ["Texte", (k) => ["--ink", "--ink-muted", "--ink-quiet", "--link"].includes(k)],
+    ["Bordures", (k) => k === "--line" || k.startsWith("--rule")],
+    [
+      "Parent (grand carré du logo)",
+      (k) => k.startsWith("--parent") || k === "--on-parent",
+    ],
+    [
+      "Child (petit carré, accent unique)",
+      (k) => k.startsWith("--child") || k === "--on-child",
+    ],
+    [
+      "Extensions du site",
       (k) =>
         [
-          "--bg",
-          "--bg-soft",
-          "--bg-elev",
-          "--bg-rule",
           "--bg-glass",
           "--dot-grid",
-          "--halo-cyan",
-          "--badge-soft-bg",
           "--hover-on-dark",
-        ].includes(k),
-    ],
-    ["Texte", (k) => k === "--ink" || k === "--ink-quiet" || k === "--quiet"],
-    ["Bordures", (k) => k.startsWith("--rule")],
-    [
-      "Couleurs accent",
-      (k) => ["--teal-deep", "--teal-mid", "--cyan", "--eyebrow"].includes(k),
+          "--teal-deep",
+          "--teal-mid",
+          "--cyan",
+        ].includes(k) || k.startsWith("--map-"),
     ],
     [
-      "Ombres & rings",
-      (k) => k.startsWith("--shadow-") || k.startsWith("--ring-"),
+      "Ombres & focus",
+      (k) => k.startsWith("--shadow-") || k.startsWith("--focus-ring"),
     ],
   ];
 
@@ -439,8 +446,10 @@ const main = async () => {
     [
       "- Coral max **5 %** des pixels par page ou image",
       "- Un seul CTA primaire par section",
-      "- Jamais de texte blanc sur fond coral — utiliser `--pxlc-text-ink`",
+      "- Jamais de texte blanc sur fond coral — utiliser `--on-child`",
       "- Pas de gradients, pas d'emoji en iconographie",
+      "- **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)",
+      "- **Motif Duo** (`PxlcDuo`) : paires grand/petit, seul le dernier petit carré est corail — une fois par écran au plus ; la petite marque (`PxlcMark` 20 px) coiffe les cartes d'étape",
     ].join("\n"),
   );
 
