@@ -90,6 +90,7 @@ Le diff doit être vide hors deltas volontaires, déclarés dans la PR. Après u
 | `/plaquette`        | Plaquette de présentation (6 feuilles A4, source du PDF) |
 | `/contact`          | Formulaire + WhatsApp                                |
 | `/mentions-legales` | Mentions légales                                     |
+| `/accessibilite`    | Déclaration d'accessibilité (modèle RGAA)            |
 | `/404`              | Page introuvable                                     |
 
 ## CI

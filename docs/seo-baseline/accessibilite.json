@@ -1,0 +1,320 @@
+{
+  "route": "/accessibilite/",
+  "title": "Accessibilité · PXLC",
+  "lang": "fr-FR",
+  "links": {
+    "canonical": [
+      {
+        "href": "https://pxlc.fr/accessibilite/"
+      }
+    ]
+  },
+  "metas": {
+    "author": "Andy Zébus",
+    "color-scheme": "light dark",
+    "description": "Déclaration d’accessibilité de pxlc.fr : état de conformité, tests réalisés, contact pour signaler un obstacle.",
+    "og:description": "Déclaration d’accessibilité de pxlc.fr : état de conformité, tests réalisés, contact pour signaler un obstacle.",
+    "og:image": "https://pxlc.fr/og/site.png?v=1200x675",
+    "og:image:alt": "Logo PXLC — Médiation numérique · Guadeloupe",
+    "og:image:height": "675",
+    "og:image:type": "image/png",
+    "og:image:width": "1200",
+    "og:locale": "fr_FR",
+    "og:site_name": "PXLC",
+    "og:title": "Accessibilité · PXLC",
+    "og:type": "website",
+    "og:url": "https://pxlc.fr/accessibilite/",
+    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "theme-color": [
+      "#082B36",
+      "#F4F1EA"
+    ],
+    "twitter:card": "summary_large_image",
+    "twitter:creator": "@seyken971",
+    "twitter:image": "https://pxlc.fr/og/site.png?v=1200x675",
+    "twitter:image:height": "675",
+    "twitter:image:src": "https://pxlc.fr/og/site.png?v=1200x675",
+    "twitter:image:width": "1200",
+    "twitter:site": "@seyken971",
+    "viewport": "width=device-width, initial-scale=1"
+  },
+  "jsonLd": [
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@id": "https://pxlc.fr/#website",
+          "@type": "WebSite",
+          "alternateName": "PXLC - Médiation numérique",
+          "description": "Andy Zébus, créateur de PXLC, aide les structures en Guadeloupe à accompagner les familles autour des écrans.",
+          "inLanguage": "fr-FR",
+          "name": "PXLC",
+          "publisher": {
+            "@id": "https://pxlc.fr/#identity"
+          },
+          "url": "https://pxlc.fr/"
+        },
+        {
+          "@id": "https://pxlc.fr/accessibilite/#webpage",
+          "@type": "WebPage",
+          "about": {
+            "@id": "https://pxlc.fr/#identity"
+          },
+          "description": "Déclaration d’accessibilité de pxlc.fr : état de conformité, tests réalisés, contact pour signaler un obstacle.",
+          "inLanguage": "fr-FR",
+          "isPartOf": {
+            "@id": "https://pxlc.fr/#website"
+          },
+          "name": "Accessibilité",
+          "url": "https://pxlc.fr/accessibilite/"
+        },
+        {
+          "@id": "https://pxlc.fr/#identity",
+          "@type": [
+            "Organization",
+            "ProfessionalService"
+          ],
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "FR",
+            "addressLocality": "Les Abymes",
+            "addressRegion": "Guadeloupe",
+            "postalCode": "97139",
+            "streetAddress": "8 Résidence la familiale, rue Man Manigard Alfred, Dugazon"
+          },
+          "areaServed": [
+            {
+              "@type": "AdministrativeArea",
+              "name": "Guadeloupe"
+            },
+            {
+              "@type": "City",
+              "name": "Les Abymes"
+            },
+            {
+              "@type": "City",
+              "name": "Pointe-à-Pitre"
+            },
+            {
+              "@type": "City",
+              "name": "Baie-Mahault"
+            },
+            {
+              "@type": "City",
+              "name": "Le Gosier"
+            }
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "availableLanguage": "fr",
+            "contactType": "customer service",
+            "email": "contact@pxlc.fr",
+            "telephone": "+590690717618"
+          },
+          "description": "PXLC accompagne les familles autour des écrans. Médiation numérique en Guadeloupe, portée par Andy Zébus, auprès des structures qui accompagnent des familles.",
+          "email": "contact@pxlc.fr",
+          "founder": {
+            "@id": "https://pxlc.fr/#andy"
+          },
+          "foundingDate": "2015",
+          "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 16.1496296,
+            "longitude": -61.39705
+          },
+          "hasMap": "https://maps.app.goo.gl/4UPhQWdzboD6HnAs8",
+          "identifier": [
+            {
+              "@type": "PropertyValue",
+              "propertyID": "RCS",
+              "value": "Pointe-à-Pitre 813 793 528"
+            },
+            {
+              "@type": "PropertyValue",
+              "propertyID": "SIREN",
+              "value": "813793528"
+            },
+            {
+              "@type": "PropertyValue",
+              "propertyID": "NAF",
+              "value": "70.21Z"
+            }
+          ],
+          "image": {
+            "@id": "https://pxlc.fr/#photo-event"
+          },
+          "legalName": "Andy Zébus - Entrepreneur Individuel",
+          "logo": {
+            "@id": "https://pxlc.fr/#logo"
+          },
+          "makesOffer": {
+            "@type": "Offer",
+            "itemOffered": {
+              "@id": "https://pxlc.fr/#service"
+            }
+          },
+          "name": "PXLC - Médiation numérique",
+          "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "closes": "17:00",
+            "dayOfWeek": [
+              "https://schema.org/Monday",
+              "https://schema.org/Tuesday",
+              "https://schema.org/Wednesday",
+              "https://schema.org/Thursday",
+              "https://schema.org/Friday"
+            ],
+            "opens": "08:00"
+          },
+          "sameAs": [
+            "https://maps.app.goo.gl/4UPhQWdzboD6HnAs8",
+            "https://www.linkedin.com/company/pxlc-mediation-numerique/"
+          ],
+          "taxID": "81379352800031",
+          "telephone": "+590690717618",
+          "url": "https://pxlc.fr/"
+        },
+        {
+          "@id": "https://pxlc.fr/#andy",
+          "@type": "Person",
+          "alumniOf": [
+            {
+              "@type": "EducationalOrganization",
+              "name": "Talis Business School (Paris)"
+            },
+            {
+              "@type": "EducationalOrganization",
+              "name": "Université des Antilles"
+            },
+            {
+              "@type": "EducationalOrganization",
+              "name": "Institut Supérieur Caraïbe (ISCA)"
+            }
+          ],
+          "description": "Médiateur numérique basé aux Abymes (Guadeloupe). Aide les structures — SESSAD, IME, associations, collectivités — à accompagner les familles autour des écrans : conflits autour du temps d’écran, bonnes pratiques numériques.",
+          "hasCredential": [
+            {
+              "@type": "EducationalOccupationalCredential",
+              "credentialCategory": "Licence",
+              "name": "Licence d’anglais, spécialité médiation interculturelle euro-caribéenne — Université des Antilles"
+            }
+          ],
+          "hasOccupation": {
+            "@type": "Occupation",
+            "name": "Médiateur numérique",
+            "occupationLocation": {
+              "@type": "AdministrativeArea",
+              "name": "Guadeloupe"
+            }
+          },
+          "image": {
+            "@id": "https://pxlc.fr/#photo-andy"
+          },
+          "jobTitle": "Médiateur numérique",
+          "knowsAbout": [
+            "Médiation numérique",
+            "Médiation par le jeu vidéo",
+            "Parentalité numérique",
+            "esport",
+            "Guadeloupe"
+          ],
+          "knowsLanguage": [
+            "fr",
+            "en"
+          ],
+          "name": "Andy Zébus",
+          "sameAs": [
+            "https://www.linkedin.com/in/azebus",
+            "https://github.com/seyken971",
+            "https://www.instagram.com/seyken971",
+            "https://www.youtube.com/@seyken971",
+            "https://www.threads.com/@seyken971",
+            "https://x.com/seyken971",
+            "https://bsky.app/profile/seyken971.pxlc.fr",
+            "https://www.facebook.com/seyken971"
+          ],
+          "url": "https://pxlc.fr/a-propos/",
+          "worksFor": {
+            "@id": "https://pxlc.fr/#identity"
+          }
+        },
+        {
+          "@id": "https://pxlc.fr/#service",
+          "@type": "Service",
+          "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Guadeloupe"
+          },
+          "audience": {
+            "@type": "BusinessAudience",
+            "audienceType": [
+              "SESSAD",
+              "IME",
+              "associations",
+              "collectivités"
+            ]
+          },
+          "description": "Médiation numérique pour les structures qui accompagnent des familles en Guadeloupe. Résolution des conflits autour du temps d’écran, ateliers de bonnes pratiques, vulgarisation numérique.",
+          "name": "Médiation numérique - Programmes PXLC",
+          "provider": {
+            "@id": "https://pxlc.fr/#identity"
+          },
+          "serviceType": "Médiation numérique",
+          "url": "https://pxlc.fr/projets/"
+        },
+        {
+          "@id": "https://pxlc.fr/#photo-event",
+          "@type": "ImageObject",
+          "contentUrl": "https://pxlc.fr/img/photos/andy-event.jpg",
+          "height": {
+            "@type": "QuantitativeValue",
+            "unitCode": "E37",
+            "value": 1331
+          },
+          "inLanguage": "fr-FR",
+          "url": "https://pxlc.fr/img/photos/andy-event.jpg",
+          "width": {
+            "@type": "QuantitativeValue",
+            "unitCode": "E37",
+            "value": 2000
+          }
+        },
+        {
+          "@id": "https://pxlc.fr/#logo",
+          "@type": "ImageObject",
+          "caption": "PXLC - Médiation numérique",
+          "contentUrl": "https://pxlc.fr/logo.svg",
+          "height": {
+            "@type": "QuantitativeValue",
+            "unitCode": "E37",
+            "value": 512
+          },
+          "inLanguage": "fr-FR",
+          "url": "https://pxlc.fr/logo.svg",
+          "width": {
+            "@type": "QuantitativeValue",
+            "unitCode": "E37",
+            "value": 512
+          }
+        },
+        {
+          "@id": "https://pxlc.fr/#photo-andy",
+          "@type": "ImageObject",
+          "contentUrl": "https://pxlc.fr/img/photos/andy-portrait.jpg",
+          "height": {
+            "@type": "QuantitativeValue",
+            "unitCode": "E37",
+            "value": 738
+          },
+          "inLanguage": "fr-FR",
+          "url": "https://pxlc.fr/img/photos/andy-portrait.jpg",
+          "width": {
+            "@type": "QuantitativeValue",
+            "unitCode": "E37",
+            "value": 738
+          }
+        }
+      ]
+    }
+  ]
+}

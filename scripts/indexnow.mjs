@@ -6,7 +6,7 @@
  * en dernière étape ; utilisable seul :
  *
  *   npm run indexnow                    # pages dont le lastmod ≥ HEAD
- *   npm run indexnow -- --all           # les 6 URLs (amorçage, refonte globale)
+ *   npm run indexnow -- --all           # les 7 URLs (amorçage, refonte globale)
  *   npm run indexnow -- --since <iso>   # pages dont le lastmod ≥ cette date
  *   npm run indexnow -- --dry-run       # affiche le payload sans l'envoyer
  *
