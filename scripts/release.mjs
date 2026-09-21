@@ -10,14 +10,16 @@
  * Étapes :
  *   1. gh pr checks --watch     — la CI de la PR doit être verte ;
  *   2. gh pr merge --squash --delete-branch ;
- *   3. git checkout main && git pull --ff-only ;
+ *   3. git fetch origin main — le commit de fusion est lu sur origin/main,
+ *      puis bascule sur main (ff-only) si elle n'est pas occupée par un autre
+ *      worktree — sinon la branche courante est conservée ;
  *   4. run « Deploy to GitHub Pages » du commit de fusion (poll 10 s, 3 min max
  *      — un run peut mettre du temps à être planifié), puis gh run watch ;
  *   5. prod : chaque <loc> du sitemap répond 200 avec un canonical égal à
  *      l'URL, et la liste des URLs est celle du build local (dist) s'il existe ;
  *   6. IndexNow : soumet les pages dont le lastmod porte le commit de fusion
- *      (scripts/indexnow.mjs) — jamais bloquant, 
-pm run indexnow -- --all`n *      pour tout resoumettre.
+ *      (scripts/indexnow.mjs) — jamais bloquant, `npm run indexnow -- --all`
+ *      pour tout resoumettre.
  *
  * Rien de destructif : pas de force, pas de suppression locale. Exit 1 au
  * premier écart, avec la raison.
@@ -62,11 +64,18 @@ const main = async () => {
     console.log('  fusion distante confirmée malgré l\'erreur locale de gh')
   }
 
-  step('main local')
-  runLive('git', ['checkout', 'main'])
-  runLive('git', ['pull', '--ff-only'])
-  const sha = run('git', ['rev-parse', 'HEAD'])
-  console.log(`  ${sha.slice(0, 7)} ${run('git', ['log', '-1', '--format=%s'])}`)
+  step('Commit de fusion')
+  // Pas de checkout : lancée depuis un worktree, main est déjà extraite
+  // ailleurs et `git checkout main` échoue alors que la fusion a abouti.
+  runLive('git', ['fetch', 'origin', 'main'])
+  const sha = run('git', ['rev-parse', 'origin/main'])
+  console.log(`  ${sha.slice(0, 7)} ${run('git', ['log', '-1', '--format=%s', sha])}`)
+  try {
+    run('git', ['checkout', '-q', 'main'], { stdio: ['ignore', 'pipe', 'pipe'] })
+    runLive('git', ['merge', '--ff-only', '-q', sha])
+  } catch {
+    console.log('  main occupée par un autre worktree : branche courante conservée')
+  }
 
   step(`Run « ${WORKFLOW} » du commit de fusion`)
   let runId = null
