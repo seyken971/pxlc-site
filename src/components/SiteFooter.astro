@@ -4,7 +4,7 @@ import Linkedin from '../icons/linkedin.svg'
 import Mail from '../icons/mail.svg'
 import MessageSquare from '../icons/message-square.svg'
 import PxlcLockup from './PxlcLockup.astro'
-import PxlcPixelStrip from './PxlcPixelStrip.astro'
+import PxlcDuo from './PxlcDuo.astro'
 import { IDENTITY } from '../config/identity'
 
 const year = new Date().getFullYear()
@@ -18,7 +18,7 @@ const year = new Date().getFullYear()
   <div class="container" data-nosnippet>
     <div class="site-footer__inner">
       <div>
-        <PxlcLockup />
+        <PxlcLockup onDark />
         <p class="site-footer__mission">
           PXLC accompagne les familles autour des écrans.
         </p>
@@ -59,6 +59,9 @@ const year = new Date().getFullYear()
               rel="noopener noreferrer"
               aria-label="Télécharger la plaquette (PDF, 6 pages, nouvel onglet)">Télécharger la plaquette</a></li>
           <li>
+            <a class="site-footer__col-link" href="/plaquette/">Lire la plaquette en ligne</a>
+          </li>
+          <li>
             <a class="site-footer__col-link" href="/a-propos/">À propos d’Andy Zébus</a>
           </li>
         </ul>
@@ -86,8 +89,11 @@ const year = new Date().getFullYear()
         <li>
           <a href="/mentions-legales/#rgpd">Confidentialité</a>
         </li>
+        <li>
+          <a href="/accessibilite/">Accessibilité</a>
+        </li>
       </ul>
-      <PxlcPixelStrip count={7} accentAt={4} />
+      <PxlcDuo onDark />
     </div>
   </div>
 </footer>

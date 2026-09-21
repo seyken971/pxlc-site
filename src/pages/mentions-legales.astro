@@ -2,8 +2,8 @@
 // Legal / informational page — indexable : elle porte le NAP et engage
 // l’entité, donc elle a sa place dans l’index et dans le sitemap.
 import BaseLayout from '../layouts/BaseLayout.astro'
-import PxlcPixelStrip from '../components/PxlcPixelStrip.astro'
-import PxlcPixelCorner from '../components/PxlcPixelCorner.astro'
+import PxlcDuo from '../components/PxlcDuo.astro'
+import PxlcMark from '../components/PxlcMark.astro'
 import PxlcMarkSeparator from '../components/PxlcMarkSeparator.astro'
 import { pageGraph } from '../lib/schema'
 import { IDENTITY } from '../config/identity'
@@ -30,7 +30,7 @@ const schemaGraph = pageGraph({
   <!-- ── Hero ──────────────────────────────────────────────── -->
   <section class="legal-hero">
     <div class="container">
-      <PxlcPixelStrip class="legal-hero__strip" />
+      <PxlcDuo class="legal-hero__strip" />
       <span class="eyebrow eyebrow--lg">Informations légales</span>
       <h1 class="legal-title">
         Mentions légales<span class="coral-dot" aria-hidden="true">.</span>
@@ -49,7 +49,7 @@ const schemaGraph = pageGraph({
 
       <!-- Éditeur — carte branded -->
       <div class="legal-card">
-        <PxlcPixelCorner class="card__pixel legal-card__corner" />
+        <PxlcMark size={20} decorative class="card__duo legal-card__corner" />
         <h2 class="legal-card__label">Éditeur du site</h2>
         <div class="legal-card__name">Andy Zébus — Entrepreneur Individuel</div>
         <dl class="legal-dl">
@@ -128,8 +128,7 @@ const schemaGraph = pageGraph({
           je conserve vos coordonnées au plus pendant 3 ans à compter du dernier échange. La prise de
           rendez-vous passe par Vyte (Vyte.in SAS, Paris), qui héberge les réservations en France. Conformément au
           règlement européen 2016/679 (RGPD), vous disposez des droits d'accès, de rectification, d'effacement,
-          de portabilité et d'opposition sur vos données&nbsp;: écrivez à
-          <a href="mailto:contact@pxlc.fr">contact@pxlc.fr</a>.
+          de portabilité et d'opposition sur vos données&nbsp;: écrivez à <a href="mailto:contact@pxlc.fr">contact@pxlc.fr</a>.
         </p>
 
         <p class="kicker legal-updated">
@@ -143,8 +142,8 @@ const schemaGraph = pageGraph({
 <style>
   /* ── Hero ─────────────────────────────────────────────────────── */
   .legal-hero {
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--bg-rule);
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--line);
     padding: clamp(40px, 5vw, 64px) 0;
     transition: background var(--dur-base);
   }
@@ -154,9 +153,9 @@ const schemaGraph = pageGraph({
   }
 
   .legal-title {
-    font-size: clamp(38px, 5.5vw, 56px);
-    letter-spacing: -0.025em;
-    line-height: 1.05;
+    font-size: var(--fs-title-1);
+    letter-spacing: var(--ls-title-1);
+    line-height: var(--lh-title-1);
     margin: var(--space-2) 0 var(--space-4);
   }
 
@@ -174,14 +173,14 @@ const schemaGraph = pageGraph({
   /* ── Éditeur card ─────────────────────────────────────────────── */
   .legal-card {
     position: relative;
-    background: var(--bg-elev);
-    border: 1px solid var(--rule);
+    background: var(--surface-raised);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: var(--space-5);
     transition: background var(--dur-base);
   }
 
-  /* Surcharge de positionnement pour .card__pixel (opacity héritée globalement). */
+  /* Surcharge de positionnement pour .card__duo (opacity héritée globalement). */
   .legal-card :global(.legal-card__corner) {
     top: var(--space-4);
     right: var(--space-4);
@@ -193,7 +192,7 @@ const schemaGraph = pageGraph({
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--eyebrow);
+    color: var(--parent);
     margin: 0 0 var(--space-2);
   }
 
@@ -231,20 +230,20 @@ const schemaGraph = pageGraph({
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: var(--quiet);
+    color: var(--ink-quiet);
   }
 
   .legal-dl dd {
     font-size: 14px;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
     margin: 0;
   }
 
   .legal-dl dd code {
     font-family: var(--font-label);
     font-size: 13px;
-    color: var(--eyebrow);
-    background: var(--bg-soft);
+    color: var(--parent);
+    background: var(--surface-soft);
     padding: 1px 6px;
     border-radius: var(--radius-xs);
   }

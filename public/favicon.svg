@@ -1,12 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="PXLC">
   <title>PXLC</title>
-  <rect x="48" y="48" width="120" height="120" rx="12" fill="#036E73"/>
-  <rect x="48" y="196" width="120" height="120" rx="12" fill="#036E73"/>
-  <rect x="48" y="344" width="120" height="120" rx="12" fill="#036E73"/>
-  <rect x="196" y="48" width="120" height="120" rx="12" fill="#01A09D"/>
-  <rect x="196" y="196" width="120" height="120" rx="12" fill="#01A09D"/>
-  <rect x="196" y="344" width="120" height="120" rx="12" fill="#01A09D"/>
-  <rect x="344" y="48" width="120" height="120" rx="12" fill="#00D2C8"/>
-  <rect x="344" y="196" width="120" height="120" rx="12" fill="#00D2C8"/>
+  <rect x="48" y="48" width="268" height="268" rx="32" fill="#036E73"/>
   <rect x="344" y="344" width="120" height="120" rx="12" fill="#FF5E3A"/>
 </svg>

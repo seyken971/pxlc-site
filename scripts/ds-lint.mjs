@@ -201,7 +201,7 @@ function lintStyle(raw, file, only = null) {
   flag(
     /border-radius\s*:[^\n;]*\b([3-9]\d*|[1-9]\d+)px/g,
     'radius-brut',
-    m => `${m[0].trim()} → utiliser var(--radius-xs|sm|md|lg|pill)`,
+    m => `${m[0].trim()} → utiliser var(--radius-xs|sm|md|lg|xl|pill)`,
   )
 
   // R8 — rgba()/rgb() brut (continuité de R1 : les alphas dérivent aussi)

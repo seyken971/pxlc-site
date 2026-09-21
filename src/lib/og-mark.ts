@@ -1,23 +1,15 @@
 /**
  * Shared constants for the OG card renderer (src/lib/og-templates.ts):
- * the 3×3 brand-mark geometry, kept apart from the templates so the
- * satori tree stays readable.
+ * the brand-mark geometry, kept apart from the templates so the satori
+ * tree stays readable.
  */
 import { BRAND_HEX } from './brand-colors'
 
 export const OG_F_SANS = 'Plus Jakarta Sans, system-ui, sans-serif'
 
-// 3×3 brand mark cell coordinates (viewBox 0 0 100 100).
-export const MARK_POS = [2, 35.33, 68.67] as const
-
+// Logo PXLC 2026 (viewBox 0 0 100 100) : grand carré parent + petit carré
+// enfant en diagonale sur la grille 3×3. Même géométrie que PxlcMark.astro.
 export const MARK_RECTS = [
-  { x: MARK_POS[0], y: MARK_POS[0], fill: BRAND_HEX.tealDeep },
-  { x: MARK_POS[1], y: MARK_POS[0], fill: BRAND_HEX.tealMid },
-  { x: MARK_POS[2], y: MARK_POS[0], fill: BRAND_HEX.cyan },
-  { x: MARK_POS[0], y: MARK_POS[1], fill: BRAND_HEX.tealDeep },
-  { x: MARK_POS[1], y: MARK_POS[1], fill: BRAND_HEX.tealMid },
-  { x: MARK_POS[2], y: MARK_POS[1], fill: BRAND_HEX.cyan },
-  { x: MARK_POS[0], y: MARK_POS[2], fill: BRAND_HEX.tealDeep },
-  { x: MARK_POS[1], y: MARK_POS[2], fill: BRAND_HEX.tealMid },
-  { x: MARK_POS[2], y: MARK_POS[2], fill: BRAND_HEX.coral },
+  { x: 2, y: 2, size: 62.66, rx: 7.5, fill: BRAND_HEX.tealDeep },
+  { x: 68.67, y: 68.67, size: 29.33, rx: 3.5, fill: BRAND_HEX.coral },
 ] as const

@@ -3,8 +3,8 @@ import { Image } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import SiteBreadcrumb from '../components/SiteBreadcrumb.astro'
 import CitationBlock from '../components/CitationBlock.astro'
-import PxlcPixelStrip from '../components/PxlcPixelStrip.astro'
-import PxlcPixelCorner from '../components/PxlcPixelCorner.astro'
+import PxlcDuo from '../components/PxlcDuo.astro'
+import PxlcMark from '../components/PxlcMark.astro'
 import { ID, pageGraph } from '../lib/schema'
 import { breadcrumbItems } from '../lib/breadcrumb'
 import { IDENTITY } from '../config/identity'
@@ -70,7 +70,7 @@ const schemaGraph = pageGraph({
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
   <!-- ── Hero ──────────────────────────────────────────────── -->
   <section class="about-hero">
-    <PxlcPixelStrip class="about-hero__strip" />
+    <PxlcDuo class="about-hero__strip" />
     <div class="container">
       <div class="about-grid">
         <div>
@@ -90,8 +90,9 @@ const schemaGraph = pageGraph({
               aria-label="Prendre rendez-vous (nouvel onglet)">Prendre rendez-vous</a>
             <a
               href="/files/plaquette-pxlc.pdf" target="_blank" rel="noopener noreferrer"
-              class="btn btn--ghost btn--lg btn--no-arrow" aria-label="Plaquette PDF, 6 pages (nouvel onglet)">Plaquette
+              class="btn btn--ghost btn--lg btn--no-arrow" aria-label="Plaquette PDF · 6 pages (nouvel onglet)">Plaquette
               PDF · 6 pages</a>
+            <a href="/plaquette/" class="hero__alt" aria-label="Lire en ligne (plaquette, version web accessible)">Lire en ligne</a>
           </div>
         </div>
 
@@ -107,7 +108,7 @@ const schemaGraph = pageGraph({
               fetchpriority="high"
             />
           </div>
-          <PxlcPixelCorner class="about-portrait__corner" />
+          <PxlcMark size={20} decorative class="about-portrait__corner" />
         </div>
       </div>
 
@@ -188,8 +189,8 @@ const schemaGraph = pageGraph({
   /* ── Hero ────────────────────────────────────────────────────── */
   .about-hero {
     position: relative;
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--bg-rule);
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--line);
     padding: clamp(40px, 5vw, 64px) 0;
     transition: background var(--dur-base);
   }
@@ -227,9 +228,9 @@ const schemaGraph = pageGraph({
   }
 
   .about-title {
-    font-size: clamp(36px, 5.4vw, 64px);
-    line-height: 1.04;
-    letter-spacing: -0.03em;
+    font-size: var(--fs-title-1);
+    line-height: var(--lh-title-1);
+    letter-spacing: var(--ls-title-1);
     margin: 0 0 20px;
     text-wrap: balance;
   }
@@ -237,7 +238,7 @@ const schemaGraph = pageGraph({
   .about-lead {
     font-size: 17px;
     line-height: 1.55;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
     max-width: 580px;
   }
 
@@ -287,7 +288,7 @@ const schemaGraph = pageGraph({
   .about-facts {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    border-block: 1px solid var(--rule);
+    border-block: 1px solid var(--line);
     margin: var(--space-6) 0 0;
     position: relative;
   }
@@ -298,7 +299,7 @@ const schemaGraph = pageGraph({
   }
 
   .about-fact+.about-fact {
-    border-left: 1px solid var(--rule);
+    border-left: 1px solid var(--line);
   }
 
   .about-fact:first-child {
@@ -316,7 +317,7 @@ const schemaGraph = pageGraph({
     }
 
     .about-fact:nth-child(n + 3) {
-      border-top: 1px solid var(--rule);
+      border-top: 1px solid var(--line);
     }
   }
 
@@ -325,7 +326,7 @@ const schemaGraph = pageGraph({
     font-size: 11px;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--quiet);
+    color: var(--ink-quiet);
     margin-bottom: var(--space-2);
   }
 
@@ -470,7 +471,7 @@ const schemaGraph = pageGraph({
     height: 12px;
     border-radius: 1px;
     background: var(--teal-mid);
-    box-shadow: 0 0 0 4px var(--bg-soft);
+    box-shadow: 0 0 0 4px var(--surface-soft);
     z-index: 1;
   }
 
@@ -482,7 +483,7 @@ const schemaGraph = pageGraph({
     left: 50%;
     transform: translateX(-50%);
     width: 2px;
-    background: var(--rule);
+    background: var(--line);
   }
 
   /* 2026 — la grille se résout : nœud coral, fin du rail. */
@@ -530,7 +531,7 @@ const schemaGraph = pageGraph({
   .timeline__desc {
     font-size: 15px;
     line-height: 1.6;
-    color: var(--ink-quiet);
+    color: var(--ink-muted);
     margin: var(--space-1) 0 0;
   }
 

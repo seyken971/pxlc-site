@@ -2,9 +2,9 @@
    PXLC — Design tokens
    Single source of truth for colors, typography, spacing, radius,
    elevation and motion. Wired into styles.css and component
-   scoped styles. Fonts (Plus Jakarta Sans, Lora) are
-   self-hosted by @nuxt/fonts — no @import needed here, the
-   font-family declarations below trigger the module's auto-resolution.
+   scoped styles. Semantic layer aligned on the design system
+   « PXLC 2026 ». Fonts (Plus Jakarta Sans, Lora) are self-hosted,
+   declared in fonts.css.
    ============================================================= */
 
 /* Adjusted fallback fonts — match approximate x-height of Plus Jakarta Sans/Lora
@@ -37,6 +37,11 @@
   --pxlc-cyan: #00D2C8;
   --pxlc-coral: #FF5E3A;
   --pxlc-coral-deep: #E8492A;
+  --pxlc-coral-deep-dark: #FF7A5C;
+  --pxlc-teal-soft: #DCEFED;
+  --pxlc-teal-soft-dark: #0F3D48;
+  --pxlc-coral-soft: #FFE3DA;
+  --pxlc-coral-soft-dark: #3A1D17;
   --pxlc-bg-light: #EAF6F4;
   --pxlc-bg-dark: #082B36;
   --pxlc-bg-dark-soft: #0C3340;
@@ -57,20 +62,35 @@
   --pxlc-pattern-warm-deep: #CDC4B0;
   /* BRAND HEX END */
 
-  /* ── Semantic surface tokens (light) ────────────────────── */
-  --bg:           var(--pxlc-bg-light);
-  --bg-soft:      var(--pxlc-ivory);
-  --bg-elev:      var(--pxlc-white);
-  --bg-rule:      var(--pxlc-border-soft);
-  /* Header / overlay surfaces. Tinted variants of --bg with alpha for
+  /* ── Semantic tokens (light) — design system PXLC 2026 ──── */
+  /* Noms et valeurs du design system « PXLC 2026 » : surface ivoire,
+     parent = le grand carré du logo (teal / cyan), child = le petit
+     carré (corail, accent unique ≤ 5 % d'une page). */
+  --surface:        var(--pxlc-ivory);
+  --surface-raised: var(--pxlc-white);
+  --surface-soft:   var(--pxlc-bg-light);
+  --line:           var(--pxlc-border-soft);
+
+  --ink:            var(--pxlc-text-ink);
+  --ink-muted:      var(--pxlc-text-on-light);
+  --ink-quiet:      var(--pxlc-text-secondary);
+
+  --parent:         var(--pxlc-teal-deep);
+  --parent-mid:     var(--pxlc-teal-mid);
+  --parent-soft:    var(--pxlc-teal-soft);
+  --on-parent:      var(--pxlc-white);
+  --child:          var(--pxlc-coral);
+  --child-deep:     var(--pxlc-coral-deep);
+  --child-soft:     var(--pxlc-coral-soft);
+  --on-child:       var(--pxlc-text-ink);
+  --link:           var(--parent);
+
+  /* ── Extensions propres au site (hors design system) ────── */
+  /* Header / overlay surfaces. Tinted variants of --surface with alpha for
      backdrop-filter glass effect. Overridden in [data-theme="dark"]. */
-  --bg-glass:     rgba(234, 246, 244, 0.92);
-  /* Points du motif dot-grid (vignettes blog) — bascule seul en dark. */
+  --bg-glass:     rgba(244, 241, 234, 0.92);
+  /* Points du motif dot-grid — bascule seul en dark. */
   --dot-grid:     rgba(8, 43, 54, 0.09);
-  /* Halo radial cyan du hero — plus discret en dark. */
-  --halo-cyan:    rgba(0, 210, 200, 0.14);
-  /* Fond du badge soft — légèrement renforcé en dark. */
-  --badge-soft-bg: rgba(0, 210, 200, 0.12);
   /* Hover sur surface toujours sombre (menu mobile) — pas de variante. */
   --hover-on-dark: rgba(255, 255, 255, 0.06);
   /* Carte des communes (CommuneMap) : terre, frontières, contour de la zone. */
@@ -78,28 +98,53 @@
   --map-stroke:      var(--pxlc-text-secondary);
   --map-zone-stroke: var(--pxlc-teal-deep);
 
-  --ink:          var(--pxlc-text-ink);
-  --ink-quiet:    var(--pxlc-text-on-light);
-  --quiet:        var(--pxlc-text-secondary);
-
-  --rule:         var(--pxlc-border);
   /* Filet accentué teal translucide (ex. border-top des cartes méthode). */
   --rule-accent:  rgba(1, 160, 157, 0.25);
 
+  /* Couleurs fixes, identiques dans les deux thèmes (décor, surfaces
+     toujours sombres). Pour du texte qui suit le thème : --parent. */
   --teal-deep:    var(--pxlc-teal-deep);
   --teal-mid:     var(--pxlc-teal-mid);
   --cyan:         var(--pxlc-cyan);
-  --eyebrow:      var(--pxlc-teal-deep);
 
   /* ── Typography ─────────────────────────────────────────── */
-  /* Only the font-families are tokenised. The scale itself is local to
-     each component (most titles use clamp() for fluid responsive sizing
-     — a fixed --fs-h1 token wouldn't fit). */
+  /* Familles, puis échelle typographique du design system PXLC 2026
+     (title-1 … small). Les titres sont fluides : le clamp() plafonne à
+     la valeur du DS sur bureau. Taille --fs-*, interligne --lh-*,
+     interlettrage --ls-* ; la graisse reste dans la règle (700 pour
+     title-1/2, 600 pour title-3, label et ui). Hors échelle : les
+     chiffres d'affichage décoratifs (repères, frise, numéros d'étape). */
   --font-display: "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-body:    "Lora", "Lora Fallback", Georgia, "Times New Roman", serif;
   /* Label/eyebrow font (Plus Jakarta Sans with tracking). Actual code blocks use --font-code. */
   --font-label:   "Plus Jakarta Sans", "Plus Jakarta Sans Fallback", system-ui, sans-serif;
   --font-code:    ui-monospace, "SFMono-Regular", Menlo, "Courier New", monospace;
+
+  /* Titre de page, un par page. */
+  --fs-title-1: clamp(36px, 5.4vw, 56px);
+  --lh-title-1: 1.05;
+  --ls-title-1: -0.03em;
+  /* Titres de section. */
+  --fs-title-2: clamp(28px, 4.2vw, 40px);
+  --lh-title-2: 1.1;
+  --ls-title-2: -0.025em;
+  /* Titres de carte et sous-sections. */
+  --fs-title-3: 24px;
+  --lh-title-3: 1.2;
+  --ls-title-3: -0.01em;
+  /* Chapô sous un titre (Lora). */
+  --fs-lead: clamp(17px, 2vw, 19px);
+  --lh-lead: 1.55;
+  /* Texte courant, puis légendes et notes (Lora). */
+  --fs-body: 16px;
+  --lh-body: 1.6;
+  --fs-small: 14px;
+  --lh-small: 1.5;
+  /* Eyebrows et étiquettes, en capitales. */
+  --fs-label: 11px;
+  --ls-label: 0.18em;
+  /* Boutons et éléments d'interface. */
+  --fs-ui: 15px;
 
   /* ── Spacing — 8 px rhythm ──────────────────────────────── */
   --space-1: 4px;
@@ -119,26 +164,22 @@
   --radius-sm:   6px;
   --radius-md:   8px;
   --radius-lg:   14px;
+  /* Grands aplats — le rayon du grand carré du logo (12 %). */
+  --radius-xl:   24px;
   --radius-pill: 999px;
 
   /* ── Elevation ──────────────────────────────────────────── */
-  /* Soft elevation for cards / lifted UI; overridden in dark mode. */
-  --shadow-card-hover: 0 8px 24px -12px rgba(8,43,54,.18);
+  /* Carte survolée, jamais au repos ; overridden in dark mode. */
+  --shadow-card: 0 8px 24px -12px rgba(8,43,54,.18);
   /* Scrolled-state shadow under the sticky header. */
   --shadow-header:     0 2px 14px -6px rgba(8,43,54,.14);
-  /* Button shadows — resting hairline + hover glows teintés par variante. */
-  --shadow-btn-rest:   0 1px 0 rgba(8,43,54,.06);
-  --shadow-btn-coral:  0 8px 24px -12px rgba(255,94,58,.6);
-  --shadow-btn-teal:   0 8px 24px -12px rgba(3,110,115,.5);
-  --shadow-btn-cyan:   0 8px 24px -12px rgba(0,210,200,.4);
 
   /* ── Focus rings ────────────────────────────────────────── */
-  /* All focus-visible rings reuse these — keeps the brand consistent
-     and avoids the repeated rgba() literals that were drifting before. */
-  --ring-cyan:  0 0 0 3px rgba(0,210,200,.25);
-  --ring-teal:  0 0 0 3px rgba(3,110,115,.3);
-  --ring-teal-soft: 0 0 0 3px rgba(3,110,115,.2);
-  --ring-coral: 0 0 0 3px rgba(255,94,58,.3);
+  /* Focus clavier du design system : un espace couleur page puis un
+     anneau parent de 2 px. Tous les focus-visible le réutilisent. */
+  --focus-ring: 0 0 0 2px var(--surface), 0 0 0 4px var(--parent);
+  /* Variante pour les surfaces toujours sombres (menu mobile, footer). */
+  --focus-ring-on-dark: 0 0 0 2px var(--pxlc-bg-dark), 0 0 0 4px var(--pxlc-cyan);
 
   /* ── Motion ─────────────────────────────────────────────── */
   --ease-step: cubic-bezier(.6, 0, .2, 1);
@@ -161,24 +202,25 @@
 
 /* ── Dark theme overrides ─────────────────────────────────── */
 [data-theme="dark"] {
-  --bg:           var(--pxlc-bg-dark);
-  --bg-soft:      var(--pxlc-bg-dark-deep);
-  --bg-elev:      var(--pxlc-bg-dark-soft);
-  --bg-rule:      var(--pxlc-border-dark);
-  --ink:          var(--pxlc-ivory);
-  --ink-quiet:    var(--pxlc-text-on-dark-soft);
-  --quiet:        var(--pxlc-text-quiet-dark);
-  --rule:         var(--pxlc-border-dark-2);
-  --eyebrow:      var(--pxlc-cyan);
+  --surface:        var(--pxlc-bg-dark);
+  --surface-raised: var(--pxlc-bg-dark-soft);
+  --surface-soft:   var(--pxlc-bg-dark-deep);
+  --line:           var(--pxlc-border-dark-2);
+  --ink:            var(--pxlc-ivory);
+  --ink-muted:      var(--pxlc-text-on-dark-soft);
+  --ink-quiet:      var(--pxlc-text-quiet-dark);
+  --parent:         var(--pxlc-cyan);
+  --parent-soft:    var(--pxlc-teal-soft-dark);
+  --on-parent:      var(--pxlc-bg-dark);
+  --child-deep:     var(--pxlc-coral-deep-dark);
+  --child-soft:     var(--pxlc-coral-soft-dark);
 
   --bg-glass:     rgba(8, 43, 54, 0.92);
   --dot-grid:     rgba(255, 255, 255, 0.06);
-  --halo-cyan:    rgba(0, 210, 200, 0.08);
-  --badge-soft-bg: rgba(0, 210, 200, 0.18);
   --map-land:        var(--pxlc-bg-dark-soft);
   --map-stroke:      var(--pxlc-text-quiet-dark);
   --map-zone-stroke: var(--pxlc-cyan);
 
-  --shadow-card-hover: 0 8px 24px -12px rgba(0,0,0,.45);
+  --shadow-card: 0 8px 24px -12px rgba(0,0,0,.45);
   --shadow-header:     0 2px 14px -6px rgba(0,0,0,.45);
 }

@@ -31,17 +31,16 @@ const crumbs = breadcrumbItems(Astro.url.pathname, currentLabel)
     list-style: none; padding: 0; margin: 0;
     font-family: var(--font-label); font-size: 11px;
     letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--quiet);
+    color: var(--ink-quiet);
   }
   .breadcrumb__item:not(:last-child)::after {
-    content: "/"; margin-left: var(--space-2); color: var(--quiet);
+    content: "/"; margin-left: var(--space-2); color: var(--ink-quiet);
   }
   /* Zone de tap ≥ 44 px sans grossir le libellé de 11 px. */
   .breadcrumb__link, .breadcrumb__current {
     display: inline-flex; align-items: center; min-height: 44px;
   }
-  .breadcrumb__link { color: var(--teal-deep); transition: color var(--dur-fast); }
+  .breadcrumb__link { color: var(--parent); transition: color var(--dur-fast); }
   .breadcrumb__link:hover { color: var(--pxlc-coral); text-decoration: none; }
-  :global([data-theme="dark"]) .breadcrumb__link { color: var(--cyan); }
   .breadcrumb__current { color: var(--ink); font-weight: 600; }
 </style>

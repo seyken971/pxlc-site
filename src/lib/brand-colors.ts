@@ -21,6 +21,13 @@ export const BRAND_HEX = {
   // Accent
   coral: '#FF5E3A',
   coralDeep: '#E8492A',
+  coralDeepDark: '#FF7A5C',
+
+  // Tinted grounds (design system PXLC 2026) — badges parent / child.
+  tealSoft: '#DCEFED',
+  tealSoftDark: '#0F3D48',
+  coralSoft: '#FFE3DA',
+  coralSoftDark: '#3A1D17',
 
   // Surfaces
   bgLight: '#EAF6F4',

@@ -1,19 +1,19 @@
 {
-  "route": "/contact/",
-  "title": "Contacter Andy Zébus — devis ou premier échange · PXLC",
+  "route": "/accessibilite/",
+  "title": "Accessibilité · PXLC",
   "lang": "fr-FR",
   "links": {
     "canonical": [
       {
-        "href": "https://pxlc.fr/contact/"
+        "href": "https://pxlc.fr/accessibilite/"
       }
     ]
   },
   "metas": {
     "author": "Andy Zébus",
     "color-scheme": "light dark",
-    "description": "Devis ou premier échange de 20 min — gratuit, sans engagement. Pour les structures qui accompagnent des familles.",
-    "og:description": "Réponse sous 2 jours ouvrés — formulaire, WhatsApp ou visio. Premier échange de 20 min gratuit pour cadrer votre projet.",
+    "description": "Déclaration d’accessibilité de pxlc.fr : état de conformité, tests réalisés, contact pour signaler un obstacle.",
+    "og:description": "Déclaration d’accessibilité de pxlc.fr : état de conformité, tests réalisés, contact pour signaler un obstacle.",
     "og:image": "https://pxlc.fr/og/site.png?v=1200x675",
     "og:image:alt": "Logo PXLC — Médiation numérique · Guadeloupe",
     "og:image:height": "675",
@@ -21,9 +21,9 @@
     "og:image:width": "1200",
     "og:locale": "fr_FR",
     "og:site_name": "PXLC",
-    "og:title": "Contacter Andy Zébus — devis ou premier échange · PXLC",
+    "og:title": "Accessibilité · PXLC",
     "og:type": "website",
-    "og:url": "https://pxlc.fr/contact/",
+    "og:url": "https://pxlc.fr/accessibilite/",
     "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
     "theme-color": [
       "#082B36",
@@ -55,24 +55,18 @@
           "url": "https://pxlc.fr/"
         },
         {
-          "@id": "https://pxlc.fr/contact/#webpage",
-          "@type": [
-            "WebPage",
-            "ContactPage"
-          ],
+          "@id": "https://pxlc.fr/accessibilite/#webpage",
+          "@type": "WebPage",
           "about": {
             "@id": "https://pxlc.fr/#identity"
           },
-          "breadcrumb": {
-            "@id": "https://pxlc.fr/contact/#breadcrumb"
-          },
-          "description": "Page de prise de contact avec PXLC — Andy Zébus, médiateur numérique en Guadeloupe.",
+          "description": "Déclaration d’accessibilité de pxlc.fr : état de conformité, tests réalisés, contact pour signaler un obstacle.",
           "inLanguage": "fr-FR",
           "isPartOf": {
             "@id": "https://pxlc.fr/#website"
           },
-          "name": "Contact PXLC",
-          "url": "https://pxlc.fr/contact/"
+          "name": "Accessibilité",
+          "url": "https://pxlc.fr/accessibilite/"
         },
         {
           "@id": "https://pxlc.fr/#identity",
@@ -267,24 +261,6 @@
           },
           "serviceType": "Médiation numérique",
           "url": "https://pxlc.fr/projets/"
-        },
-        {
-          "@id": "https://pxlc.fr/contact/#breadcrumb",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "item": "https://pxlc.fr/",
-              "name": "Accueil",
-              "position": 1
-            },
-            {
-              "@type": "ListItem",
-              "item": "https://pxlc.fr/contact/",
-              "name": "Contact",
-              "position": 2
-            }
-          ]
         },
         {
           "@id": "https://pxlc.fr/#photo-event",

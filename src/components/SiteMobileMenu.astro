@@ -1,7 +1,7 @@
 ---
 import PxlcLockup from './PxlcLockup.astro'
 import PxlcMark from './PxlcMark.astro'
-import PxlcPixelStrip from './PxlcPixelStrip.astro'
+import PxlcDuo from './PxlcDuo.astro'
 import { NAV_ITEMS, isActive, navHref } from '../config/nav'
 import { IDENTITY } from '../config/identity'
 
@@ -16,19 +16,19 @@ const pathname = Astro.url.pathname
   aria-modal="true"
   aria-label="Menu de navigation"
 >
-  <!-- Decorative: PxlcMark watermark (bottom-right, 7 % opacity) -->
+  <!-- Decorative: PxlcMark watermark (bottom-right, 18 % opacity) -->
   <div class="mobile-menu__watermark">
-    <PxlcMark size={400} decorative={true} />
+    <PxlcMark size={400} decorative onDark />
   </div>
 
-  <!-- Decorative: pixel strip (top-right, 40 % opacity) -->
+  <!-- Decorative: motif Duo (top-right, 40 % opacity) -->
   <div class="mobile-menu__strip">
-    <PxlcPixelStrip count={7} accentAt={4} />
+    <PxlcDuo onDark />
   </div>
 
   <!-- Header row: lockup + close button -->
   <div class="mobile-menu__head">
-    <PxlcLockup />
+    <PxlcLockup onDark />
     <button
       type="button"
       class="mobile-menu__close"
@@ -75,15 +75,18 @@ const pathname = Astro.url.pathname
     >
       Prendre rendez-vous
     </a>
-    <a
-      href="/files/plaquette-pxlc.pdf"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="mobile-menu__plaquette"
-      aria-label="Télécharger la plaquette (PDF, 6 pages, nouvel onglet)"
-    >
-      Télécharger la plaquette
-    </a>
+    <div class="mobile-menu__plaquettes">
+      <a
+        href="/files/plaquette-pxlc.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mobile-menu__plaquette"
+        aria-label="Télécharger la plaquette (PDF, 6 pages, nouvel onglet)"
+      >
+        Télécharger la plaquette
+      </a>
+      <a href="/plaquette/" class="mobile-menu__plaquette">Lire en ligne</a>
+    </div>
   </div>
 </div>
 
@@ -167,4 +170,6 @@ const pathname = Astro.url.pathname
     transition: color var(--dur-fast);
   }
   .mobile-menu__plaquette:hover { color: var(--pxlc-ivory); text-decoration: none; }
+  /* PDF et version web côte à côte (RGAA 13.3 : version accessible du document). */
+  .mobile-menu__plaquettes { display: flex; justify-content: center; flex-wrap: wrap; column-gap: var(--space-4); }
 </style>

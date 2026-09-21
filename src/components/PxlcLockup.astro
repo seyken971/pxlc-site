@@ -4,15 +4,18 @@ import PxlcMark from './PxlcMark.astro'
 interface Props {
   size?: 'sm' | 'md' | 'lg'
   href?: string
+  /** Surface toujours sombre (footer, menu mobile) : parent en cyan. */
+  onDark?: boolean
   class?: string
 }
-const { size = 'sm', href = '/', class: className } = Astro.props
+const { size = 'sm', href = '/', onDark = false, class: className } = Astro.props
 const markSize = size === 'lg' ? 56 : size === 'md' ? 40 : 36
-const nameSize = size === 'lg' ? 28 : 18
+const nameSize = size === 'lg' ? 34 : 22
 ---
 
+<!-- Le petit carré corail du logo tient lieu de point : le mot s'écrit
+     « PXLC », sans point typographique (design system PXLC 2026). -->
 <a class:list={['lockup', className]} href={href} aria-label="PXLC — accueil">
-  <PxlcMark size={markSize} />
-  <span class="lockup__name" style={`font-size: ${nameSize}px`}
-    >PXLC<span class="coral-dot" aria-hidden="true">.</span></span>
+  <PxlcMark size={markSize} onDark={onDark} decorative class="lockup__mark" />
+  <span class="lockup__name" style={`font-size: ${nameSize}px`}>PXLC</span>
 </a>

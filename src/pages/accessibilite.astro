@@ -1,0 +1,177 @@
+---
+// Déclaration d'accessibilité — sur le modèle RGAA (état de conformité,
+// tests, limites, contact, voies de recours). Rien n'y est revendiqué qui
+// ne soit vérifié : pas d'audit RGAA à ce jour, donc « non audité ».
+import BaseLayout from '../layouts/BaseLayout.astro'
+import PxlcDuo from '../components/PxlcDuo.astro'
+import PxlcMark from '../components/PxlcMark.astro'
+import PxlcMarkSeparator from '../components/PxlcMarkSeparator.astro'
+import { pageGraph } from '../lib/schema'
+import { IDENTITY } from '../config/identity'
+
+// Date d'établissement de la déclaration — à mettre à jour à la main à
+// chaque révision du contenu (pas la date du build).
+const lastUpdated = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
+  .format(new Date('2026-09-21T12:00:00'))
+
+const seo = {
+  title: 'Accessibilité',
+  description: 'Déclaration d’accessibilité de pxlc.fr : état de conformité, tests réalisés, contact pour signaler un obstacle.',
+}
+
+const schemaGraph = pageGraph({
+  path: '/accessibilite/',
+  name: seo.title,
+  description: seo.description,
+})
+---
+
+<BaseLayout {...seo} schemaGraph={schemaGraph}>
+  <!-- ── Hero ──────────────────────────────────────────────── -->
+  <section class="a11y-hero">
+    <div class="container">
+      <PxlcDuo class="a11y-hero__strip" />
+      <span class="eyebrow eyebrow--lg">Informations légales</span>
+      <h1 class="a11y-title">
+        Accessibilité<span class="coral-dot" aria-hidden="true">.</span>
+      </h1>
+      <p class="lead a11y-lead">
+        Je veux que ce site se consulte sans obstacle, au clavier, avec un lecteur d’écran ou avec un
+        zoom important. Voici où il en est, et comment me signaler ce qui bloque.
+      </p>
+    </div>
+  </section>
+
+  <!-- ── Content ───────────────────────────────────────────── -->
+  <section class="section">
+    <div class="container a11y-container">
+
+      <!-- État de conformité -->
+      <div class="a11y-card">
+        <PxlcMark size={20} decorative class="card__duo a11y-card__corner" />
+        <h2 class="a11y-card__label">État de conformité</h2>
+        <p class="a11y-card__status">Non audité</p>
+        <p class="a11y-card__text">
+          Le site pxlc.fr n’a pas encore fait l’objet d’un audit de conformité au référentiel
+          général d’amélioration de l’accessibilité (RGAA&nbsp;4.1). Au sens du RGAA, un site sans
+          audit est déclaré «&nbsp;non conforme&nbsp;», même quand ses tests automatiques ne relèvent
+          aucune erreur.
+        </p>
+      </div>
+
+      <PxlcMarkSeparator />
+
+      <article class="prose">
+        <h2>Ce qui est vérifié à chaque mise à jour</h2>
+        <ul>
+          <li>
+            Un audit automatique (axe-core, critères WCAG&nbsp;2.1 niveau AA) passe sur chaque page
+            avant toute mise en ligne&nbsp;: une erreur bloque la publication.
+          </li>
+          <li>
+            Les couleurs du texte respectent un contraste d’au moins 4,5:1 sur leur fond, en thème
+            clair comme en thème sombre.
+          </li>
+          <li>
+            Tout se fait au clavier&nbsp;: un lien «&nbsp;Aller au contenu&nbsp;» ouvre chaque page, et
+            l’élément actif reste visible grâce à un anneau de focus.
+          </li>
+          <li>
+            Les boutons et liens principaux offrent une zone de toucher d’au moins 44&nbsp;px.
+          </li>
+          <li>
+            Les animations s’arrêtent si votre système demande de réduire les mouvements.
+          </li>
+        </ul>
+
+        <h2>Limites connues</h2>
+        <ul>
+          <li>
+            La <a href="/files/plaquette-pxlc.pdf">plaquette PDF</a> n’a pas encore été vérifiée avec
+            un lecteur d’écran. Son contenu est intégralement repris sur la page <a href="/plaquette/">plaquette</a>,
+            en HTML.
+          </li>
+          <li>
+            La prise de rendez-vous (Vyte), les itinéraires (Google Maps, Waze) et les réseaux sociaux
+            sont des services tiers&nbsp;: leur accessibilité ne dépend pas de moi. Le formulaire de <a href="/contact/">contact</a>,
+            l’email et le téléphone restent toujours disponibles.
+          </li>
+        </ul>
+
+        <h2>Établissement de cette déclaration</h2>
+        <p>
+          Technologies utilisées&nbsp;: HTML, CSS et un JavaScript minimal (thème, menu mobile,
+          formulaire). Outils de test&nbsp;: axe-core et Lighthouse, dans Chromium, sur bureau et sur
+          mobile.
+        </p>
+
+        <h2>Signaler un obstacle</h2>
+        <p>
+          Si un contenu ou un service vous reste inaccessible, écrivez-moi
+          à <a href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a> ou appelez le <a href={`tel:${IDENTITY.telephone}`}>{IDENTITY.telephoneDisplay}</a>&nbsp;: je vous
+          transmets l’information sous une autre forme et je corrige le site.
+        </p>
+
+        <h2>Voies de recours</h2>
+        <p>
+          Si vous m’avez signalé un défaut d’accessibilité sans obtenir de réponse satisfaisante, vous
+          pouvez saisir le <a href="https://www.defenseurdesdroits.fr/" target="_blank" rel="noopener noreferrer">Défenseur des droits</a>.
+        </p>
+
+        <p class="kicker a11y-updated">
+          Déclaration établie le {lastUpdated}
+        </p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ── Hero ─────────────────────────────────────────────────────── */
+  .a11y-hero {
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--line);
+    padding: clamp(40px, 5vw, 64px) 0;
+  }
+  .a11y-hero :global(.a11y-hero__strip) { margin-bottom: var(--space-4); }
+  .a11y-title {
+    font-size: var(--fs-title-1);
+    letter-spacing: var(--ls-title-1);
+    line-height: var(--lh-title-1);
+    margin: var(--space-2) 0 var(--space-4);
+  }
+  .a11y-lead { max-width: 640px; }
+
+  /* ── Content ──────────────────────────────────────────────────── */
+  .a11y-container { max-width: 760px; }
+
+  .a11y-card {
+    position: relative;
+    background: var(--surface-raised);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+  }
+  .a11y-card :global(.a11y-card__corner) { top: var(--space-4); right: var(--space-4); }
+  .a11y-card__label {
+    font-family: var(--font-label);
+    font-size: var(--fs-label);
+    font-weight: 600;
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--parent);
+    margin: 0 0 var(--space-2);
+  }
+  .a11y-card__status {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--fs-title-3);
+    line-height: var(--lh-title-3);
+    letter-spacing: var(--ls-title-3);
+    color: var(--ink);
+    margin-bottom: var(--space-3);
+  }
+  .a11y-card__text { font-size: var(--fs-small); line-height: var(--lh-small); max-width: 60ch; }
+
+  .a11y-updated { display: block; margin-top: var(--space-6); }
+</style>
