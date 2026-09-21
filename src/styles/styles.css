@@ -589,7 +589,7 @@ main[tabindex="-1"]:focus { outline: none; }
 /* Zone de tap ≥ 44 px sans grossir le texte légal de 11 px. */
 .site-footer__legal a { display: inline-flex; align-items: center; min-height: 44px; }
 .site-footer__legal a:hover { color: var(--pxlc-cyan); }
-.site-footer__legal-links { display: flex; gap: var(--space-3); list-style: none; padding: 0; margin: 0; }
+.site-footer__legal-links { display: flex; flex-wrap: wrap; column-gap: var(--space-3); list-style: none; padding: 0; margin: 0; }
 
 /* Form inputs — moved to /contact scoped style */
 
