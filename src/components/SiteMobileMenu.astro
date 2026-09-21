@@ -1,4 +1,13 @@
 ---
+/**
+ * Menu mobile plein écran : navigation, CTA de rendez-vous, liens vers la
+ * plaquette.
+ * @usage Toutes les pages, via BaseLayout ; ouvert par le burger de
+ * SiteHeader.
+ * @a11y Dialog modal nommé, inert tant qu'il est fermé ; focus piégé à
+ * l'ouverture, Échap ferme et rend le focus au burger ; page courante en
+ * aria-current="page".
+ */
 import PxlcLockup from './PxlcLockup.astro'
 import PxlcMark from './PxlcMark.astro'
 import PxlcDuo from './PxlcDuo.astro'

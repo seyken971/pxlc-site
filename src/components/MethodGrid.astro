@@ -1,8 +1,18 @@
 ---
+/**
+ * Section « Ma méthode en trois temps » : une carte par étape, coiffée de
+ * la petite marque.
+ * @usage Accueil.
+ * @a11y Section reliée à son h2 (aria-labelledby) ; une carte = un article
+ * titré en h3 ; marque et point final décoratifs.
+ */
 import PxlcMark from './PxlcMark.astro'
 
 export interface MethodStep { num: string, title: string, desc: string, tag?: string }
-interface Props { steps: MethodStep[] }
+interface Props {
+  /** Étapes dans l'ordre : numéro, titre, texte, étiquette facultative. */
+  steps: MethodStep[]
+}
 const { steps } = Astro.props
 ---
 

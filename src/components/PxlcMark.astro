@@ -1,15 +1,4 @@
 ---
-interface Props {
-  size?: number
-  decorative?: boolean
-  /** Force le parent en cyan sur une surface toujours sombre (footer, menu mobile). */
-  onDark?: boolean
-  /** Version une couleur, en encre. */
-  mono?: boolean
-  class?: string
-}
-const { size = 36, decorative = false, onDark = false, mono = false, class: className } = Astro.props
-
 /**
  * Le logo PXLC (design system « PXLC 2026 ») : sur une grille 3×3, un
  * grand carré (le parent, 2×2 cellules) et un petit carré (l'enfant, la
@@ -17,11 +6,28 @@ const { size = 36, decorative = false, onDark = false, mono = false, class: clas
  * thème (--parent : teal en clair, cyan en sombre) ; l'enfant est
  * toujours --child (corail). Ne jamais inverser les rôles, recolorer
  * l'enfant, déformer ni pivoter (seul le filigrane incliné à −8° l'est).
- *
- * NB: la même géométrie vit dans src/lib/og-mark.ts (MARK_RECTS, fills
- * hex) pour la carte OG, rendue hors de tout contexte CSS. Garder les
- * deux copies synchronisées.
+ * @usage Seul dans les en-têtes et le filigrane ; en 20 px, coiffe les
+ * cartes d'étape ; dans le lockup, toujours decorative (le lien porte le nom).
+ * @a11y role="img" et aria-label « Logo PXLC » par défaut ; decorative
+ * le passe en aria-hidden quand un texte voisin nomme déjà la marque.
  */
+// NB: la même géométrie vit dans src/lib/og-mark.ts (MARK_RECTS, fills
+// hex) pour la carte OG, rendue hors de tout contexte CSS. Garder les
+// deux copies synchronisées.
+interface Props {
+  /** Côté du carré, en px. */
+  size?: number
+  /** Masque le logo aux technologies d'assistance (aria-hidden). */
+  decorative?: boolean
+  /** Force le parent en cyan sur une surface toujours sombre (footer, menu mobile). */
+  onDark?: boolean
+  /** Version une couleur, en encre. */
+  mono?: boolean
+  /** Classes ajoutées au SVG (placement dans le parent). */
+  class?: string
+}
+const { size = 36, decorative = false, onDark = false, mono = false, class: className } = Astro.props
+
 const parentFill = mono ? 'var(--ink)' : onDark ? 'var(--cyan)' : 'var(--parent)'
 const childFill = mono ? 'var(--ink)' : 'var(--child)'
 ---

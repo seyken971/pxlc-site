@@ -1,5 +1,14 @@
 ---
-interface Props { partners?: string[] }
+/**
+ * Bandeau des partenaires de confiance, en liste de noms.
+ * @usage Accueil, sous le hero.
+ * @a11y Section nommée ; liste avec role="list" pour garder la sémantique
+ * malgré list-style: none.
+ */
+interface Props {
+  /** Noms des structures partenaires, affichés dans l'ordre. */
+  partners?: string[]
+}
 const { partners = ['SESSAD Lékoklaya'] } = Astro.props
 ---
 

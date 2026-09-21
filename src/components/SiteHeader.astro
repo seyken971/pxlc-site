@@ -1,4 +1,12 @@
 ---
+/**
+ * En-tête du site : lockup, navigation principale, bascule de thème,
+ * CTA « Prendre RDV » (Vyte) et burger qui ouvre SiteMobileMenu.
+ * @usage Toutes les pages, via BaseLayout.
+ * @a11y Nav nommée « Navigation principale », page courante en
+ * aria-current="page" ; CTA externe annoncé « nouvel onglet » ; burger en
+ * aria-expanded / aria-controls="mobile-menu".
+ */
 import PxlcLockup from './PxlcLockup.astro'
 import ThemeToggle from './ThemeToggle.astro'
 import { NAV_ITEMS, isActive, navHref } from '../config/nav'

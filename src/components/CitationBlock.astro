@@ -1,8 +1,19 @@
 ---
+/**
+ * Section de citation institutionnelle : source, extrait entre guillemets
+ * français, attribution.
+ * @usage Citation sourcée depuis docs/references/, jamais reformulée.
+ * @a11y Section nommée « Référence institutionnelle » ; figure,
+ * blockquote et figcaption ; guillemets décoratifs en aria-hidden.
+ */
 interface Props {
+  /** Document cité, affiché au-dessus de l'extrait. */
   source: string
+  /** Extrait exact, sans guillemets (ajoutés par le composant). */
   quote: string
+  /** Auteur, date et section de la citation. */
   attribution: string
+  /** Fond doux (.section--soft). */
   soft?: boolean
 }
 const { source, quote, attribution, soft = true } = Astro.props

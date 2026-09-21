@@ -159,8 +159,8 @@ layout:
 # PXLC — Design System
 
 > Généré automatiquement par `scripts/export-design.mjs`.
-> Source : `src/styles/tokens.css` + `styles.css`.
-> Relancer `npm run design` après toute modification des sources CSS.
+> Source : `src/styles/tokens.css` + `styles.css` + `src/components/`.
+> Relancer `npm run design` après toute modification des sources CSS ou des composants.
 
 ## Palette
 
@@ -349,7 +349,7 @@ Rythme 8 px.
 
 ## Composants CSS globaux
 
-Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas listés ici.
+Classes issues de `styles.css`. Les variantes scoped des composants sont listées dans « Composants ».
 
 ### Page root guards
 
@@ -497,6 +497,269 @@ Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas
 ### Long-form prose (mentions légales, etc.)
 
 - `.prose`
+
+## Composants
+
+Généré depuis `src/components/` : description et tags `@usage` / `@a11y` du bloc JSDoc de tête, props depuis `interface Props`, variantes et états depuis le `<style>` du composant.
+
+### Primitives de marque (`Pxlc*`)
+
+#### `PxlcDuo`
+
+Motif Duo (design system « PXLC 2026 ») : des paires grand/petit tirées du logo, alignées ; seul le dernier petit carré est corail. Remplace l'ancienne bande de pixels.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `count` | `number` | `3` | Nombre de paires grand/petit. |
+| `unit` | `number` | `8` | Côté du petit carré, en px. |
+| `onDark` | `boolean` | `false` | Surface toujours sombre (footer, menu mobile) : grand carré en cyan. |
+| `class` | `string` | — | Classes ajoutées au SVG (placement dans le parent). |
+
+- **Usage** : Micro-décoration, une fois par écran au plus : en-têtes de page, pied de page, menu mobile, feuilles de la plaquette.
+- **Accessibilité** : Purement décoratif : SVG en aria-hidden, aucun contenu à annoncer.
+
+#### `PxlcInput`
+
+Champ de formulaire avec son libellé : input, ou textarea dès que rows est fourni.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `id` * | `string` | — | Identifiant du champ, relié au libellé. |
+| `label` * | `string` | — | Libellé visible. |
+| `type` | `HTMLAttributes<'input'>['type']` | — | Type d'input (text par défaut) ; ignoré en textarea. |
+| `placeholder` | `string` | — | Exemple de saisie, jamais un substitut du libellé. |
+| `rows` | `number` | — | Nombre de lignes : rend une textarea. |
+| `required` | `boolean` | — | Champ obligatoire (required + aria-required, astérisque visuel). |
+| `autocomplete` | `string` | — | Jeton autocomplete (name, email…) ; ignoré en textarea. |
+
+- **Usage** : Formulaire de la page contact.
+- **Accessibilité** : Libellé visible relié par for/id ; champ requis marqué aria-required, l'astérisque visuel restant en aria-hidden.
+
+#### `PxlcLinkout`
+
+Lien texte de sortie de section, stylé .linkout, libellé en slot.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `href` * | `string` | — | Destination du lien. |
+
+- **Usage** : Fin de bloc de contenu (étude de cas SESSAD).
+- **Accessibilité** : Lien natif ; le libellé du slot doit nommer la destination seul.
+
+#### `PxlcLockup`
+
+Logo et nom « PXLC » côte à côte, en lien vers l'accueil. Le petit carré corail du logo tient lieu de point : pas de point typographique.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Gabarit : logo 36, 40 ou 56 px ; nom 22 ou 34 px. |
+| `href` | `string` | `'/'` | Destination du lien. |
+| `onDark` | `boolean` | `false` | Surface toujours sombre (footer, menu mobile) : parent en cyan. |
+| `class` | `string` | — | Classes ajoutées au lien (placement dans le parent). |
+
+- **Usage** : En-tête, pied de page, menu mobile, page 404.
+- **Accessibilité** : Un seul lien nommé « PXLC — accueil » ; le logo interne est decorative pour ne pas annoncer la marque deux fois.
+
+#### `PxlcMark`
+
+Le logo PXLC (design system « PXLC 2026 ») : sur une grille 3×3, un grand carré (le parent, 2×2 cellules) et un petit carré (l'enfant, la cellule en bas à droite), face à face en diagonale. Le parent suit le thème (--parent : teal en clair, cyan en sombre) ; l'enfant est toujours --child (corail). Ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane incliné à −8° l'est).
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `size` | `number` | `36` | Côté du carré, en px. |
+| `decorative` | `boolean` | `false` | Masque le logo aux technologies d'assistance (aria-hidden). |
+| `onDark` | `boolean` | `false` | Force le parent en cyan sur une surface toujours sombre (footer, menu mobile). |
+| `mono` | `boolean` | `false` | Version une couleur, en encre. |
+| `class` | `string` | — | Classes ajoutées au SVG (placement dans le parent). |
+
+- **Usage** : Seul dans les en-têtes et le filigrane ; en 20 px, coiffe les cartes d'étape ; dans le lockup, toujours decorative (le lien porte le nom).
+- **Accessibilité** : role="img" et aria-label « Logo PXLC » par défaut ; decorative le passe en aria-hidden quand un texte voisin nomme déjà la marque.
+
+#### `PxlcMarkSeparator`
+
+Séparateur horizontal : deux filets encadrant la petite marque 18 px.
+
+Aucune prop.
+
+- **Usage** : Entre deux sections de contenu (accueil, pages légales).
+- **Accessibilité** : Décoratif : bloc entier en aria-hidden.
+
+### Chrome du site (`Site*`)
+
+#### `SiteBreadcrumb`
+
+Fil d'Ariane dérivé de l'URL et de la navigation.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `currentLabel` | `string` | — | Libellé du segment final quand il n'est pas dans la nav (ex. titre d'article). |
+
+- **États** : `:hover`
+- **Usage** : Pages intérieures (projets, à propos, contact) ; le JSON-LD BreadcrumbList vient de la même source.
+- **Accessibilité** : Nav nommée « Fil d'Ariane », liste ordonnée, dernier segment en aria-current="page".
+
+#### `SiteFooter`
+
+Pied de page : lockup, mission, liens de contact, plan du site, mentions légales et accessibilité.
+
+Aucune prop.
+
+- **Usage** : Toutes les pages, via BaseLayout.
+- **Accessibilité** : Liens-icônes nommés par aria-label, icônes en aria-hidden ; liens externes et PDF annoncés dans leur libellé accessible.
+
+#### `SiteHead`
+
+Surface SEO d'une page dans le head : title, canonical, metas, OG et Twitter, JSON-LD haché pour la CSP.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `title` * | `string` | — | Titre de page sans suffixe — « %s · PXLC » appliqué ici. ≤ 53 caractères. |
+| `description` * | `string` | — | Meta description. ≤ 120 caractères. |
+| `ogDescription` | `string` | `description` | og:description si différente de description (ex : accueil). |
+| `ogTitle` | `string` | `fullTitle` | og:title si différent du titre complet — les articles retirent le suffixe « · PXLC » (og:site_name porte déjà la marque). |
+| `ogType` | `'website' \| 'article'` | `'website'` | og:type de la page. |
+| `robots` | `string` | `'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'` | Directive meta robots (noindex pour les pages hors sitemap). |
+| `ogImage` | `string` | ``${SITE.url}/og/site.png?v=1200x675`` | URL absolue de l'image OG (1200×675, 16:9). |
+| `ogImageAlt` | `string` | `'Logo PXLC — Médiation numérique · Guadeloupe'` | Texte alternatif de l'image OG — la carte de marque par défaut. |
+| `schemaGraph` | `object[]` | — | Graphe schema.org complet de la page (nœuds du @graph). |
+| `colorScheme` | `'light dark' \| 'light'` | `'light dark'` | `light dark` par défaut ; `light` pour une page au thème épinglé. |
+
+- **Usage** : Une fois par page, via BaseLayout ou PlaquetteLayout ; tout ce qu'il émet est verrouillé par la baseline SEO.
+- **Accessibilité** : Pose color-scheme (thème natif des contrôles) et ogImageAlt ; rien de visible dans la page.
+
+#### `SiteHeader`
+
+En-tête du site : lockup, navigation principale, bascule de thème, CTA « Prendre RDV » (Vyte) et burger qui ouvre SiteMobileMenu.
+
+Aucune prop.
+
+- **Usage** : Toutes les pages, via BaseLayout.
+- **Accessibilité** : Nav nommée « Navigation principale », page courante en aria-current="page" ; CTA externe annoncé « nouvel onglet » ; burger en aria-expanded / aria-controls="mobile-menu".
+
+#### `SiteMobileMenu`
+
+Menu mobile plein écran : navigation, CTA de rendez-vous, liens vers la plaquette.
+
+Aucune prop.
+
+- **États** : `:hover`
+- **Usage** : Toutes les pages, via BaseLayout ; ouvert par le burger de SiteHeader.
+- **Accessibilité** : Dialog modal nommé, inert tant qu'il est fermé ; focus piégé à l'ouverture, Échap ferme et rend le focus au burger ; page courante en aria-current="page".
+
+### Sections et blocs
+
+#### `CitationBlock`
+
+Section de citation institutionnelle : source, extrait entre guillemets français, attribution.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `source` * | `string` | — | Document cité, affiché au-dessus de l'extrait. |
+| `quote` * | `string` | — | Extrait exact, sans guillemets (ajoutés par le composant). |
+| `attribution` * | `string` | — | Auteur, date et section de la citation. |
+| `soft` | `boolean` | `true` | Fond doux (.section--soft). |
+
+- **Usage** : Citation sourcée depuis docs/references/, jamais reformulée.
+- **Accessibilité** : Section nommée « Référence institutionnelle » ; figure, blockquote et figcaption ; guillemets décoratifs en aria-hidden.
+
+#### `CommuneMap`
+
+Carte des communes de Guadeloupe, rendue en SVG inline au build depuis src/data/communes-971.json (généré par scripts/build-communes.mjs — contours réels, jamais un tracé à la main). Les communes de `zone` sont remplies et numérotées ; les noms ne sont pas écrits sur la carte (communes mitoyennes, les libellés se chevauchent) mais dans la légende, reliés par les numéros.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `zone` * | `string[]` | — | Communes surlignées, dans l'ordre des numéros de la légende. |
+| `label` * | `string` | — | Nom accessible de la carte (role="img"). |
+
+- **Variantes** : `.commune-map__commune--zone`
+- **Usage** : Page contact, zone d'intervention.
+- **Accessibilité** : SVG en role="img" nommé par label ; tracés et numéros en aria-hidden ; la légende en liste ordonnée porte les noms.
+
+#### `HeroSection`
+
+Hero de page : eyebrow, titre h1, chapô, un CTA primaire et un CTA secondaire, photo et pastille facultatives, filigrane du logo.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `eyebrow` | `string` | `'PXLC · Guadeloupe'` | Surtitre au-dessus du h1. |
+| `title` * | `string` | — | Titre de la page, rendu en h1. |
+| `titleDot` | `boolean` | `false` | Ajoute un point final stylé (coral-dot) après le titre. |
+| `lead` | `string` | `''` | Chapô sous le titre. |
+| `ctaPrimary` | `Cta \| null` | `null` | Le CTA primaire de la section (un seul). |
+| `ctaSecondary` | `Cta \| null` | `null` | CTA secondaire, en bouton ghost. |
+| `ctaSecondaryAlt` | `AltLink \| null` | `null` | Lien texte discret à côté du CTA secondaire. |
+| `hint` | `string \| null` | `null` | Mention courte sous les CTA. |
+| `photo` | `ImageMetadata \| null` | `null` | Photo importée depuis src/assets (astro:assets génère les variantes webp). |
+| `photoAlt` | `string` | `''` | Texte alternatif de la photo. |
+| `pill` | `Pill \| null` | `null` | Pastille posée sur la photo : surtitre et texte. |
+| `showBgMark` | `boolean` | `true` | Affiche le logo en filigrane incliné en fond. |
+
+- **Variantes** : `.hero__title--dot`
+- **Usage** : Une fois par page, en tête ; porte l'unique h1.
+- **Accessibilité** : Section reliée à son h1 ; CTA externes suffixés « (nouvel onglet) » dans leur aria-label ; filigrane en aria-hidden ; photo décrite par photoAlt.
+
+#### `MethodGrid`
+
+Section « Ma méthode en trois temps » : une carte par étape, coiffée de la petite marque.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `steps` * | `MethodStep[]` | — | Étapes dans l'ordre : numéro, titre, texte, étiquette facultative. |
+
+- **Variantes** : `.card--method`
+- **Usage** : Accueil.
+- **Accessibilité** : Section reliée à son h2 (aria-labelledby) ; une carte = un article titré en h3 ; marque et point final décoratifs.
+
+#### `PartnerStrip`
+
+Bandeau des partenaires de confiance, en liste de noms.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `partners` | `string[]` | `['SESSAD Lékoklaya']` | Noms des structures partenaires, affichés dans l'ordre. |
+
+- **Usage** : Accueil, sous le hero.
+- **Accessibilité** : Section nommée ; liste avec role="list" pour garder la sémantique malgré list-style: none.
+
+#### `PlaquettePage`
+
+Feuille A4 de la plaquette : en-tête de navigation, contenu en slot, pied avec édition et domaine ; variante couverture sur fond sombre.
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `num` * | `string` | — | Numéro de feuille, deux chiffres (« 02 »). |
+| `total` * | `string` | — | Nombre total de feuilles (« 06 »). |
+| `label` | `string` | — | Libellé de navigation en tête de feuille (« 01 · La mission »). |
+| `cover` | `boolean` | `false` | Couverture : fond sombre, sans en-tête ni pied. |
+| `version` * | `string` | — | Édition, affichée dans le pied (« v4 »). |
+| `website` * | `string` | — | Domaine sans protocole, affiché dans le pied (« pxlc.fr »). |
+| `screenLabel` * | `string` | — | Libellé écran de la feuille (aperçu, aria). |
+
+- **Variantes** : `.pq-page--cover`
+- **Usage** : Page /plaquette/, six feuilles exactement (garde-fou de npm run plaquette).
+- **Accessibilité** : Chaque feuille est une section nommée par screenLabel.
+
+#### `SessadCase`
+
+Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») : photo, texte et lien vers la page projets.
+
+Aucune prop.
+
+- **Usage** : Accueil. Faits de copy : voir les garde-fous de CLAUDE.md (intervenant culturel au singulier, « le psychologue »).
+- **Accessibilité** : Section reliée à son h2 ; photo décrite ; point final décoratif.
+
+#### `ThemeToggle`
+
+Bascule clair / sombre. Suit le thème système tant que la personne n'a pas choisi ; son choix est gardé dans localStorage (pxlc-theme).
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `variant` | `'default' \| 'on-dark'` | `'default'` | on-dark : couleurs pour une surface toujours sombre. |
+
+- **Usage** : Dans l'en-tête du site.
+- **Accessibilité** : Bouton natif en aria-pressed ; aria-pressed et aria-label sont resynchronisés au chargement sur le thème réel ; icônes en aria-hidden.
+
+> `*` = prop obligatoire.
 
 ## Règles brand
 

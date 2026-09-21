@@ -1,11 +1,21 @@
 ---
+/**
+ * Logo et nom « PXLC » côte à côte, en lien vers l'accueil. Le petit carré
+ * corail du logo tient lieu de point : pas de point typographique.
+ * @usage En-tête, pied de page, menu mobile, page 404.
+ * @a11y Un seul lien nommé « PXLC — accueil » ; le logo interne est
+ * decorative pour ne pas annoncer la marque deux fois.
+ */
 import PxlcMark from './PxlcMark.astro'
 
 interface Props {
+  /** Gabarit : logo 36, 40 ou 56 px ; nom 22 ou 34 px. */
   size?: 'sm' | 'md' | 'lg'
+  /** Destination du lien. */
   href?: string
   /** Surface toujours sombre (footer, menu mobile) : parent en cyan. */
   onDark?: boolean
+  /** Classes ajoutées au lien (placement dans le parent). */
   class?: string
 }
 const { size = 'sm', href = '/', onDark = false, class: className } = Astro.props

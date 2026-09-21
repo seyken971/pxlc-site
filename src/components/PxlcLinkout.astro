@@ -1,5 +1,13 @@
 ---
-interface Props { href: string }
+/**
+ * Lien texte de sortie de section, stylé .linkout, libellé en slot.
+ * @usage Fin de bloc de contenu (étude de cas SESSAD).
+ * @a11y Lien natif ; le libellé du slot doit nommer la destination seul.
+ */
+interface Props {
+  /** Destination du lien. */
+  href: string
+}
 const { href } = Astro.props
 ---
 

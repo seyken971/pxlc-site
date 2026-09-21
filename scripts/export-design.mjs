@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 /**
- * Génère design.md (référence complète : tokens, palette, classes, règles)
- * et design-rules.md (règles brand seules, importé par CLAUDE.md) depuis
- * src/styles/tokens.css + styles.css.
+ * Génère design.md (référence complète : tokens, palette, classes,
+ * composants, règles) et design-rules.md (règles brand seules, importé par
+ * CLAUDE.md) depuis src/styles/tokens.css + styles.css et les contrats
+ * JSDoc de src/components/ (voir component-docs.mjs).
  *
  * Usage :
  *   node scripts/export-design.mjs
@@ -14,6 +15,7 @@
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
 import { writeFilePreservingEol } from "./write-file-eol.mjs";
+import { parseComponentDoc } from "./component-docs.mjs";
 
 const TOKENS = "src/styles/tokens.css";
 const STYLES = "src/styles/styles.css";
@@ -83,14 +85,30 @@ function parseSections(css) {
  * filesystem pour ne jamais dériver de la réalité.
  */
 async function listComponents(dir = "src/components") {
-  const names = [];
+  return (await componentFiles(dir)).map((f) => f.name).sort();
+}
+
+async function componentFiles(dir) {
+  const files = [];
   for (const e of await readdir(dir, { withFileTypes: true })) {
     if (e.isDirectory())
-      names.push(...(await listComponents(join(dir, e.name))));
+      files.push(...(await componentFiles(join(dir, e.name))));
     else if (e.name.endsWith(".vue") || e.name.endsWith(".astro"))
-      names.push(e.name.replace(/\.(vue|astro)$/, ""));
+      files.push({
+        name: e.name.replace(/\.(vue|astro)$/, ""),
+        path: join(dir, e.name),
+      });
   }
-  return names.sort();
+  return files;
+}
+
+/** Contrat documenté de chaque composant .astro, indexé par nom. */
+async function readComponentDocs(dir = "src/components") {
+  const docs = {};
+  for (const { name, path } of await componentFiles(dir))
+    if (path.endsWith(".astro"))
+      docs[name] = parseComponentDoc(await readFile(path, "utf8"));
+  return docs;
 }
 
 // ── Helpers Markdown ───────────────────────────────────────────────────────
@@ -214,10 +232,11 @@ function buildFrontmatter(root, dark) {
 // ── Main ───────────────────────────────────────────────────────────────────
 
 const main = async () => {
-  const [tokensCss, stylesCss, components] = await Promise.all([
+  const [tokensCss, stylesCss, components, componentDocs] = await Promise.all([
     readFile(TOKENS, "utf8"),
     readFile(STYLES, "utf8"),
     listComponents(),
+    readComponentDocs(),
   ]);
 
   const root = parseRoot(tokensCss);
@@ -231,9 +250,11 @@ const main = async () => {
   // ── En-tête ──────────────────────────────────────────────────────────────
   md.push("# PXLC — Design System\n");
   md.push("> Généré automatiquement par `scripts/export-design.mjs`.");
-  md.push("> Source : `src/styles/tokens.css` + `styles.css`.");
   md.push(
-    "> Relancer `npm run design` après toute modification des sources CSS.\n",
+    "> Source : `src/styles/tokens.css` + `styles.css` + `src/components/`.",
+  );
+  md.push(
+    "> Relancer `npm run design` après toute modification des sources CSS ou des composants.\n",
   );
 
   // ── Palette ───────────────────────────────────────────────────────────────
@@ -375,7 +396,7 @@ const main = async () => {
   // ── Composants CSS globaux ────────────────────────────────────────────────
   md.push("\n## Composants CSS globaux\n");
   md.push(
-    "Classes issues de `styles.css`. Les styles scoped des composants Vue ne sont pas listés ici.\n",
+    "Classes issues de `styles.css`. Les variantes scoped des composants sont listées dans « Composants ».\n",
   );
 
   const skipTitles = new Set(["Global", "Reset & globals"]);
@@ -390,6 +411,58 @@ const main = async () => {
     md.push(filtered.map((c) => `- \`.${c}\``).join("\n"));
     md.push("");
   }
+
+  // ── Composants ────────────────────────────────────────────────────────────
+  // Contrats dérivés des sources .astro (scripts/component-docs.mjs) : la
+  // prose vient des commentaires JSDoc, gardés par ds-lint R13 ; variantes
+  // et états sont relevés dans les <style> scoped, jamais écrits à la main.
+  md.push("## Composants\n");
+  md.push(
+    "Généré depuis `src/components/` : description et tags `@usage` / `@a11y` du bloc JSDoc de tête, props depuis `interface Props`, variantes et états depuis le `<style>` du composant.\n",
+  );
+  const cell = (s) => s.replace(/\|/g, "\\|");
+  const groups = [
+    ["Primitives de marque (`Pxlc*`)", (n) => n.startsWith("Pxlc")],
+    ["Chrome du site (`Site*`)", (n) => n.startsWith("Site")],
+    [
+      "Sections et blocs",
+      (n) => !n.startsWith("Pxlc") && !n.startsWith("Site"),
+    ],
+  ];
+  for (const [label, fn] of groups) {
+    md.push(`### ${label}\n`);
+    for (const name of components.filter(fn)) {
+      const doc = componentDocs[name];
+      md.push(`#### \`${name}\`\n`);
+      if (doc.description) md.push(`${doc.description}\n`);
+      if (doc.props.length) {
+        md.push(
+          table(
+            ["Prop", "Type", "Défaut", "Rôle"],
+            doc.props.map((p) => [
+              `\`${p.name}\`${p.optional ? "" : " *"}`,
+              `\`${cell(p.type)}\``,
+              p.default === null ? "—" : `\`${cell(p.default)}\``,
+              cell(p.doc) || "—",
+            ]),
+          ),
+        );
+        md.push("");
+      } else {
+        md.push("Aucune prop.\n");
+      }
+      const extras = [
+        doc.variants.length &&
+          `- **Variantes** : ${doc.variants.map((v) => `\`${v}\``).join(", ")}`,
+        doc.states.length &&
+          `- **États** : ${doc.states.map((v) => `\`${v}\``).join(", ")}`,
+        doc.tags.usage && `- **Usage** : ${doc.tags.usage}`,
+        doc.tags.a11y && `- **Accessibilité** : ${doc.tags.a11y}`,
+      ].filter(Boolean);
+      if (extras.length) md.push(extras.join("\n") + "\n");
+    }
+  }
+  md.push("> `*` = prop obligatoire.\n");
 
   // ── Règles brand ──────────────────────────────────────────────────────────
   // À partir d'ici, tout est aussi écrit dans design-rules.md, importé par
