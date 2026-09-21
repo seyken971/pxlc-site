@@ -44,7 +44,7 @@ const markers = zone.map((nom, i) => ({ nom, num: i + 1, centroid: byName.get(no
   <figcaption class="commune-map__legend">
     <ol class="commune-map__keys" role="list">
       {markers.map(m => (
-        <li><i aria-hidden="true">{m.num}</i>{m.nom}</li>
+        <li><span class="commune-map__num" aria-hidden="true">{m.num}</span>{m.nom}</li>
       ))}
     </ol>
     <small class="commune-map__credit">Contours&nbsp;: IGN · geo.api.gouv.fr</small>
@@ -84,11 +84,11 @@ const markers = zone.map((nom, i) => ({ nom, num: i + 1, centroid: byName.get(no
     font-family: var(--font-label); font-size: 12.5px; color: var(--ink-muted);
   }
   .commune-map__keys li { display: flex; align-items: center; gap: 7px; }
-  .commune-map__keys i {
+  .commune-map__num {
     display: grid; place-items: center;
     width: 15px; height: 15px; border-radius: var(--radius-pill);
     background: var(--ink); color: var(--surface);
-    font-size: 9.5px; font-weight: 700; font-style: normal;
+    font-size: 9.5px; font-weight: 700;
   }
   .commune-map__credit { font-family: var(--font-label); font-size: 11px; color: var(--ink-quiet); }
 </style>

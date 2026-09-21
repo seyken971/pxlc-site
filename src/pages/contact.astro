@@ -326,7 +326,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   .contact-chips label {
     display: flex; align-items: center;
     min-height: 38px; padding: 9px 15px;
-    border: 1px solid var(--line); border-radius: var(--radius-pill);
+    border: 1px solid var(--ink-quiet); border-radius: var(--radius-pill);
     font-family: var(--font-label); font-size: 13px; font-weight: 500;
     color: var(--ink-muted);
     white-space: nowrap;
@@ -418,7 +418,8 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     margin: 0;
   }
   .contact-nap__line--links { margin-top: var(--space-2-5); }
-  .contact-nap__link { color: var(--parent); }
+  /* Souligné : lien au milieu de l'adresse, la couleur seule ne suffit pas (RGAA 10.6). */
+  .contact-nap__link { color: var(--parent); text-decoration: underline; text-underline-offset: 3px; }
   .contact-nap__link:hover { color: var(--child); }
 
   .contact-maplinks { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }

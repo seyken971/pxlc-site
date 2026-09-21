@@ -49,7 +49,7 @@ const schemaGraph = pageGraph({
     <a class="btn btn--ghost btn--no-arrow" href="/">Retour au site</a>
     <a
       class="btn btn--ghost btn--no-arrow" href={PDF_HREF} target="_blank" rel="noopener noreferrer"
-      aria-label="Télécharger la plaquette (PDF, 6 pages, nouvel onglet)">Télécharger le PDF</a>
+      aria-label="Télécharger le PDF (plaquette, 6 pages, nouvel onglet)">Télécharger le PDF</a>
   </nav>
 
   <div class="pq-pages">
@@ -734,5 +734,20 @@ const schemaGraph = pageGraph({
     margin-top: 5mm;
     padding-top: 4mm;
     border-top: 1px dashed var(--line);
+  }
+
+  /* ── Écran étroit (RGAA 10.11) ─────────────────────────────
+     Sous 760 px, les feuilles deviennent fluides (PlaquettePage) et les
+     grilles passent sur une colonne : aucun défilement horizontal à
+     320 px. L'impression et le PDF gardent la mise en page A4 (média
+     print, fenêtre de 794 px dans export-plaquette). */
+  @media screen and (max-width: 760px) {
+    .pq-grid-3, .pq-cover__meta, .pq-bio, .pq-frameworks, .pq-etapes,
+    .pq-themes, .pq-cas__facts, .pq-consent__fields, .pq-consent__sigs,
+    .pq-step, .pq-indicateurs { grid-template-columns: 1fr; }
+    .pq-cover__inner { padding: var(--space-6) var(--space-3) var(--space-5); }
+    .pq-cover__bg-mark { width: 60vw; height: 60vw; right: -10vw; bottom: -10vw; }
+    .pq-toolbar { flex-wrap: wrap; }
+    .pq-cover__title { font-size: var(--fs-title-1); overflow-wrap: anywhere; }
   }
 </style>

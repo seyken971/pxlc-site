@@ -111,6 +111,20 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
   @media screen {
     .pq-page { box-shadow: var(--shadow-card); border-radius: 2px; }
   }
+  /* Écran étroit : la feuille suit la largeur de la fenêtre et sa hauteur
+     suit le contenu (RGAA 10.11) ; l'A4 reste pour l'impression. */
+  @media screen and (max-width: 760px) {
+    .pq-page {
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      padding: var(--space-5) var(--space-3) calc(var(--space-9) + var(--space-3));
+      border-radius: 0;
+    }
+    .pq-page--cover { padding: 0; }
+    .pq-page__head { flex-wrap: wrap; gap: var(--space-2); }
+    .pq-page__foot { left: var(--space-3); right: var(--space-3); flex-wrap: wrap; gap: var(--space-1) var(--space-3); }
+  }
   @media print {
     .pq-page { box-shadow: none; border-radius: 0; }
   }
