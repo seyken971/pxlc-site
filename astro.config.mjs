@@ -24,9 +24,6 @@ export default defineConfig({
   site: 'https://pxlc.fr',
   trailingSlash: 'always',
   build: { format: 'directory' },
-  // /structures/ a été indexée : GitHub Pages ne sert pas de 301, Astro émet
-  // donc une page de redirection (meta refresh + canonical) vers la rubrique.
-  redirects: { '/structures': '/projets/' },
   // Préchargement natif : chaque lien interne est chargé dès qu'il devient
   // visible, la page suivante s'affiche sans attente. Requêtes same-origin
   // (connect-src 'self') ; le script est traité, donc haché, par Astro.
