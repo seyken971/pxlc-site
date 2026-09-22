@@ -42,6 +42,10 @@
           "@id": "https://pxlc.fr/#website",
           "@type": "WebSite",
           "alternateName": "PXLC - Médiation numérique",
+          "copyrightHolder": {
+            "@id": "https://pxlc.fr/#andy"
+          },
+          "copyrightYear": 2015,
           "description": "Andy Zébus, créateur de PXLC, aide les structures en Guadeloupe à accompagner les familles autour des écrans.",
           "inLanguage": "fr-FR",
           "name": "PXLC",
@@ -61,6 +65,9 @@
           },
           "breadcrumb": {
             "@id": "https://pxlc.fr/projets/#breadcrumb"
+          },
+          "copyrightHolder": {
+            "@id": "https://pxlc.fr/#andy"
           },
           "description": "Le projet Parent-Écran-Enfant conduit au SESSAD Lékoklaya en 2026 — déroulé, thèmes d’atelier, indicateurs suivis.",
           "inLanguage": "fr-FR",
@@ -159,6 +166,13 @@
           "image": {
             "@id": "https://pxlc.fr/#photo-event"
           },
+          "knowsAbout": [
+            "Médiation numérique",
+            "Médiation par le jeu vidéo",
+            "Parentalité numérique",
+            "esport",
+            "Guadeloupe"
+          ],
           "legalName": "Andy Zébus - Entrepreneur Individuel",
           "logo": {
             "@id": "https://pxlc.fr/#logo"
