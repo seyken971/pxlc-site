@@ -219,7 +219,7 @@ main[tabindex="-1"]:focus { outline: none; }
   margin-bottom: var(--space-2);
 }
 /* Marqueur visuel de champ requis — aria-hidden côté markup, l'info
-   accessible passe par aria-required sur l'input. */
+   accessible passe par l'attribut required de l'input. */
 .form-label__req { color: var(--child); margin-left: 2px; }
 .form-input, .form-textarea {
   width: 100%; padding: var(--space-2-5) var(--space-3); border-radius: var(--radius-md);

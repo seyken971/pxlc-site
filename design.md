@@ -529,11 +529,11 @@ Champ de formulaire avec son libellé : input, ou textarea dès que rows est fou
 | `type` | `HTMLAttributes<'input'>['type']` | — | Type d'input (text par défaut) ; ignoré en textarea. |
 | `placeholder` | `string` | — | Exemple de saisie, jamais un substitut du libellé. |
 | `rows` | `number` | — | Nombre de lignes : rend une textarea. |
-| `required` | `boolean` | — | Champ obligatoire (required + aria-required, astérisque visuel). |
+| `required` | `boolean` | — | Champ obligatoire (required natif, astérisque visuel). |
 | `autocomplete` | `string` | — | Jeton autocomplete (name, email…) ; ignoré en textarea. |
 
 - **Usage** : Formulaire de la page contact.
-- **Accessibilité** : Libellé visible relié par for/id ; champ requis marqué aria-required, l'astérisque visuel restant en aria-hidden.
+- **Accessibilité** : Libellé visible relié par for/id ; champ requis marqué par l'attribut natif required, l'astérisque visuel restant en aria-hidden.
 
 #### `PxlcLinkout`
 
