@@ -10,7 +10,7 @@ scheme = ["https", "http"]
 # - le site lui-même : couvert par check-links et par la vérification de prod
 #   de npm run release ;
 # - hcsp.fr : le serveur du HCSP coupe les connexions venant des runners
-#   GitHub (« Connection reset by peer », run du 22/09/2026) alors que les avis
+#   GitHub (« Connection reset by peer ») alors que les avis
 #   cités répondent 200 ailleurs — faux positif chaque semaine.
 exclude = [
   '^https?://(www\.)?pxlc\.fr',

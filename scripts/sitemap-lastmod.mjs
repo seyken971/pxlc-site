@@ -5,11 +5,8 @@
  * - Pages : date du dernier commit touchant le fichier de la page.
  * - Repli : l'horodatage du build, quand rien de mieux n'est disponible.
  *
- * Pourquoi pas l'horodatage du build partout, comme avant : il changeait à
- * chaque déploiement même sans modification de contenu. Deux conséquences —
- * un signal mensonger pour les moteurs, que Google finit par ignorer, et une
- * baseline SEO qui bougeait à chaque capture, rendant impossible la règle
- * « le diff doit être vide hors deltas volontaires ».
+ * Le build ne sert que de repli : un lastmod qui bouge sans changement de
+ * contenu est un faux signal pour les moteurs et ferait dériver la baseline SEO.
  *
  * Limite assumée : la date d'une page suit son propre fichier, pas les
  * composants qu'elle importe. Une refonte de composant partagé ne bouge donc

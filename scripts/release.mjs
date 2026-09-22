@@ -65,8 +65,8 @@ const main = async () => {
   }
 
   step('Commit de fusion')
-  // Pas de checkout : lancée depuis un worktree, main est déjà extraite
-  // ailleurs et `git checkout main` échoue alors que la fusion a abouti.
+  // Checkout de main tenté, abandonné si un autre worktree l'occupe : la
+  // fusion distante a abouti, seul l'état local diffère.
   runLive('git', ['fetch', 'origin', 'main'])
   const sha = run('git', ['rev-parse', 'origin/main'])
   console.log(`  ${sha.slice(0, 7)} ${run('git', ['log', '-1', '--format=%s', sha])}`)

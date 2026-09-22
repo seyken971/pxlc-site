@@ -33,7 +33,7 @@ jobs:
           # viennent de la date du dernier commit touchant chaque page
           # (scripts/sitemap-lastmod.mjs). Sur le clone superficiel par défaut,
           # cette date est introuvable et tout retombe sur l'horodatage du
-          # build — le signal qu'on cherche justement à ne plus envoyer.
+          # build.
           fetch-depth: 0
 
       - name: Setup Node.js 24 LTS
@@ -55,6 +55,7 @@ jobs:
         #   build     = astro build (pages statiques dans dist/)
         #   postbuild = check-links (dont les fichiers que Pages exige :
         #               .nojekyll, CNAME, robots, sitemap) → schema-check →
+        #               seo-lint →
         #               seo-check (dist contre docs/seo-baseline : une PR qui
         #               change le SEO sans recapturer la baseline échoue ici)
         run: npm run check
@@ -69,17 +70,16 @@ jobs:
 
       - name: Install Playwright Chromium
         # Sans --with-deps : les libs système de Chromium sont déjà sur l'image
-        # ubuntu-latest, et l'apt-get du flag avait figé le job plus de 35 min
-        # le 19/08/2026. Si une future image perd une lib, remettre
+        # ubuntu-latest, et l'apt-get du flag peut figer le job. Si une future
+        # image perd une lib, remettre
         # `--with-deps` avec DEBIAN_FRONTEND=noninteractive et NEEDRESTART_MODE=a.
         timeout-minutes: 5
         run: npx playwright install chromium
 
       - name: A11y audit (axe-core + headless Chromium)
-        # Seule porte a11y : couvre les règles sémantiques ET celles qui
-        # exigent un vrai navigateur (color-contrast, target-size, focus),
-        # plus les états dynamiques (menu mobile ouvert, FAQ dépliée).
-        # `npm run a11y` (jsdom) reste dispo en local, sans navigateur.
+        # Complète l'audit jsdom de `npm run check` par les règles qui exigent
+        # un vrai navigateur (color-contrast, target-size) et les états
+        # dynamiques (menu mobile ouvert, FAQ dépliée).
         run: npm run a11y:runtime
 
       - name: Setup Pages

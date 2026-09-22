@@ -7,11 +7,10 @@ import { THEME_SCRIPT } from './src/lib/theme-script.ts'
 // GitHub Pages sert chaque page en `/chemin/index.html` : l'URL avec slash
 // final répond 200, la version sans slash 301-redirige vers elle. On aligne
 // donc canonical + sitemap + liens internes sur la forme avec slash
-// (trailingSlash + format directory), comme le faisait la config Nuxt.
+// (trailingSlash + format directory).
 
-// <lastmod> : date éditoriale pour les articles, date du dernier commit
-// touchant la page pour les statiques — politique détaillée dans
-// scripts/sitemap-lastmod.mjs. L'horodatage du build ne sert que de repli.
+// <lastmod> : date du dernier commit touchant la page, repli sur l'horodatage
+// du build — politique détaillée dans scripts/sitemap-lastmod.mjs.
 const buildStamp = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z')
 const lastmodFor = createLastmod(buildStamp)
 
@@ -59,8 +58,8 @@ export default defineConfig({
   },
   integrations: [
     // Sitemap officiel : `dist/sitemap-index.xml` + `dist/sitemap-0.xml`.
-    // Les pages 404/500 sont exclues par l'intégration ; plus aucune page du
-    // site n'est en noindex, donc pas de filtre supplémentaire.
+    // Les pages 404/500 sont exclues par l'intégration ; aucune autre page
+    // n'est en noindex, donc pas de filtre.
     sitemap({
       serialize: item => ({ ...item, lastmod: lastmodFor(item.url) }),
     }),

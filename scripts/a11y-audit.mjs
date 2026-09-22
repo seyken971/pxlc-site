@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
  * Static a11y audit — runs axe-core (jsdom) on every prerendered HTML
- * page under dist/. Color-contrast and focus/visibility checks
- * are skipped because jsdom doesn't lay out CSS; everything else (ARIA,
+ * page under dist/. color-contrast, target-size and meta-viewport are
+ * skipped because jsdom doesn't lay out CSS; everything else (ARIA,
  * landmarks, headings, names/roles, semantics) is in scope.
  *
  * Run after `npm run build`:

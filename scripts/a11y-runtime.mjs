@@ -5,7 +5,6 @@
  * a real browser:
  *  - color-contrast (needs CSS resolution)
  *  - target-size (needs computed layout)
- *  - focus visibility (needs interaction)
  *  - dynamic states (mobile menu open, FAQ details expanded)
  *
  * Spins up a tiny static server on an ephemeral port for dist/,

@@ -4,8 +4,7 @@
  *
  * Sur les checkouts Windows (core.autocrlf=true) les fichiers sont en CRLF
  * alors que les scripts génèrent du LF — écrire du LF churnerait le fichier
- * dans git à chaque run. Helper partagé par generate-tokens.mjs et
- * export-design.mjs (même précédent que seo-limits.mjs).
+ * dans git à chaque run. Utilisé par les scripts générateurs.
  */
 import { readFile, writeFile } from 'node:fs/promises'
 

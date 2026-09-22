@@ -3,8 +3,8 @@
  * scripts/ds-lint.mjs
  * Design-system compliance linter.
  *
- * Scanne src/components, src/pages, src/layouts (.astro et .vue) ainsi que
- * src/styles/styles.css (règles <style> uniquement) à la recherche
+ * Scanne src/components, src/pages, src/layouts (.astro) ainsi que
+ * src/styles/styles.css (règles couleur et easing uniquement) à la recherche
  * de violations du design system PXLC et quitte avec code 1
  * (build annulé) si au moins une violation est trouvée.
  * tokens.css est exempté — c'est la source des valeurs littérales.
@@ -19,8 +19,8 @@
  *   R2 gradient       — linear/radial-gradient interdits
  *   R3 font-famille   — "Sora", "DM Sans", "JetBrains Mono" hardcodés
  *   R4 radius-brut    — border-radius > 2 px sans var(--radius-*)
- *   R5 vocab-interdit — termes bannis dans <template>
- *   R6 emoji          — emoji interdits dans <template>
+ *   R5 vocab-interdit — termes bannis dans le balisage
+ *   R6 emoji          — emoji interdits dans le balisage
  *   R7 seo-longueur   — title/description des objets `const seo = {…}` des
  *                       pages trop longs, et SITE.description de
  *                       src/config/site.ts
@@ -30,8 +30,8 @@
  *   R9 ease-brut      — cubic-bezier() brut → utiliser var(--ease-step)
  *                       (les durées ne sont pas lintées : les delays de
  *                       chorégraphie hors échelle sont légitimes)
- *   R10 nommage       — composants app/components en PascalCase, deux
- *                       mots minimum (style guide Vue)
+ *   R10 nommage       — composants src/components en PascalCase, deux
+ *                       mots minimum
  *   R11 nbsp-manquante— espace ASCII avant ? ! : ; » / après « / nombre +
  *                       unité-symbole (h, min, €, %) → insécable manquante
  *   R12 phrase-interdite— garde-fous factuels (ex. « intervenants culturels »
@@ -44,13 +44,6 @@
  * Plaquette : c'est une page du site (src/pages/plaquette.astro), couverte
  * comme tout .astro. Le PDF committé n'étant jamais rebuild par la CI, c'est
  * la source qui est gardée.
- *
- * Corrections v2 :
- *   - parseSfc : tous les blocs <style> sont capturés (matchAll, pas match)
- *   - lintStyle : regexes sur raw — m.index == position réelle → lineAt correct
- *   - R1 : sélecteurs CSS id ignorés (# sans ':' sur la même ligne)
- *   - walk : seul ENOENT est swallowé — les autres erreurs fs sont propagées
- *   - FORBIDDEN : 'détox' supprimé (sous-ensemble de 'détox numérique')
  */
 import { readFile, readdir } from 'node:fs/promises'
 import { join, relative }   from 'node:path'
@@ -63,9 +56,7 @@ const SCAN_EXTS = ['.astro']
 // Feuilles CSS globales soumises aux règles couleurs brutes (R1 hex, R8 rgba).
 // tokens.css est exempté : c'est la source des valeurs hex/rgba — les
 // littéraux y sont légitimes, c'est partout ailleurs qu'ils sont interdits.
-// R2 (gradient) ne s'applique pas ici : le fade de .section--soft::before est
-// un linear-gradient volontaire (surface → transparent, pas un gradient de
-// marque) ; R3/R4 restent scoppés aux composants.
+// R2/R3/R4 restent scopés aux composants et pages.
 const CSS_FILES = ['src/styles/styles.css']
 const CSS_RULES = new Set(['hex-brut', 'rgba-brut', 'ease-brut'])
 
@@ -78,12 +69,12 @@ const FORBIDDEN = [
 ]
 
 // ── File walker ───────────────────────────────────────────────────────────────
-async function walk(dir, exts = ['.vue']) {
+async function walk(dir, exts) {
   const files = []
   let entries
   try { entries = await readdir(dir, { withFileTypes: true }) }
   catch (err) {
-    // ENOENT = répertoire absent (ex. app/layouts inexistant) → OK, on skip.
+    // ENOENT = répertoire absent → OK, on skip.
     // Toute autre erreur (EACCES, EPERM…) est propagée pour ne pas masquer
     // un problème de permissions qui donnerait un faux ✓.
     if (err.code !== 'ENOENT') throw err
@@ -97,23 +88,11 @@ async function walk(dir, exts = ['.vue']) {
   return files
 }
 
-// ── SFC / Astro parser ────────────────────────────────────────────────────────
-function parseSfc(src) {
-  // matchAll (avec g) capture TOUS les blocs <style> et <style scoped>.
-  // Les blocs sont concaténés : les numéros de ligne restent cohérents
-  // au sein de chaque bloc, avec un décalage d'une ligne entre blocs.
-  const styleBlocks = [...src.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)]
-    .map(m => m[1])
-  return {
-    template: src.match(/<template[^>]*>([\s\S]*?)<\/template>/)?.[1] ?? '',
-    style:    styleBlocks.join('\n'),
-  }
-}
-
+// ── Astro parser ──────────────────────────────────────────────────────────────
 function parseAstro(src) {
   // Frontmatter = premier bloc --- … --- ; le « template » est le balisage qui
   // suit, blocs <style> et <script> neutralisés (longueur préservée pour que
-  // les numéros de ligne restent exacts).
+  // les numéros de ligne restent exacts). Les blocs <style> sont concaténés.
   const blank = s => s.replace(/[^\n]/g, ' ')
   const fm = src.match(/^---\r?\n[\s\S]*?\r?\n---/)
   const markup = fm ? blank(fm[0]) + src.slice(fm[0].length) : src
@@ -226,7 +205,7 @@ function lintStyle(raw, file, only = null) {
   return vs
 }
 
-// ── Règles <template> ─────────────────────────────────────────────────────────
+// ── Règles du balisage ────────────────────────────────────────────────────────
 function lintTemplate(raw, file) {
   const vs    = []
   const lines = raw.split('\n')
@@ -252,13 +231,13 @@ function lintTemplate(raw, file) {
 }
 
 // ── R10 — Nommage des composants ──────────────────────────────────────────────
-// PascalCase, deux mots minimum (style guide Vue — évite les collisions avec
-// de futurs éléments HTML natifs). L'attribution du préfixe (Pxlc/Site/Blog)
-// reste un jugement documenté dans design.md — seule la forme est mécanisable.
+// PascalCase, deux mots minimum (évite les collisions avec de futurs éléments
+// HTML natifs). L'attribution du préfixe (Pxlc/Site) reste un jugement
+// documenté dans design.md — seule la forme est mécanisable.
 const COMPONENT_NAME_RE = /^[A-Z][a-z0-9]*([A-Z][a-z0-9]*)+$/
 
 function lintComponentName(file) {
-  const base = file.split(/[\\/]/).pop().replace(/\.(vue|astro)$/, '')
+  const base = file.split(/[\\/]/).pop().replace(/\.astro$/, '')
   if (COMPONENT_NAME_RE.test(base)) return []
   return [{ file, rule: 'nommage-composant', line: 1,
     detail: `"${base}" → PascalCase, deux mots minimum (ex. PxlcMark, SiteHeader)` }]
@@ -285,16 +264,13 @@ function lintComponentDoc(src, file) {
 
 // ── R7 — Longueurs SEO ────────────────────────────────────────────────────────
 // Limites partagées via scripts/seo-limits.mjs.
-// Seules les valeurs LITTÉRALES sont vérifiées — les expressions dynamiques
-// (ex. post.value.seoTitle || …) sont couvertes côté contenu par le schéma
-// zod de la collection blog.
+// Seules les valeurs littérales sont vérifiées, dans l'objet plat
+// `const seo = {…}` des pages (cible du spread <BaseLayout {...seo}>).
 function lintSeoMeta(src, file) {
   const vs = []
   const limits = { title: SEO_TITLE_MAX, description: SEO_DESC_MAX, ogDescription: SEO_DESC_MAX }
 
-  // Deux formes : l'ancien useSeoMeta({…}) (.vue) et l'objet plat
-  // `const seo = {…}` des pages .astro (cible du spread <BaseLayout {...seo}>).
-  for (const block of src.matchAll(/(?:useSeoMeta\(\s*|const seo\s*=\s*)\{([\s\S]*?)\}/g)) {
+  for (const block of src.matchAll(/const seo\s*=\s*\{([\s\S]*?)\}/g)) {
     const body = block[1]
     const bodyOffset = block.index + block[0].indexOf(body)
     for (const m of body.matchAll(/\b(title|description|ogDescription)\s*:\s*(['"])((?:\\.|(?!\2)[\s\S])*?)\2/g)) {
@@ -302,7 +278,7 @@ function lintSeoMeta(src, file) {
       const max = limits[key]
       if (value.length > max) {
         const hint = key === 'title'
-          ? `le titleTemplate ajoute « · PXLC » → base ≤ ${max}`
+          ? `le suffixe « · PXLC » s'ajoute → base ≤ ${max}`
           : `limite mobile/cartes sociales ≤ ${max}`
         vs.push({ file, rule: 'seo-longueur', line: lineAt(src, bodyOffset + m.index),
           detail: `${key} de ${value.length} caractères — ${hint}` })
@@ -317,10 +293,10 @@ function lintSeoMeta(src, file) {
 // avant ? ! : ; », après «, et entre un nombre et une unité-symbole (h, min, €, %).
 // Les unités en toutes lettres (ans, mois, jours) sont hors scope (décision marque).
 // Scanne UNIQUEMENT la copy, jamais le code, pour éviter les faux positifs
-// (ternaires `a ? b : c`, styles takumi, apostrophes ASCII en commentaire) :
-//   1. texte rendu de <template> — balises <…> et mustaches {{…}} neutralisées ;
-//   2. valeurs d'attributs statiques du template (source=, placeholder=…) —
-//      les bindings :x / @x / v-x sont exclus (ce sont du JS) ;
+// (ternaires `a ? b : c`, apostrophes ASCII en commentaire) :
+//   1. texte rendu du balisage — balises <…> et expressions {…} neutralisées ;
+//   2. valeurs d'attributs statiques (source=, placeholder=…) — les
+//      expressions attr={…} n'ont pas de guillemets et ne matchent pas ;
 //   3. valeurs de chaîne des clés porteuses de copy (title, description, q, a…)
 //      ancrées sur « clé: 'littéral' » — un ternaire (clé: cond ? …) ou un
 //      commentaire ne matchent pas (pas de quote immédiate après la clé).
@@ -344,40 +320,22 @@ function lintNbsp(src, file) {
     }
   }
 
-  // .vue : bloc <template> ; .astro : balisage après le frontmatter
-  // (parseAstro l'a déjà neutralisé, on le re-dérive ici pour garder des
-  // index absolus dans src).
-  const isAstro = file.endsWith('.astro')
-  let body = ''
-  let base = 0
-  if (isAstro) {
-    const fm = src.match(/^---\r?\n[\s\S]*?\r?\n---/)
-    base = fm ? fm[0].length : 0
-    body = src.slice(base)
-      .replace(/<style[^>]*>[\s\S]*?<\/style>/g, blank)
-      .replace(/<script[^>]*>[\s\S]*?<\/script>/g, blank)
-  }
-  else {
-    const t = src.match(/<template[^>]*>([\s\S]*?)<\/template>/)
-    if (t) {
-      body = t[1]
-      base = t.index + t[0].indexOf(body)
-    }
-  }
-  if (body) {
-    // 1) Texte rendu : on blanchit commentaires <!-- -->, balises, mustaches
-    //    Vue {{…}} et expressions Astro {…} (longueur préservée → lineAt exact).
-    hits(body
-      .replace(/<!--[\s\S]*?-->/g, blank)
-      .replace(/<[^>]*>/g, blank)
-      .replace(/\{\{[\s\S]*?\}\}/g, blank)
-      .replace(/\{[^{}]*\}/g, blank), base)
-    // 2) Attributs statiques (nom sans préfixe : @ v-). m[2] = valeur.
-    for (const m of body.matchAll(/(?<![\w:@-])([a-zA-Z][\w-]*)="([^"]*)"/g)) {
-      if (m[1].startsWith('v-')) continue
-      hits(m[2], base + m.index + m[0].length - m[2].length - 1)
-    }
-  }
+  // Balisage après le frontmatter (parseAstro l'a déjà neutralisé, on le
+  // re-dérive ici pour garder des index absolus dans src).
+  const fm = src.match(/^---\r?\n[\s\S]*?\r?\n---/)
+  const base = fm ? fm[0].length : 0
+  const body = src.slice(base)
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/g, blank)
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/g, blank)
+  // 1) Texte rendu : on blanchit commentaires <!-- -->, balises et
+  //    expressions {…} (longueur préservée → lineAt exact).
+  hits(body
+    .replace(/<!--[\s\S]*?-->/g, blank)
+    .replace(/<[^>]*>/g, blank)
+    .replace(/\{[^{}]*\}/g, blank), base)
+  // 2) Attributs statiques (hors directives class:list, set:html…). m[2] = valeur.
+  for (const m of body.matchAll(/(?<![\w:@-])([a-zA-Z][\w-]*)="([^"]*)"/g))
+    hits(m[2], base + m.index + m[0].length - m[2].length - 1)
 
   // 3) Valeurs de chaîne des clés de copy (script & objets template).
   const KEYS = 'title|description|ogDescription|eyebrow|lead|quote|attribution|source|name|detail|placeholder|q|a'
@@ -389,11 +347,9 @@ function lintNbsp(src, file) {
 }
 
 // ── R12 — Phrases interdites (garde-fous factuels) ─────────────────────────────
-// Faits PXLC qui ont une seule formulation correcte et tendent à dériver. À la
-// différence de R5 (vocab-interdit, scopé aux <template> .vue), ces phrases
-// peuvent réapparaître dans n'importe quelle source de copy — d'où un balayage
-// élargi à tout .astro/.ts sous src/ (plaquette comprise, où le pluriel avait
-// justement dérapé).
+// Faits PXLC qui ont une seule formulation correcte et tendent à dériver. R5 ne
+// balaie que le balisage des pages et composants ; R12 couvre tout .astro/.ts
+// sous src/ (données de config comprises).
 // L'espace entre les deux mots peut être ASCII, insécable (\s couvre U+00A0) ou
 // l'entité HTML &nbsp; — d'où (?:&nbsp;|\s)+.
 const FORBIDDEN_PHRASES = [
@@ -454,7 +410,7 @@ const main = async () => {
   const componentsRoot = join(ROOT, 'src/components')
   await Promise.all(allFiles.map(async file => {
     const src = await readFile(file, 'utf8')
-    const { template, style } = file.endsWith('.astro') ? parseAstro(src) : parseSfc(src)
+    const { template, style } = parseAstro(src)
     all.push(...lintStyle(style, file), ...lintTemplate(template, file), ...lintSeoMeta(src, file), ...lintNbsp(src, file))
     if (file.startsWith(componentsRoot)) all.push(...lintComponentName(file), ...lintComponentDoc(src, file))
   }))

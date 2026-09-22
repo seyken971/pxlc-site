@@ -1,5 +1,5 @@
 // @ts-check
-// ESLint v9 flat config. Deux surfaces : .astro (pages et composants),
+// Flat config ESLint. Deux surfaces : .astro (pages et composants),
 // .ts/.mjs (config, scripts Node). Les overrides pragmatiques sont documentés.
 import js from '@eslint/js'
 import globals from 'globals'
@@ -7,16 +7,11 @@ import tseslint from 'typescript-eslint'
 import eslintPluginAstro from 'eslint-plugin-astro'
 
 export default tseslint.config(
-  // Files to ignore — generated output, build artefacts, deps.
   {
     ignores: [
-      '.output/**',
-      '.nuxt/**',
       '.astro/**',
       'node_modules/**',
       'dist/**',
-      'dist-lib/**',
-      'dist-ce/**',
       'public/**',
       '.remember/**',
       '.agents/**',
@@ -43,8 +38,8 @@ export default tseslint.config(
         varsIgnorePattern: '^_',
       }],
 
-      // Empty catch blocks are intentional silent-fail (localStorage may
-      // throw in Safari private mode). Keep them flagged elsewhere.
+      // Catch vide = échec silencieux voulu (localStorage peut lever en
+      // navigation privée Safari).
       'no-empty': ['error', { allowEmptyCatch: true }],
     },
   },
