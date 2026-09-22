@@ -111,6 +111,9 @@ Les scripts sont listés dans `package.json` ; ce qui ne s'en déduit pas :
 - `npm run gen:communes` — régénère `src/data/communes-971.json` (contours des
   communes depuis geo.api.gouv.fr, rendus au build en SVG par `CommuneMap`) —
   manuel, réseau requis.
+- Liens externes : workflow hebdomadaire `.github/workflows/links.yml`
+  (lychee sur le build, config `lychee.toml`), non bloquant, rapport dans le
+  résumé du run. Les liens internes restent gardés par check-links.
 
 ## Non-régression SEO (mécanisme central)
 
@@ -133,6 +136,9 @@ texte : elle assimile l'espace insécable à l'espace simple.
 
 - Zéro île hydratée : toute l'interactivité est en `<script>` vanilla dans
   les composants `.astro`. GitHub Pages n'a pas de runtime : aucune API route.
+  Seul script ajouté par Astro : le prefetch natif (`prefetch` dans
+  `astro.config.mjs`, stratégie `viewport`), qui précharge les pages liées
+  dès que leurs liens sont visibles.
 - CSP émise par Astro (`security.csp`) : il hache ses propres scripts et
   styles ; `BaseLayout` déclare en plus le hash du JSON-LD de la page via
   `Astro.csp.insertScriptHash`, la config celui du script anti-flash

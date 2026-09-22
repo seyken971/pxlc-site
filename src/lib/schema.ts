@@ -82,10 +82,26 @@ export type PageType = 'WebPage' | 'AboutPage' | 'ContactPage' | 'FAQPage'
 
 // ── Nœuds globaux (identiques sur toutes les pages) ─────────────────────────
 
+// Domaines de compétence, partagés par l'entité et par Andy : signal
+// d'autorité thématique lu par les moteurs et les agents.
+const KNOWS_ABOUT = [
+  'Médiation numérique',
+  'Médiation par le jeu vidéo',
+  'Parentalité numérique',
+  'esport',
+  'Guadeloupe',
+]
+
+// Droits sur le contenu : Andy Zébus, titulaire selon la section « Propriété
+// intellectuelle » des mentions légales (entrepreneur individuel).
+const COPYRIGHT_HOLDER = { '@id': ID.andy }
+
 const websiteNode: Node<WebSite> = {
   '@id': ID.website,
   '@type': 'WebSite',
   'alternateName': IDENTITY.brandName,
+  'copyrightHolder': COPYRIGHT_HOLDER,
+  'copyrightYear': IDENTITY.copyrightSince,
   'description': SITE.description,
   'inLanguage': LANG,
   'name': 'PXLC',
@@ -144,6 +160,7 @@ const identityNode: MultiType<ProfessionalService, ['Organization', 'Professiona
     { '@type': 'PropertyValue', 'propertyID': 'NAF', 'value': IDENTITY.ape },
   ],
   'image': { '@id': ID.photoEvent },
+  'knowsAbout': KNOWS_ABOUT,
   'legalName': IDENTITY.legalName,
   'logo': { '@id': ID.logo },
   // Rattache #service à l'entité. Sans cette arête, le nœud Service ne serait
@@ -187,13 +204,7 @@ const andyNode: Node<Person> = {
   },
   'image': { '@id': ID.photoAndy },
   'jobTitle': 'Médiateur numérique',
-  'knowsAbout': [
-    'Médiation numérique',
-    'Médiation par le jeu vidéo',
-    'Parentalité numérique',
-    'esport',
-    'Guadeloupe',
-  ],
+  'knowsAbout': KNOWS_ABOUT,
   'knowsLanguage': ['fr', 'en'],
   'name': 'Andy Zébus',
   // URL finales des profils, vérifiées au curl : sameAs ne doit pas désigner
@@ -310,6 +321,7 @@ export const pageGraph = (opts: WebPageOptions): GraphNode[] => {
     '@type': opts.type ?? 'WebPage',
     'about': { '@id': opts.aboutId ?? ID.identity },
     ...(opts.crumbs ? { breadcrumb: { '@id': breadcrumbId(pageUrl) } } : {}),
+    'copyrightHolder': COPYRIGHT_HOLDER,
     'dateModified': lastModified(pageUrl),
     'description': opts.description,
     'inLanguage': LANG,

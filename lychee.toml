@@ -1,0 +1,19 @@
+# Vérification des liens externes (workflow .github/workflows/links.yml).
+# Les liens internes sont déjà gardés à chaque build par la gate check-links ;
+# ici, seuls les liens http(s) vers d'autres sites.
+
+# Liens internes résolus en file:// (--root-dir dans le workflow) : écartés
+# par le filtre de schéma, comme mailto: et tel:.
+scheme = ["https", "http"]
+
+# Le site lui-même : couvert par check-links et par la vérification de prod de
+# npm run release.
+exclude = ['^https?://(www\.)?pxlc\.fr']
+
+# 999 : réponse anti-robot de LinkedIn (profil valide, accès refusé aux
+# robots) ; 429 : limitation de débit, pas un lien mort.
+accept = ["200", "204", "206", "429", "999"]
+
+max_retries = 3
+retry_wait_time = 5
+timeout = 20

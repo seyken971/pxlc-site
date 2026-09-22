@@ -7,13 +7,13 @@ Déployé sur **https://pxlc.fr**.
 
 | Couche        | Tech                                                                                    |
 | ------------- | --------------------------------------------------------------------------------------- |
-| Framework     | [Astro](https://astro.build) 7 — 100 % statique, zéro JS hydraté (scripts vanilla inline) |
+| Framework     | [Astro](https://astro.build) 7 — 100 % statique, zéro JS hydraté (scripts vanilla inline) · prefetch natif au scroll |
 | SEO           | Graphe schema.org à la main (`src/lib/schema.ts`) · sitemap `@astrojs/sitemap` · CSP native (`security.csp`) · cartes OG en endpoints (`src/pages/og/`) · liens vérifiés en post-build |
 | Images        | `astro:assets` (sources `src/assets/photos/`, WebP auto)                                |
 | Icônes        | SVG vendorées dans `src/icons/` (imports natifs Astro — Lucide, Simple Icons)            |
 | Fonts         | woff2 auto-hébergées (`fonts.css` écrit à la main, pas de Google CDN)                   |
 | Hosting       | GitHub Pages — build statique dans `dist/`, déployé via `actions/deploy-pages`          |
-| CI            | GitHub Actions — lint + typecheck + build (gates) + a11y + deploy (bloquant) · Lighthouse hebdo (info) |
+| CI            | GitHub Actions — lint + typecheck + build (gates) + a11y + deploy (bloquant) · Lighthouse et liens externes (lychee) hebdo (info) |
 | Environnement | Node 24 LTS                                                                             |
 
 ## Démarrage rapide
@@ -105,6 +105,8 @@ checkout → node 24 → npm install → lint → typecheck
 ```
 
 Le workflow `lighthouse.yml` tourne chaque dimanche 18 h UTC (non-bloquant, summary Markdown dans l'onglet Actions).
+
+Le workflow `links.yml` vérifie chaque dimanche à 19:00 UTC les liens externes du build avec lychee (config `lychee.toml`, non-bloquant, rapport dans le summary du run).
 
 Les mises à jour de dépendances npm sont gérées via **Dependabot** (`.github/dependabot.yml`) — PRs groupées chaque lundi matin.
 

@@ -40,6 +40,10 @@ export const IDENTITY = {
     opens: '08:00',
     closes: '17:00',
   },
+  // Première année de la mention « © 2015–… » du pied de page, reprise par le
+  // copyrightYear du JSON-LD. Le titulaire des droits est Andy Zébus (section
+  // « Propriété intellectuelle » des mentions légales).
+  copyrightSince: 2015,
 } as const
 
 /** Mention RCS publiée, ex. « Pointe-à-Pitre 813 793 528 ». */

@@ -31,10 +31,6 @@
     ],
     "twitter:card": "summary_large_image",
     "twitter:creator": "@seyken971",
-    "twitter:image": "https://pxlc.fr/og/site.png?v=1200x675",
-    "twitter:image:height": "675",
-    "twitter:image:src": "https://pxlc.fr/og/site.png?v=1200x675",
-    "twitter:image:width": "1200",
     "twitter:site": "@seyken971",
     "viewport": "width=device-width, initial-scale=1"
   },
@@ -46,6 +42,10 @@
           "@id": "https://pxlc.fr/#website",
           "@type": "WebSite",
           "alternateName": "PXLC - Médiation numérique",
+          "copyrightHolder": {
+            "@id": "https://pxlc.fr/#andy"
+          },
+          "copyrightYear": 2015,
           "description": "Andy Zébus, créateur de PXLC, aide les structures en Guadeloupe à accompagner les familles autour des écrans.",
           "inLanguage": "fr-FR",
           "name": "PXLC",
@@ -65,6 +65,9 @@
           },
           "breadcrumb": {
             "@id": "https://pxlc.fr/contact/#breadcrumb"
+          },
+          "copyrightHolder": {
+            "@id": "https://pxlc.fr/#andy"
           },
           "description": "Page de prise de contact avec PXLC — Andy Zébus, médiateur numérique en Guadeloupe.",
           "inLanguage": "fr-FR",
@@ -149,6 +152,13 @@
           "image": {
             "@id": "https://pxlc.fr/#photo-event"
           },
+          "knowsAbout": [
+            "Médiation numérique",
+            "Médiation par le jeu vidéo",
+            "Parentalité numérique",
+            "esport",
+            "Guadeloupe"
+          ],
           "legalName": "Andy Zébus - Entrepreneur Individuel",
           "logo": {
             "@id": "https://pxlc.fr/#logo"
