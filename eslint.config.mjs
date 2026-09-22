@@ -10,19 +10,13 @@ export default tseslint.config(
   // Files to ignore — generated output, build artefacts, deps.
   {
     ignores: [
-      '.output/**',
-      '.nuxt/**',
       '.astro/**',
       'node_modules/**',
       'dist/**',
-      'dist-lib/**',
-      'dist-ce/**',
       'public/**',
       '.remember/**',
       '.agents/**',
       '.claude/**',
-      '.ds-sync/**',
-      'ds-bundle/**',
       'docs/**',
     ],
   },

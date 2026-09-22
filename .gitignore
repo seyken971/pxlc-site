@@ -1,24 +1,7 @@
-# Nuxt dev/build outputs
-.output
-.data
-.nuxt
-.nitro
-.cache
+# Astro — build output et types générés
 dist
-
-# Astro
 .astro
-
-# Component library build output
-dist-lib
-dist-ce
-
-# Design sync — staged scripts, build output, machine state
-.ds-sync/
-ds-bundle/
-.design-sync/.cache/
-.design-sync/learnings/
-.design-sync/node_modules
+.cache
 
 # Node dependencies
 node_modules
