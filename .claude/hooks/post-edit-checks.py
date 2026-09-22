@@ -1,15 +1,7 @@
 """
 PostToolUse hook — vérifications après chaque Edit/Write.
 
-Deux branches selon le fichier édité :
-
-  content/**/*.md
-    → astro sync : ré-ingère la collection blog et applique son schéma zod
-      (champs requis + limites SEO effectives, cf. src/content.config.ts).
-      Échec = exit 2 : le détail est renvoyé à Claude pour correction
-      immédiate, au lieu d'attendre le build.
-
-  *.vue / *.ts / *.js / *.mjs
+  *.astro / *.ts / *.js / *.mjs
     → 1. fix-curly-quotes.py (même payload stdin) — séquencé ici plutôt
          qu'enregistré en parallèle pour éviter une écriture concurrente
          du même fichier.
@@ -33,7 +25,7 @@ if not file_path:
     sys.exit(0)
 
 norm = file_path.replace("\\", "/")
-if any(seg in norm for seg in ("/node_modules/", "/.nuxt/", "/.output/", "/dist/")):
+if any(seg in norm for seg in ("/node_modules/", "/.astro/", "/dist/")):
     sys.exit(0)
 
 # Les hooks sont lancés depuis la racine du projet (ou du worktree).
@@ -52,36 +44,33 @@ def run(cmd, **kwargs):
     )
 
 
-# ---------------------------------------------------------------------------
-# Articles de la collection blog — schéma zod (astro sync)
-# ---------------------------------------------------------------------------
-if norm.endswith(".md") and "/content/" in norm:
-    astro_bin = os.path.join(ROOT, "node_modules", "astro", "bin", "astro.mjs")
-    if not os.path.exists(astro_bin):
-        sys.exit(0)
-    r = run(["node", astro_bin, "sync"])
-    if r.returncode != 0:
-        print(
-            "[hook] astro sync a échoué après édition de "
-            f"{file_path} (schéma de collection) :\n{r.stdout}{r.stderr}",
-            file=sys.stderr,
-        )
-        sys.exit(2)
-    print(f"[hook] astro sync OK ({file_path})")
-    sys.exit(0)
+def find_node_module(*parts):
+    """Cherche node_modules/<parts> en remontant depuis ROOT, comme Node :
+    un worktree (.claude/worktrees/…) n'a pas de node_modules propre et
+    résout celui du dépôt principal."""
+    d = ROOT
+    while True:
+        p = os.path.join(d, "node_modules", *parts)
+        if os.path.exists(p):
+            return p
+        parent = os.path.dirname(d)
+        if parent == d:
+            return None
+        d = parent
+
 
 # ---------------------------------------------------------------------------
 # Code — guillemets typographiques puis ESLint --fix
 # ---------------------------------------------------------------------------
-if norm.endswith((".vue", ".ts", ".js", ".mjs")):
+if norm.endswith((".astro", ".ts", ".js", ".mjs")):
     curly = os.path.join(HOOKS_DIR, "fix-curly-quotes.py")
     if os.path.exists(curly):
         r = run([sys.executable, curly], input=json.dumps(payload))
         if r.stdout.strip():
             print(r.stdout.strip())
 
-    eslint = os.path.join(ROOT, "node_modules", "eslint", "bin", "eslint.js")
-    if not os.path.exists(eslint):
+    eslint = find_node_module("eslint", "bin", "eslint.js")
+    if not eslint:
         sys.exit(0)
     r = run(["node", eslint, "--fix", file_path])
     if r.returncode != 0:
