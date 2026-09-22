@@ -101,7 +101,7 @@ Les scripts sont listés dans `package.json` ; ce qui ne s'en déduit pas :
   puis soumission IndexNow (Bing, Yandex, Naver, Seznam ; pas Google) des pages
   dont le lastmod porte le commit de fusion — non bloquante. La clé est publique
   (`public/<clé>.txt`, exigée par check-links) ; `npm run indexnow -- --all`
-  resoumet les 7 URLs après un changement de composant partagé.
+  resoumet toutes les URLs du sitemap après un changement de composant partagé.
 - `npm run plaquette` — build puis export de la page `/plaquette/`
   (`src/pages/plaquette.astro`, layout `PlaquetteLayout`) en PDF A4 vers
   `public/files/plaquette-pxlc.pdf` avec le Chromium Playwright. Le PDF est un
