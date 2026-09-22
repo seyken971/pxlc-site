@@ -1,0 +1,53 @@
+name: Liens externes (hebdo)
+
+# Vérifie chaque semaine les liens vers d'autres sites (profils, HCSP,
+# Défenseur des droits, outil de rendez-vous…) : un lien sortant mort est une
+# mauvaise expérience et un signal de confiance négatif. Les liens internes,
+# eux, sont gardés à chaque build par la gate check-links.
+#
+# Non bloquant : un site tiers momentanément indisponible ne doit rien
+# empêcher. Le rapport s'affiche dans le résumé du run (onglet Actions).
+
+on:
+  schedule:
+    # Dimanche 19:00 UTC, une heure après Lighthouse.
+    - cron: '0 19 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: links
+  cancel-in-progress: true
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup Node.js 24 LTS
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build static site
+        run: npm run build
+
+      - name: Check external links
+        # Configuration dans lychee.toml (schémas, exclusions, codes acceptés).
+        # --root-dir résout les liens internes en file:// pour qu'ils soient
+        # écartés par le filtre de schéma au lieu d'échouer.
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --no-progress --root-dir "${{ github.workspace }}/dist" "dist/**/*.html"
+          fail: false
+          jobSummary: true
+          token: ${{ secrets.GITHUB_TOKEN }}

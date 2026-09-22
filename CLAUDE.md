@@ -111,6 +111,9 @@ Les scripts sont listés dans `package.json` ; ce qui ne s'en déduit pas :
 - `npm run gen:communes` — régénère `src/data/communes-971.json` (contours des
   communes depuis geo.api.gouv.fr, rendus au build en SVG par `CommuneMap`) —
   manuel, réseau requis.
+- Liens externes : workflow hebdomadaire `.github/workflows/links.yml`
+  (lychee sur le build, config `lychee.toml`), non bloquant, rapport dans le
+  résumé du run. Les liens internes restent gardés par check-links.
 
 ## Non-régression SEO (mécanisme central)
 

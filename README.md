@@ -13,7 +13,7 @@ Déployé sur **https://pxlc.fr**.
 | Icônes        | SVG vendorées dans `src/icons/` (imports natifs Astro — Lucide, Simple Icons)            |
 | Fonts         | woff2 auto-hébergées (`fonts.css` écrit à la main, pas de Google CDN)                   |
 | Hosting       | GitHub Pages — build statique dans `dist/`, déployé via `actions/deploy-pages`          |
-| CI            | GitHub Actions — lint + typecheck + build (gates) + a11y + deploy (bloquant) · Lighthouse hebdo (info) |
+| CI            | GitHub Actions — lint + typecheck + build (gates) + a11y + deploy (bloquant) · Lighthouse et liens externes (lychee) hebdo (info) |
 | Environnement | Node 24 LTS                                                                             |
 
 ## Démarrage rapide
@@ -105,6 +105,8 @@ checkout → node 24 → npm install → lint → typecheck
 ```
 
 Le workflow `lighthouse.yml` tourne chaque dimanche 18 h UTC (non-bloquant, summary Markdown dans l'onglet Actions).
+
+Le workflow `links.yml` vérifie chaque dimanche à 19:00 UTC les liens externes du build avec lychee (config `lychee.toml`, non-bloquant, rapport dans le summary du run).
 
 Les mises à jour de dépendances npm sont gérées via **Dependabot** (`.github/dependabot.yml`) — PRs groupées chaque lundi matin.
 
