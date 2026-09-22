@@ -31,10 +31,6 @@
     ],
     "twitter:card": "summary_large_image",
     "twitter:creator": "@seyken971",
-    "twitter:image": "https://pxlc.fr/og/site.png?v=1200x675",
-    "twitter:image:height": "675",
-    "twitter:image:src": "https://pxlc.fr/og/site.png?v=1200x675",
-    "twitter:image:width": "1200",
     "twitter:site": "@seyken971",
     "viewport": "width=device-width, initial-scale=1"
   },
