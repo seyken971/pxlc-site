@@ -1,13 +1,27 @@
 ---
+/**
+ * Champ de formulaire avec son libellé : input, ou textarea dès que rows
+ * est fourni.
+ * @usage Formulaire de la page contact.
+ * @a11y Libellé visible relié par for/id ; champ requis marqué
+ * aria-required, l'astérisque visuel restant en aria-hidden.
+ */
 import type { HTMLAttributes } from 'astro/types'
 
 interface Props {
+  /** Identifiant du champ, relié au libellé. */
   id: string
+  /** Libellé visible. */
   label: string
+  /** Type d'input (text par défaut) ; ignoré en textarea. */
   type?: HTMLAttributes<'input'>['type']
+  /** Exemple de saisie, jamais un substitut du libellé. */
   placeholder?: string
+  /** Nombre de lignes : rend une textarea. */
   rows?: number
+  /** Champ obligatoire (required + aria-required, astérisque visuel). */
   required?: boolean
+  /** Jeton autocomplete (name, email…) ; ignoré en textarea. */
   autocomplete?: string
 }
 const { id, label, type, placeholder, rows, required, autocomplete } = Astro.props

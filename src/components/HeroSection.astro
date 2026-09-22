@@ -1,4 +1,12 @@
 ---
+/**
+ * Hero de page : eyebrow, titre h1, chapô, un CTA primaire et un CTA
+ * secondaire, photo et pastille facultatives, filigrane du logo.
+ * @usage Une fois par page, en tête ; porte l'unique h1.
+ * @a11y Section reliée à son h1 ; CTA externes suffixés « (nouvel
+ * onglet) » dans leur aria-label ; filigrane en aria-hidden ; photo
+ * décrite par photoAlt.
+ */
 import type { ImageMetadata } from 'astro'
 import { Image } from 'astro:assets'
 import PxlcMark from './PxlcMark.astro'
@@ -10,19 +18,29 @@ interface AltLink { label: string, href: string, ariaLabel?: string }
 interface Pill { eyebrow: string, text: string }
 
 interface Props {
+  /** Surtitre au-dessus du h1. */
   eyebrow?: string
+  /** Titre de la page, rendu en h1. */
   title: string
   /** Ajoute un point final stylé (coral-dot) après le titre. */
   titleDot?: boolean
+  /** Chapô sous le titre. */
   lead?: string
+  /** Le CTA primaire de la section (un seul). */
   ctaPrimary?: Cta | null
+  /** CTA secondaire, en bouton ghost. */
   ctaSecondary?: Cta | null
+  /** Lien texte discret à côté du CTA secondaire. */
   ctaSecondaryAlt?: AltLink | null
+  /** Mention courte sous les CTA. */
   hint?: string | null
   /** Photo importée depuis src/assets (astro:assets génère les variantes webp). */
   photo?: ImageMetadata | null
+  /** Texte alternatif de la photo. */
   photoAlt?: string
+  /** Pastille posée sur la photo : surtitre et texte. */
   pill?: Pill | null
+  /** Affiche le logo en filigrane incliné en fond. */
   showBgMark?: boolean
 }
 const {

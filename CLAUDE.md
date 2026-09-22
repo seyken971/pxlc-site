@@ -36,6 +36,11 @@ Le contexte de positionnement et de stratégie vit dans `CLAUDE.local.md`
   main. Sources : `src/styles/tokens.css` + `src/styles/styles.css`. Régénérés
   par `predev` et `prebuild` ; committer les versions à jour. Les valeurs de
   tokens se lisent dans `tokens.css` ou `design.md` quand on en a besoin.
+- Contrat des composants : bloc `/** … */` en tête de frontmatter
+  (description, `@usage`, `@a11y`) et JSDoc sur chaque prop de
+  `interface Props` — `scripts/component-docs.mjs` en tire la section
+  « Composants » de `design.md` ; `ds-lint` R13 (`doc-composant`) bloque tout
+  manque (`@a11y` exigé pour `Pxlc*` et `Site*`).
 - Toujours utiliser les custom properties (`--pxlc-*`, tokens sémantiques) —
   jamais de couleurs ou d'espacements en dur dans les composants.
 - Dark mode via `[data-theme="dark"]` — toute nouvelle couleur sémantique doit

@@ -1,4 +1,12 @@
 ---
+/**
+ * Surface SEO d'une page dans le head : title, canonical, metas, OG et
+ * Twitter, JSON-LD haché pour la CSP.
+ * @usage Une fois par page, via BaseLayout ou PlaquetteLayout ; tout ce
+ * qu'il émet est verrouillé par la baseline SEO.
+ * @a11y Pose color-scheme (thème natif des contrôles) et ogImageAlt ; rien
+ * de visible dans la page.
+ */
 import { createHash } from 'node:crypto'
 import { SITE } from '../config/site'
 
@@ -18,7 +26,9 @@ export interface Props {
   /** og:title si différent du titre complet — les articles retirent le
       suffixe « · PXLC » (og:site_name porte déjà la marque). */
   ogTitle?: string
+  /** og:type de la page. */
   ogType?: 'website' | 'article'
+  /** Directive meta robots (noindex pour les pages hors sitemap). */
   robots?: string
   /** URL absolue de l'image OG (1200×675, 16:9). */
   ogImage?: string

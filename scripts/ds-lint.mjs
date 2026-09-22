@@ -36,6 +36,10 @@
  *                       unité-symbole (h, min, €, %) → insécable manquante
  *   R12 phrase-interdite— garde-fous factuels (ex. « intervenants culturels »
  *                       au pluriel) balayés sur .astro/.ts sous src/
+ *   R13 doc-composant — composants src/components : description JSDoc en
+ *                       tête de frontmatter, JSDoc sur chaque prop, tag
+ *                       @a11y pour Pxlc* et Site* (source de la section
+ *                       « Composants » de design.md)
  *
  * Plaquette : c'est une page du site (src/pages/plaquette.astro), couverte
  * comme tout .astro. Le PDF committé n'étant jamais rebuild par la CI, c'est
@@ -51,6 +55,7 @@
 import { readFile, readdir } from 'node:fs/promises'
 import { join, relative }   from 'node:path'
 import { SEO_TITLE_MAX, SEO_DESC_MAX } from './seo-limits.mjs'
+import { parseComponentDoc } from './component-docs.mjs'
 
 const ROOT      = process.cwd()
 const SCAN_DIRS = ['src/components', 'src/pages', 'src/layouts']
@@ -259,6 +264,25 @@ function lintComponentName(file) {
     detail: `"${base}" → PascalCase, deux mots minimum (ex. PxlcMark, SiteHeader)` }]
 }
 
+// ── R13 — Documentation des composants ────────────────────────────────────────
+// La section « Composants » de design.md est générée depuis ces commentaires
+// (scripts/component-docs.mjs) : un trou ici serait un trou dans la doc.
+function lintComponentDoc(src, file) {
+  const base = file.split(/[\\/]/).pop().replace(/\.astro$/, '')
+  const { description, tags, props } = parseComponentDoc(src)
+  const vs = []
+  if (!description)
+    vs.push({ file, rule: 'doc-composant', line: 1,
+      detail: 'description manquante → bloc /** … */ en tête de frontmatter, avant toute déclaration' })
+  if (/^(Pxlc|Site)/.test(base) && !tags.a11y)
+    vs.push({ file, rule: 'doc-composant', line: 1,
+      detail: 'tag @a11y manquant (obligatoire pour Pxlc* et Site*)' })
+  for (const p of props.filter(p => !p.doc))
+    vs.push({ file, rule: 'doc-composant', line: lineAt(src, src.search(new RegExp(`\\b${p.name}\\??\\s*:`))),
+      detail: `prop « ${p.name} » sans JSDoc` })
+  return vs
+}
+
 // ── R7 — Longueurs SEO ────────────────────────────────────────────────────────
 // Limites partagées via scripts/seo-limits.mjs.
 // Seules les valeurs LITTÉRALES sont vérifiées — les expressions dynamiques
@@ -432,7 +456,7 @@ const main = async () => {
     const src = await readFile(file, 'utf8')
     const { template, style } = file.endsWith('.astro') ? parseAstro(src) : parseSfc(src)
     all.push(...lintStyle(style, file), ...lintTemplate(template, file), ...lintSeoMeta(src, file), ...lintNbsp(src, file))
-    if (file.startsWith(componentsRoot)) all.push(...lintComponentName(file))
+    if (file.startsWith(componentsRoot)) all.push(...lintComponentName(file), ...lintComponentDoc(src, file))
   }))
   // Feuilles CSS globales : le fichier entier passe par les règles couleur.
   await Promise.all(CSS_FILES.map(async rel => {

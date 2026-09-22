@@ -1,4 +1,12 @@
 ---
+/**
+ * Motif Duo (design system « PXLC 2026 ») : des paires grand/petit tirées
+ * du logo, alignées ; seul le dernier petit carré est corail. Remplace
+ * l'ancienne bande de pixels.
+ * @usage Micro-décoration, une fois par écran au plus : en-têtes de page,
+ * pied de page, menu mobile, feuilles de la plaquette.
+ * @a11y Purement décoratif : SVG en aria-hidden, aucun contenu à annoncer.
+ */
 interface Props {
   /** Nombre de paires grand/petit. */
   count?: number
@@ -6,16 +14,11 @@ interface Props {
   unit?: number
   /** Surface toujours sombre (footer, menu mobile) : grand carré en cyan. */
   onDark?: boolean
+  /** Classes ajoutées au SVG (placement dans le parent). */
   class?: string
 }
 const { count = 3, unit = 8, onDark = false, class: className } = Astro.props
 
-/**
- * Motif Duo (design system « PXLC 2026 ») : des paires grand/petit tirées
- * du logo, alignées ; seul le dernier petit carré est corail. Remplace
- * l'ancienne bande de pixels. Micro-décoration, une fois par écran au
- * plus, purement décorative.
- */
 const gap = Math.round(unit / 3)
 const big = 2 * unit + gap
 const pitch = 3 * unit + 2 * gap + unit

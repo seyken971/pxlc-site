@@ -1,4 +1,11 @@
 ---
+/**
+ * Fil d'Ariane dérivé de l'URL et de la navigation.
+ * @usage Pages intérieures (projets, à propos, contact) ; le JSON-LD
+ * BreadcrumbList vient de la même source.
+ * @a11y Nav nommée « Fil d'Ariane », liste ordonnée, dernier segment en
+ * aria-current="page".
+ */
 import { breadcrumbItems } from '../lib/breadcrumb'
 
 interface Props {
