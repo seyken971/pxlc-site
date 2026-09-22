@@ -6,9 +6,16 @@
 # par le filtre de schéma, comme mailto: et tel:.
 scheme = ["https", "http"]
 
-# Le site lui-même : couvert par check-links et par la vérification de prod de
-# npm run release.
-exclude = ['^https?://(www\.)?pxlc\.fr']
+# Exclusions :
+# - le site lui-même : couvert par check-links et par la vérification de prod
+#   de npm run release ;
+# - hcsp.fr : le serveur du HCSP coupe les connexions venant des runners
+#   GitHub (« Connection reset by peer », run du 22/09/2026) alors que les avis
+#   cités répondent 200 ailleurs — faux positif chaque semaine.
+exclude = [
+  '^https?://(www\.)?pxlc\.fr',
+  '^https?://(www\.)?hcsp\.fr',
+]
 
 # 999 : réponse anti-robot de LinkedIn (profil valide, accès refusé aux
 # robots) ; 429 : limitation de débit, pas un lien mort.
