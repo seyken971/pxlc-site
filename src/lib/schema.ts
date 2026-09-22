@@ -6,10 +6,6 @@
  * Ordre du @graph :
  *   #website · #webpage · #identity · #andy · #service · [nœuds Question] ·
  *   [BreadcrumbList] · #photo-event · #logo · #photo-andy
- *
- * Le graphe a d'abord été transcrit de nuxt-schema-org ; ses scories
- * (#organization dupliqué, ReadAction, primaryImageOfPage, @id machine)
- * ont été retirées depuis.
  */
 import { createLastmod } from '../../scripts/sitemap-lastmod.mjs'
 import { SITE } from '../config/site'
@@ -41,7 +37,7 @@ const lastModified = createLastmod(new Date().toISOString())
 
 /**
  * @id des nœuds globaux. Les pages s'y réfèrent plutôt que de réécrire une
- * URL absolue : c'était le seul endroit où SITE.url était dupliqué hors config.
+ * URL absolue.
  */
 export const ID = {
   andy: `${URL_BASE}/#andy`,
@@ -74,9 +70,8 @@ type MultiType<T, U, E = Entity<T>> = E extends unknown
   : never
 
 /**
- * Types de page réellement émis. L'union est fermée volontairement : quand
- * `type` valait `string`, une faute de frappe ('AboutPge') passait le
- * typecheck alors que tout le reste du fichier est contraint par schema-dts.
+ * Types de page réellement émis. Union fermée : une faute de frappe
+ * ('AboutPge') casse le typecheck.
  */
 export type PageType = 'WebPage' | 'AboutPage' | 'ContactPage' | 'FAQPage'
 
@@ -119,9 +114,8 @@ const postalAddress: PostalAddress = {
 }
 
 // ProfessionalService = sous-type LocalBusiness le plus précis pour une
-// prestation de médiation sans point de vente. Données reprises verbatim de
-// l'ancien defineLocalBusiness (nuxt.config.ts) — cohérence NAP avec la fiche
-// Google Business Profile.
+// prestation de médiation sans point de vente. Données alignées sur la fiche
+// Google Business Profile (cohérence NAP).
 //
 // Le double @type est redondant sur le papier (ProfessionalService hérite déjà
 // d'Organization via LocalBusiness) : il est gardé pour les consommateurs qui
@@ -207,9 +201,7 @@ const andyNode: Node<Person> = {
   'knowsAbout': KNOWS_ABOUT,
   'knowsLanguage': ['fr', 'en'],
   'name': 'Andy Zébus',
-  // URL finales des profils, vérifiées au curl : sameAs ne doit pas désigner
-  // une redirection. www.github.com, www.twitter.com et www.threads.net en
-  // renvoyaient toutes une.
+  // URL finales des profils : sameAs ne doit pas désigner une redirection.
   'sameAs': [
     'https://www.linkedin.com/in/azebus',
     'https://github.com/seyken971',
@@ -241,11 +233,9 @@ const serviceNode: Node<Service> = {
 
 // Dimensions déclarées d'après les fichiers de public/img/photos/, qui ne
 // servent qu'au JSON-LD et à la fiche Google Business Profile — le site, lui,
-// rend depuis src/assets/photos/. #photo-event a donc pu repasser à son
-// original 2000x1331 sans toucher au rendu. #photo-andy reste à 738 px : sa
-// source est une capture de plateau télé en 1600x738, c'est son plafond, et il
-// reste sous les 1200 px que Google recommande. Mieux vaut la valeur juste
-// qu'une promesse.
+// rend depuis src/assets/photos/. #photo-andy plafonne à 738 px (capture de
+// plateau télé en 1600x738), sous les 1200 px recommandés par Google : la
+// valeur juste plutôt qu'une promesse.
 // schema.org type width/height en Distance | QuantitativeValue : un nombre nu
 // n'est pas valide, d'où le QuantitativeValue en pixels (unitCode UN/CEFACT
 // E37).
@@ -285,9 +275,8 @@ export interface WebPageOptions {
   /** Fil d'Ariane de la page (breadcrumbItems) — ajoute le nœud + la réf. */
   crumbs?: Crumb[]
   /**
-   * Nœuds Question (structures) — référencés via mainEntity. `id` porte le
-   * fragment du @id : réordonner la FAQ ne doit pas réaffecter les @id à
-   * d'autres questions, ce que faisait la numérotation par index.
+   * Nœuds Question (FAQ de /projets/) — référencés via mainEntity. `id` porte
+   * le fragment du @id : réordonner la FAQ ne réaffecte pas les @id.
    */
   questions?: { id: string, q: string, a: string }[]
 }

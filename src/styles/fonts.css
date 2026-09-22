@@ -1,6 +1,6 @@
 /* Polices auto-hébergées — Plus Jakarta Sans et Lora (fontes variables,
-   graisses 400-600), subsets latin + latin-ext uniquement (site en français).
-   L'italique n'est conservée que pour Lora (emphases <em> des articles).
+   Lora 400-700, Plus Jakarta Sans 200-800), subsets latin + latin-ext
+   uniquement (site en français). L'italique n'existe que pour Lora (<em>).
    Les règles « Fallback » alignent les métriques des polices système pour
    éviter tout décalage de mise en page (CLS) pendant le chargement. */
 @font-face {

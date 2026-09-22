@@ -8,9 +8,9 @@ export interface Crumb {
 }
 
 // Fil d'Ariane partagé entre l'UI (SiteBreadcrumb) et le JSON-LD
-// BreadcrumbList (schema de page) — même logique que l'ancien
-// useBreadcrumbItems : libellés repris de NAV_ITEMS par correspondance de
-// chemin, currentLabel pour le segment final hors nav (titre d'article).
+// BreadcrumbList (schema de page) : libellés repris de NAV_ITEMS par
+// correspondance de chemin, currentLabel pour un segment final hors nav
+// (ex. « Plaquette »).
 export const breadcrumbItems = (pathname: string, currentLabel?: string): Crumb[] => {
   const segments = pathname.split('/').filter(Boolean)
   const paths = ['/', ...segments.map((_, i) => '/' + segments.slice(0, i + 1).join('/'))]

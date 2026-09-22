@@ -50,10 +50,6 @@ export const BRAND_HEX = {
   borderDark: '#103847',
   borderDark2: '#1F4A59',
   white: '#FFFFFF',
-
-  // Pattern colours — used in blog card thumbnail gradients.
-  patternWarm: '#D6CEBD',
-  patternWarmDeep: '#CDC4B0',
 } as const
 
 export type BrandHex = typeof BRAND_HEX

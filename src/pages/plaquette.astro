@@ -15,14 +15,13 @@ import andyPortrait from '../assets/photos/andy-portrait.jpg'
 // Plaquette de présentation, 6 feuilles A4. Cette page EST la source du PDF
 // public/files/plaquette-pxlc.pdf : scripts/export-plaquette.mjs l'imprime
 // depuis dist/ (npm run plaquette). Toute modification ici se relance et se
-// committe avec le PDF. Édition v5 : la feuille 05 décrit le déroulé du
-// programme Parent-Écran-Enfant, Lékoklaya en encart. Identité, contact,
-// thèmes et données du projet viennent de src/config (jamais retapés).
+// committe avec le PDF. Identité, contact, thèmes et données du projet
+// viennent de src/config (jamais retapés).
 const VERSION = 'v6'
 const lekoklaya = PROJECTS[0]
 const TOTAL = '06'
 const PDF_HREF = '/files/plaquette-pxlc.pdf'
-const CAL = IDENTITY.bookingUrlDisplay
+const BOOKING = IDENTITY.bookingUrlDisplay
 
 const website = SITE.url.replace(/^https?:\/\//, '').replace(/\/$/, '')
 const nbsp = (s: string) => s.replace(/ /g, ' ')
@@ -109,7 +108,7 @@ const schemaGraph = pageGraph({
       <div class="pq-card pq-card--dark">
         <span class="eyebrow">Ma promesse aux structures</span>
         <p>Je m'adapte à votre cadre de confidentialité, à vos bilans et à vos objectifs de service ou de soin. Je viens en appui de l'équipe — pas à sa place. Je reviens autant de fois que nécessaire, sur la durée du projet. <strong>Premier échange de 20&nbsp;min gratuit, sans engagement.</strong></p>
-        <p class="pq-card__contact">{CAL} · {IDENTITY.email} · {nbsp(phone)}</p>
+        <p class="pq-card__contact">{BOOKING} ·{IDENTITY.email} · {nbsp(phone)}</p>
       </div>
     </PlaquettePage>
 

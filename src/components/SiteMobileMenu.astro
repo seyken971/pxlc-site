@@ -74,7 +74,7 @@ const pathname = Astro.url.pathname
     ))}
   </nav>
 
-  <!-- Bottom bar: primary CTA + plaquette PDF secondary -->
+  <!-- Barre du bas : CTA + plaquette (PDF et en ligne) -->
   <div class="mobile-menu__bottom">
     <a
       href={IDENTITY.bookingUrl}
@@ -100,10 +100,9 @@ const pathname = Astro.url.pathname
 </div>
 
 <script>
-  // Portage DOM du menu mobile : ouverture via le burger du header, fermeture
-  // (✕, Échap, lien cliqué), verrou du scroll body, et piège de focus tant que
-  // le dialog est ouvert — Tab / Maj+Tab bouclent, tout focus égaré revient
-  // dedans. La fermeture au changement de route est devenue inutile en MPA.
+  // Ouverture via le burger du header, fermeture (✕, Échap, lien cliqué),
+  // verrou du scroll body, et piège de focus tant que le dialog est ouvert —
+  // Tab / Maj+Tab bouclent, tout focus égaré revient dedans.
   const menu = document.getElementById('mobile-menu')
   const burger = document.querySelector<HTMLButtonElement>('.burger')
   const closeBtn = menu?.querySelector<HTMLButtonElement>('.mobile-menu__close')
