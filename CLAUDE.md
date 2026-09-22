@@ -136,6 +136,9 @@ texte : elle assimile l'espace insécable à l'espace simple.
 
 - Zéro île hydratée : toute l'interactivité est en `<script>` vanilla dans
   les composants `.astro`. GitHub Pages n'a pas de runtime : aucune API route.
+  Seul script ajouté par Astro : le prefetch natif (`prefetch` dans
+  `astro.config.mjs`, stratégie `viewport`), qui précharge les pages liées
+  dès que leurs liens sont visibles.
 - CSP émise par Astro (`security.csp`) : il hache ses propres scripts et
   styles ; `BaseLayout` déclare en plus le hash du JSON-LD de la page via
   `Astro.csp.insertScriptHash`, la config celui du script anti-flash

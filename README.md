@@ -7,7 +7,7 @@ Déployé sur **https://pxlc.fr**.
 
 | Couche        | Tech                                                                                    |
 | ------------- | --------------------------------------------------------------------------------------- |
-| Framework     | [Astro](https://astro.build) 7 — 100 % statique, zéro JS hydraté (scripts vanilla inline) |
+| Framework     | [Astro](https://astro.build) 7 — 100 % statique, zéro JS hydraté (scripts vanilla inline) · prefetch natif au scroll |
 | SEO           | Graphe schema.org à la main (`src/lib/schema.ts`) · sitemap `@astrojs/sitemap` · CSP native (`security.csp`) · cartes OG en endpoints (`src/pages/og/`) · liens vérifiés en post-build |
 | Images        | `astro:assets` (sources `src/assets/photos/`, WebP auto)                                |
 | Icônes        | SVG vendorées dans `src/icons/` (imports natifs Astro — Lucide, Simple Icons)            |
