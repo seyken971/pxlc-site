@@ -33,7 +33,7 @@ if not file_path:
     sys.exit(0)
 
 norm = file_path.replace("\\", "/")
-if any(seg in norm for seg in ("/node_modules/", "/.nuxt/", "/.output/", "/dist/")):
+if any(seg in norm for seg in ("/node_modules/", "/.astro/", "/dist/")):
     sys.exit(0)
 
 # Les hooks sont lancés depuis la racine du projet (ou du worktree).
