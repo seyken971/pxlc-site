@@ -13,13 +13,6 @@ dist
 dist-lib
 dist-ce
 
-# Design sync — staged scripts, build output, machine state
-.ds-sync/
-ds-bundle/
-.design-sync/.cache/
-.design-sync/learnings/
-.design-sync/node_modules
-
 # Node dependencies
 node_modules
 
