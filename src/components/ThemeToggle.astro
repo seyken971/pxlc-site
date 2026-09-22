@@ -1,11 +1,6 @@
 ---
 import Moon from '../icons/moon.svg'
 import Sun from '../icons/sun.svg'
-
-interface Props {
-  variant?: 'default' | 'on-dark'
-}
-const { variant = 'default' } = Astro.props
 ---
 
 <!-- État initial rendu pour le thème clair ; le script ci-dessous resynchronise
@@ -13,7 +8,7 @@ const { variant = 'default' } = Astro.props
      l'anti-flash du layout. -->
 <button
   type="button"
-  class:list={['theme-toggle', { 'theme-toggle--on-dark': variant === 'on-dark' }]}
+  class="theme-toggle"
   aria-label="Passer en thème sombre"
   aria-pressed="false"
 >
