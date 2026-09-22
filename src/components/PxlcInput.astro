@@ -3,8 +3,8 @@
  * Champ de formulaire avec son libellé : input, ou textarea dès que rows
  * est fourni.
  * @usage Formulaire de la page contact.
- * @a11y Libellé visible relié par for/id ; champ requis marqué
- * aria-required, l'astérisque visuel restant en aria-hidden.
+ * @a11y Libellé visible relié par for/id ; champ requis marqué par
+ * l'attribut natif required, l'astérisque visuel restant en aria-hidden.
  */
 import type { HTMLAttributes } from 'astro/types'
 
@@ -19,7 +19,7 @@ interface Props {
   placeholder?: string
   /** Nombre de lignes : rend une textarea. */
   rows?: number
-  /** Champ obligatoire (required + aria-required, astérisque visuel). */
+  /** Champ obligatoire (required natif, astérisque visuel). */
   required?: boolean
   /** Jeton autocomplete (name, email…) ; ignoré en textarea. */
   autocomplete?: string
@@ -36,7 +36,6 @@ const { id, label, type, placeholder, rows, required, autocomplete } = Astro.pro
           rows={rows}
           placeholder={placeholder}
           required={required}
-          aria-required={required ? 'true' : undefined}
           class="form-textarea"></textarea>
       )
     : (
@@ -45,7 +44,6 @@ const { id, label, type, placeholder, rows, required, autocomplete } = Astro.pro
           type={type ?? 'text'}
           placeholder={placeholder}
           required={required}
-          aria-required={required ? 'true' : undefined}
           autocomplete={autocomplete}
           class="form-input"
         />
