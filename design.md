@@ -752,9 +752,7 @@ Aucune prop.
 
 Bascule clair / sombre. Suit le thème système tant que la personne n'a pas choisi ; son choix est gardé dans localStorage (pxlc-theme).
 
-| Prop | Type | Défaut | Rôle |
-| --- | --- | --- | --- |
-| `variant` | `'default' \| 'on-dark'` | `'default'` | on-dark : couleurs pour une surface toujours sombre. |
+Aucune prop.
 
 - **Usage** : Dans l'en-tête du site.
 - **Accessibilité** : Bouton natif en aria-pressed ; aria-pressed et aria-label sont resynchronisés au chargement sur le thème réel ; icônes en aria-hidden.
