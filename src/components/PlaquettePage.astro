@@ -115,8 +115,11 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
     background: var(--pxlc-white);
   }
 
+  /* Écran : la feuille garde au moins la hauteur A4 mais s'allonge si le
+     texte grandit (espacement, zoom — RGAA 10.12) ; seule l'impression
+     et le PDF figent le format. */
   @media screen {
-    .pq-page { box-shadow: var(--shadow-card); border-radius: 2px; }
+    .pq-page { height: auto; min-height: 297mm; box-shadow: var(--shadow-card); border-radius: 2px; }
   }
   /* Écran étroit : la feuille suit la largeur de la fenêtre et sa hauteur
      suit le contenu (RGAA 10.11) ; l'A4 reste pour l'impression. */
