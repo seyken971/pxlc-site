@@ -45,6 +45,7 @@ logs
 !.claude/settings.json
 .unlighthouse
 CLAUDE.local.md
+TASKS.md
 
 # Plaquette : aperçus PNG locaux (npm run plaquette:previews) ; le PDF vit
 # dans public/files/ et se committe

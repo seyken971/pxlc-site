@@ -167,3 +167,21 @@ texte : elle assimile l'espace insécable à l'espace simple.
 - Petits commits ciblés ; messages en français, sans emoji.
 - En cas de doute sur le ton, le positionnement ou la cible d'un texte :
   proposer, ne pas publier — Andy valide tout le copy final.
+
+## Mode de travail avec Claude
+
+- Autonomie : quand une étape ne demande pas l'avis d'Andy, continuer ; les
+  notes d'avancement vont dans le même message que l'action suivante.
+  S'arrêter seulement si impossible d'avancer sans lui, ou avant toute action
+  destructive ou visible de l'extérieur (push, fusion, release, suppression,
+  envoi, publication).
+- Tâches longues : tenir une checklist dans `TASKS.md` (gitignored), cochée
+  au fil de l'eau, enrichie de ce qui est découvert en route.
+- Audits larges (a11y, SEO, copy sur toutes les pages) : un sous-agent par
+  page ou par zone ; vérifier ses preuves avant de les accepter ; synthèse en
+  un seul tableau.
+- Revue avant fusion : ne lister que ce qui bloquerait la fusion — fichier et
+  ligne, pourquoi c'est faux, comment le montrer.
+- Recherche et citations : signaler tout ce qui n'a pas pu être confirmé et
+  où la recherche a porté (complète la règle `docs/references/`).
+- Fin de run, trois titres : **Bloqué sur Andy**, **Modifié**, **Trouvé**.
