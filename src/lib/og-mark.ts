@@ -5,8 +5,6 @@
  */
 import { BRAND_HEX } from './brand-colors'
 
-export const OG_F_SANS = 'Plus Jakarta Sans, system-ui, sans-serif'
-
 // Logo PXLC 2026 (viewBox 0 0 100 100) : grand carré parent + petit carré
 // enfant en diagonale sur la grille 3×3. Même géométrie que PxlcMark.astro.
 export const MARK_RECTS = [

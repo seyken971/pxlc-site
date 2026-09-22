@@ -9,8 +9,8 @@
  *   node scripts/export-design.mjs
  *   npm run design
  *
- * Les fichiers sont écrits à la racine du repo. Relancer après toute
- * modification de tokens.css ou styles.css.
+ * Les fichiers sont écrits à la racine du repo. Relancé automatiquement par
+ * predev et prebuild.
  */
 import { readFile, readdir } from "node:fs/promises";
 import { join } from "node:path";
@@ -80,9 +80,9 @@ function parseSections(css) {
 }
 
 /**
- * Liste les noms de composants depuis src/components/ (récursif, .astro
- * et .vue), suffixes retirés — la doc de nommage est dérivée du
- * filesystem pour ne jamais dériver de la réalité.
+ * Liste les noms de composants depuis src/components/ (récursif, .astro),
+ * suffixe retiré — la doc de nommage est dérivée du filesystem pour ne
+ * jamais dériver de la réalité.
  */
 async function listComponents(dir = "src/components") {
   return (await componentFiles(dir)).map((f) => f.name).sort();
@@ -93,9 +93,9 @@ async function componentFiles(dir) {
   for (const e of await readdir(dir, { withFileTypes: true })) {
     if (e.isDirectory())
       files.push(...(await componentFiles(join(dir, e.name))));
-    else if (e.name.endsWith(".vue") || e.name.endsWith(".astro"))
+    else if (e.name.endsWith(".astro"))
       files.push({
-        name: e.name.replace(/\.(vue|astro)$/, ""),
+        name: e.name.replace(/\.astro$/, ""),
         path: join(dir, e.name),
       });
   }
@@ -402,7 +402,7 @@ const main = async () => {
   const skipTitles = new Set(["Global", "Reset & globals"]);
   for (const { title, classes } of sections) {
     if (skipTitles.has(title)) continue;
-    // Skip sections that are only utility/import lines
+    // Écarte les sélecteurs globaux (:root, body, :where)
     const filtered = classes.filter(
       (c) => !["root", "body", "where"].includes(c),
     );
@@ -524,7 +524,7 @@ const main = async () => {
       `- **\`Pxlc*\`** — primitives de marque réutilisables partout : ${ticks(pxlcNames)}`,
       `- **\`Site*\`** — chrome du site (présent sur toutes les pages) : ${ticks(siteNames)}`,
       `- **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : ${ticks(plainNames)}`,
-      "- Deux mots minimum par nom (style guide Vue — évite les collisions avec de futurs éléments HTML natifs)",
+      "- Deux mots minimum par nom (évite les collisions avec de futurs éléments HTML natifs)",
     ].join("\n"),
   );
 

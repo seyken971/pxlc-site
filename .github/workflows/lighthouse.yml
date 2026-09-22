@@ -1,14 +1,8 @@
 name: Lighthouse (weekly)
 
-# Runs every Sunday at 18:00 UTC (~19:00 Paris winter / 20:00 summer) and
-# on-demand via the Actions tab. Separate from the deploy workflow on
-# purpose — Lighthouse is slow (~5 min for the 7 routes) and noisy on
-# localhost, so we don't want it gating PRs. The cron gives us a weekly
-# trendline of any perf regression that crept in.
-#
-# The job produces a markdown table in the workflow run summary (no
-# artefacts, no PR comments) — open the run from the Actions tab to read
-# it. Non-blocking: even if scores tank, the job is informational.
+# Chaque dimanche à 18:00 UTC et à la demande. Hors du déploiement : lent et
+# bruité en localhost, il ne bloque pas les PR. Tableau Markdown dans le
+# résumé du run, informatif uniquement.
 
 on:
   schedule:
@@ -43,10 +37,6 @@ jobs:
         run: npm run build
 
       - name: Run Lighthouse
-        # ubuntu-latest ships Google Chrome stable at /usr/bin/google-chrome,
-        # which is what chrome-launcher picks up. No extra install needed.
-        # The script writes a Markdown digest to $GITHUB_STEP_SUMMARY.
-        # `continue-on-error` so a sub-0.9 score doesn't fail the run —
-        # this workflow is informational only.
+        # chrome-launcher utilise le Chrome stable de l'image ubuntu-latest.
         run: npm run lighthouse
         continue-on-error: true

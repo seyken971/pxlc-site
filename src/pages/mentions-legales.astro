@@ -8,9 +8,8 @@ import PxlcMarkSeparator from '../components/PxlcMarkSeparator.astro'
 import { pageGraph } from '../lib/schema'
 import { IDENTITY } from '../config/identity'
 
-// Date de dernière mise à jour du contenu légal — à mettre à jour manuellement
-// si les mentions sont modifiées. new Date() était utilisé avant mais donnait
-// la date du build SSG, pas celle de la mise à jour réelle du contenu.
+// Date de dernière mise à jour du contenu légal — à mettre à jour à la main
+// (pas la date du build).
 const lastUpdated = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
   .format(new Date('2026-09-06T12:00:00'))
 
@@ -167,9 +166,6 @@ const schemaGraph = pageGraph({
   /* ── Content container ────────────────────────────────────────── */
   .legal-container { max-width: 760px; }
 
-  /* Sticky header offset géré globalement par html { scroll-padding-top: 96px } dans styles.css. */
-  .legal-container :global(h2[id]) { scroll-margin-top: 0; }
-
   /* ── Éditeur card ─────────────────────────────────────────────── */
   .legal-card {
     position: relative;
@@ -180,7 +176,7 @@ const schemaGraph = pageGraph({
     transition: background var(--dur-base);
   }
 
-  /* Surcharge de positionnement pour .card__duo (opacity héritée globalement). */
+  /* Surcharge de positionnement pour .card__duo. */
   .legal-card :global(.legal-card__corner) {
     top: var(--space-4);
     right: var(--space-4);

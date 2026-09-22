@@ -66,10 +66,7 @@ const auditRoute = async (port, route, port_chrome) => {
 
 const main = async () => {
   const { server, port } = await startServer()
-  // /mentions-legales a robots: noindex — l'audit SEO Lighthouse le pénalise
-  // (-40pts) alors que le bloquer est correct. Inutile de suivre une page qui
-  // n'a pas vocation à ranker → on l'exclut de la liste découverte.
-  const routes = (await discoverRoutes()).filter((r) => r !== '/mentions-legales')
+  const routes = await discoverRoutes()
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless=new', '--no-sandbox'] })
   const all = []
 
@@ -137,7 +134,7 @@ const main = async () => {
         `| \`${r.route}\` | ${pct(r.perf)} | ${pct(r.a11y)} | ${pct(r.bp)} | ${pct(r.seo)} | ${ms(r.lcp)} | ${cls(r.cls)} | ${ms(r.tbt)} |`,
       ),
       '',
-      '> Scores ≥ 90% green, 50–89% yellow, < 50% red. The numbers above are mobile-throttled localhost — production via GitHub Pages CDN + browser cache typically reads 10–15 points higher. Compare against PageSpeed Insights on `https://pxlc.fr` for the real baseline.',
+      '> Scores ≥ 90% green, 50–89% yellow, < 50% red. The numbers above are mobile-throttled localhost, not production. Compare against PageSpeed Insights on `https://pxlc.fr` for the real baseline.',
       '',
     ]
 
@@ -157,13 +154,8 @@ const main = async () => {
       .catch(err => process.stderr.write(`warning: failed to write step summary: ${err.message}\n`))
   }
 
-  // The script always exits 0. The cron is informational — the workflow has
-  // `continue-on-error: true` on the run step and reads the Markdown summary
-  // for the trendline. A hard fail here would just produce a confusing red
-  // annotation without actually failing the job. Sub-0.9 Perf on mobile-
-  // throttled localhost is the norm, not a regression (see the disclaimer
-  // line in the Markdown summary). Real a11y regressions are caught by the
-  // dedicated axe gates in the deploy workflow, not here.
+  // Toujours exit 0 : workflow informatif (continue-on-error). Les régressions
+  // a11y sont gardées par les audits axe du déploiement.
   process.exit(0)
 }
 

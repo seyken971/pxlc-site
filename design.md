@@ -28,8 +28,6 @@ colors:
     pxlc-border-dark: "#103847"
     pxlc-border-dark-2: "#1F4A59"
     pxlc-white: "#FFFFFF"
-    pxlc-pattern-warm: "#D6CEBD"
-    pxlc-pattern-warm-deep: "#CDC4B0"
   semantic:
     surface:
       light: "var(--pxlc-ivory)"
@@ -152,7 +150,6 @@ layout:
   container-pad: "clamp(20px, 4vw, 56px)"
   z-header: "50"
   z-menu: "100"
-  z-progress: "200"
   z-skip: "1000"
 ---
 
@@ -192,8 +189,6 @@ layout:
 | `--pxlc-border-dark` | `#103847` |
 | `--pxlc-border-dark-2` | `#1F4A59` |
 | `--pxlc-white` | `#FFFFFF` |
-| `--pxlc-pattern-warm` | `#D6CEBD` |
-| `--pxlc-pattern-warm-deep` | `#CDC4B0` |
 
 ## Tokens sémantiques
 
@@ -344,7 +339,6 @@ Rythme 8 px.
 | `--container-pad` | `clamp(20px, 4vw, 56px)` |
 | `--z-header` | `50` |
 | `--z-menu` | `100` |
-| `--z-progress` | `200` |
 | `--z-skip` | `1000` |
 
 ## Composants CSS globaux
@@ -506,7 +500,7 @@ Généré depuis `src/components/` : description et tags `@usage` / `@a11y` du b
 
 #### `PxlcDuo`
 
-Motif Duo (design system « PXLC 2026 ») : des paires grand/petit tirées du logo, alignées ; seul le dernier petit carré est corail. Remplace l'ancienne bande de pixels.
+Motif Duo (design system « PXLC 2026 ») : des paires grand/petit tirées du logo, alignées ; seul le dernier petit carré est corail.
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
@@ -592,7 +586,7 @@ Fil d'Ariane dérivé de l'URL et de la navigation.
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
-| `currentLabel` | `string` | — | Libellé du segment final quand il n'est pas dans la nav (ex. titre d'article). |
+| `currentLabel` | `string` | — | Libellé du segment final quand il n'est pas dans la nav (ex. « Plaquette »). |
 
 - **États** : `:hover`
 - **Usage** : Pages intérieures (projets, à propos, contact) ; le JSON-LD BreadcrumbList vient de la même source.
@@ -616,7 +610,7 @@ Surface SEO d'une page dans le head : title, canonical, metas, OG et Twitter, JS
 | `title` * | `string` | — | Titre de page sans suffixe — « %s · PXLC » appliqué ici. ≤ 53 caractères. |
 | `description` * | `string` | — | Meta description. ≤ 120 caractères. |
 | `ogDescription` | `string` | `description` | og:description si différente de description (ex : accueil). |
-| `ogTitle` | `string` | `fullTitle` | og:title si différent du titre complet — les articles retirent le suffixe « · PXLC » (og:site_name porte déjà la marque). |
+| `ogTitle` | `string` | `fullTitle` | og:title si différent du titre complet (ex. sans le suffixe « · PXLC », og:site_name portant déjà la marque). |
 | `ogType` | `'website' \| 'article'` | `'website'` | og:type de la page. |
 | `robots` | `string` | `'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'` | Directive meta robots (noindex pour les pages hors sitemap). |
 | `ogImage` | `string` | ``${SITE.url}/og/site.png?v=1200x675`` | URL absolue de l'image OG (1200×675, 16:9). |
@@ -650,17 +644,17 @@ Aucune prop.
 
 #### `CitationBlock`
 
-Section de citation institutionnelle : source, extrait entre guillemets français, attribution.
+Citation mise en exergue : source, extrait entre guillemets français, attribution.
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
-| `source` * | `string` | — | Document cité, affiché au-dessus de l'extrait. |
+| `source` * | `string` | — | Provenance, affichée au-dessus de l'extrait. |
 | `quote` * | `string` | — | Extrait exact, sans guillemets (ajoutés par le composant). |
-| `attribution` * | `string` | — | Auteur, date et section de la citation. |
+| `attribution` * | `string` | — | Auteur ou cadre de la citation. |
 | `soft` | `boolean` | `true` | Fond doux (.section--soft). |
 
-- **Usage** : Citation sourcée depuis docs/references/, jamais reformulée.
-- **Accessibilité** : Section nommée « Référence institutionnelle » ; figure, blockquote et figcaption ; guillemets décoratifs en aria-hidden.
+- **Usage** : Une citation par page au plus (parole d'Andy, devise de projet) ; citée telle quelle, jamais reformulée.
+- **Accessibilité** : Section nommée « Citation » ; figure, blockquote et figcaption ; guillemets décoratifs en aria-hidden.
 
 #### `CommuneMap`
 
@@ -731,7 +725,7 @@ Feuille A4 de la plaquette : en-tête de navigation, contenu en slot, pied avec 
 | `total` * | `string` | — | Nombre total de feuilles (« 06 »). |
 | `label` | `string` | — | Libellé de navigation en tête de feuille (« 01 · La mission »). |
 | `cover` | `boolean` | `false` | Couverture : fond sombre, sans en-tête ni pied. |
-| `version` * | `string` | — | Édition, affichée dans le pied (« v4 »). |
+| `version` * | `string` | — | Édition, affichée dans le pied (« v6 »). |
 | `website` * | `string` | — | Domaine sans protocole, affiché dans le pied (« pxlc.fr »). |
 | `screenLabel` * | `string` | — | Libellé écran de la feuille (aperçu, aria). |
 
@@ -796,7 +790,7 @@ Aucune prop.
 - **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcDuo`, `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
 - **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PartnerStrip`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
-- Deux mots minimum par nom (style guide Vue — évite les collisions avec de futurs éléments HTML natifs)
+- Deux mots minimum par nom (évite les collisions avec de futurs éléments HTML natifs)
 
 ### Visuel
 

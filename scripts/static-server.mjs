@@ -1,15 +1,14 @@
 /**
  * scripts/static-server.mjs
- * Helpers partagés par les audits runtime (a11y-runtime.mjs, lighthouse-audit.mjs).
+ * Helpers partagés par a11y-runtime.mjs, lighthouse-audit.mjs et
+ * export-plaquette.mjs.
  *
  *  - MIME           : table content-type pour servir dist
  *  - startServer    : serveur HTTP statique éphémère sur un port libre
  *  - discoverRoutes : liste les routes prerendered (un index.html par route)
  *
- * Évite la duplication du serveur + de la table MIME entre les deux scripts
- * (même précédent que seo-limits.mjs et write-file-eol.mjs), et garde la liste
- * de routes auditées en phase avec dist — plus de tableau ROUTES codé
- * en dur qui rate silencieusement les nouvelles pages.
+ * Les routes auditées sont découvertes dans dist : une nouvelle page est
+ * couverte sans liste à tenir.
  */
 import http from 'node:http'
 import { readFile, readdir, stat } from 'node:fs/promises'

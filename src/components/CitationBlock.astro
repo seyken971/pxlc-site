@@ -1,17 +1,18 @@
 ---
 /**
- * Section de citation institutionnelle : source, extrait entre guillemets
- * français, attribution.
- * @usage Citation sourcée depuis docs/references/, jamais reformulée.
- * @a11y Section nommée « Référence institutionnelle » ; figure,
- * blockquote et figcaption ; guillemets décoratifs en aria-hidden.
+ * Citation mise en exergue : source, extrait entre guillemets français,
+ * attribution.
+ * @usage Une citation par page au plus (parole d'Andy, devise de projet) ;
+ * citée telle quelle, jamais reformulée.
+ * @a11y Section nommée « Citation » ; figure, blockquote et figcaption ;
+ * guillemets décoratifs en aria-hidden.
  */
 interface Props {
-  /** Document cité, affiché au-dessus de l'extrait. */
+  /** Provenance, affichée au-dessus de l'extrait. */
   source: string
   /** Extrait exact, sans guillemets (ajoutés par le composant). */
   quote: string
-  /** Auteur, date et section de la citation. */
+  /** Auteur ou cadre de la citation. */
   attribution: string
   /** Fond doux (.section--soft). */
   soft?: boolean
@@ -19,7 +20,7 @@ interface Props {
 const { source, quote, attribution, soft = true } = Astro.props
 ---
 
-<section class:list={['section', { 'section--soft': soft }]} aria-label="Référence institutionnelle">
+<section class:list={['section', { 'section--soft': soft }]} aria-label="Citation">
   <div class="container">
     <figure class="citation">
       <div class="citation__source">{source}</div>

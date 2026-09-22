@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 /**
  * Vérifie le graphe schema.org du build statique — le build échoue sur graphe
- * incohérent. La baseline de docs/seo-baseline/ gèle l'existant sans rien
- * valider : elle détecte qu'un graphe a changé, jamais qu'il est cassé. Un
- * `aboutId` mal orthographié passait donc build, typecheck et ds-lint sans
- * bruit. Pour chaque page de dist :
+ * incohérent. Complète seo-check, qui détecte qu'un graphe a changé mais pas
+ * qu'il est cassé. Pour chaque page de dist :
  *
  *  - un seul bloc application/ld+json, qui parse et porte @context + @graph ;
  *  - tout nœud du @graph porte un @id et un @type ;

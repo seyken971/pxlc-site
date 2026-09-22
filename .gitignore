@@ -34,5 +34,5 @@ TASKS.md
 # dans public/files/ et se committe
 .previews/
 
-# Snapshot SEO de travail (compare a docs/seo-baseline, regenere a chaque build)
+# Snapshot SEO de travail (régénéré par seo-check)
 docs/seo-current

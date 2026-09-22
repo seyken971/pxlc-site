@@ -2,8 +2,7 @@
 /**
  * scripts/seo-check.mjs
  * Compare la surface SEO du build (dist) à la baseline versionnée
- * (docs/seo-baseline) — le build échoue sur tout écart. Remplace le rituel
- * manuel « snapshot → git diff --no-index → tri du diff ».
+ * (docs/seo-baseline) — le build échoue sur tout écart.
  *
  *   node scripts/seo-check.mjs [buildDir] [baselineDir]
  *   npm run seo:check

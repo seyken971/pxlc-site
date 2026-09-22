@@ -39,10 +39,9 @@ type Props = Omit<HeadProps, 'colorScheme'>
 
     <script>
       // Scroll reveal — ajoute .is-visible aux éléments animés quand ils
-      // entrent dans le viewport. MPA : s'exécute à chaque chargement de page.
-      // Ignoré si prefers-reduced-motion (le CSS rend alors tout visible).
-      const TARGETS
-        = '.animate-in:not(.is-visible), .card--method:not(.is-visible), .blog-card:not(.is-visible)'
+      // entrent dans le viewport. Ignoré si prefers-reduced-motion (le CSS
+      // rend alors tout visible).
+      const TARGETS = '.animate-in:not(.is-visible), .card--method:not(.is-visible)'
 
       if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
         const scrollIO = new IntersectionObserver(

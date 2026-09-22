@@ -213,12 +213,8 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
 
     const subject = `Contact PXLC — ${name}${type ? ` (${type})` : ''}`
     const href = `mailto:contact@pxlc.fr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
-    // Le mailto: construit au submit — réutilisé comme lien de repli si le
-    // client mail ne s'ouvre pas.
     if (sentLink) sentLink.href = href
     window.location.href = href
-    // La carte de statut remplace le formulaire (la saisie reste dans le DOM,
-    // le mailto: de repli la contient).
     form.hidden = true
     if (sentCard) {
       sentCard.hidden = false

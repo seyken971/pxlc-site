@@ -10,11 +10,8 @@
 import { createHash } from 'node:crypto'
 import { SITE } from '../config/site'
 
-// Surface SEO d'une page — title, canonical, metas, OG/Twitter, JSON-LD —
-// partagée par BaseLayout (pages du site) et PlaquetteLayout (page A4 sans
-// chrome). Le script anti-flash et le thème restent du ressort des layouts :
-// la plaquette épingle le mode clair, les autres pages suivent la préférence.
-// La baseline SEO (docs/seo-baseline) verrouille tout ce qui est émis ici.
+// Le script anti-flash et le thème restent du ressort des layouts : la
+// plaquette épingle le mode clair, les autres pages suivent la préférence.
 
 export interface Props {
   /** Titre de page sans suffixe — « %s · PXLC » appliqué ici. ≤ 53 caractères. */
@@ -23,8 +20,8 @@ export interface Props {
   description: string
   /** og:description si différente de description (ex : accueil). */
   ogDescription?: string
-  /** og:title si différent du titre complet — les articles retirent le
-      suffixe « · PXLC » (og:site_name porte déjà la marque). */
+  /** og:title si différent du titre complet (ex. sans le suffixe
+      « · PXLC », og:site_name portant déjà la marque). */
   ogTitle?: string
   /** og:type de la page. */
   ogType?: 'website' | 'article'

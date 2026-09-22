@@ -1,12 +1,11 @@
-/* PXLC site — global stylesheet
-   Imports tokens then implements every component used on the marketing site. */
+/* PXLC site — feuille globale : tokens, chrome du site et classes partagées.
+   Les composants propres à une section portent leur style scopé. */
 
 @import "./tokens.css";
 
 /* ── Scroll reveal ────────────────────────────────────────── */
-/* Elements fade up as they enter the viewport. JS (app.vue) adds
-   .is-visible via IntersectionObserver. Skipped entirely when the
-   user prefers reduced motion. */
+/* Apparition au défilement : BaseLayout ajoute .is-visible
+   (IntersectionObserver). Désactivé si l'utilisateur réduit les animations. */
 @media (prefers-reduced-motion: no-preference) {
   .animate-in,
   .card--method {
@@ -43,19 +42,12 @@ body {
    in dark mode. With :where() any class-scoped color wins automatically. */
 :where(a) { color: var(--link); text-decoration: none; transition: color var(--dur-fast); }
 :where(a):hover { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
-/* WCAG 1.4.1: links inside a text block must be distinguishable without
-   color alone. Underline every class-less inline link (HCSP refs in
-   /a-propos, mailto/rendez-vous in mentions-legales, etc.); buttons, nav
-   links and other typed links carry their own classes so they're
-   exempt. @nuxt/content (MDC) émet les liens inline du corps des articles
-   avec un attribut class="" vide que :not([class]) ne capture pas — d'où
-   les sélecteurs [class=""] explicites. */
+/* WCAG 1.4.1 : un lien dans le texte se distingue autrement que par la
+   couleur. Les liens sans classe sont soulignés ; boutons et liens de
+   navigation portent leur propre classe. */
 p a:not([class]),
-p a[class=""],
 li a:not([class]),
-li a[class=""],
-dd a:not([class]),
-dd a[class=""] { text-decoration: underline; text-underline-offset: 3px; }
+dd a:not([class]) { text-decoration: underline; text-underline-offset: 3px; }
 button { font-family: inherit; }
 h1,h2 { margin: 0; color: var(--ink); font-family: var(--font-display); font-weight: 700; }
 h3,h4 { margin: 0; color: var(--ink); font-family: var(--font-display); font-weight: 600; }
@@ -64,18 +56,12 @@ img { max-width: 100%; display: block; }
 
 /* ── Page root guards ────────────────────────────────────── */
 
-/* Fix #5 — The sticky header (.site-header) is ~81px tall. A global
-   scroll-padding-top keeps EVERY in-page anchor target clear of it.
-   Complements the per-element scroll-margin-top:96px already set on
-   .audience-card and `h2[id]` targets (those can stay; this generalises it). */
+/* Header collant (~81 px) : scroll-padding-top dégage toutes les ancres. */
 html { scroll-padding-top: 96px; }
 
-/* Fix #4 — Hero, CTA and section decorations (filigrane de la marque) intentionally
-   bleed past the right edge. Clip horizontally so that bleed can never
-   produce a stray horizontal scrollbar at narrow/intermediate widths.
-   Use `clip` — NOT `hidden` — so the sticky header is not turned into a
-   scroll container (overflow:hidden on body would force overflow-y to auto
-   and break position:sticky). */
+/* Les filigranes débordent à droite : clip évite la barre de défilement
+   horizontale. Pas `hidden`, qui ferait de body un conteneur de défilement
+   et casserait le header sticky. */
 body { overflow-x: clip; }
 
 /* Skip link */
@@ -155,11 +141,8 @@ main[tabindex="-1"]:focus { outline: none; }
   text-decoration: none;
   transition: background var(--dur-base) var(--ease-step), color var(--dur-base), transform var(--dur-base), box-shadow var(--dur-base);
 }
-/* No font-family override on the ::after — letting "→" render in the system
-   font instead of JetBrains Mono avoids a layout shift when the mono webfont
-   swaps in (FOUT). Lighthouse caught a CLS of 0.162 from this on
-   /pour-les-structures. The glyph is U+2192, identical width in all fonts
-   for our purposes. */
+/* Pas de font-family sur la flèche : évite un décalage (CLS) au chargement
+   des polices. */
 .btn::after { content: "→"; font-size: 13px; transform: translateY(-1px); }
 .btn--no-arrow::after { content: none; }
 .btn--lg { padding: 16px 28px; font-size: 16px; }
@@ -410,11 +393,8 @@ main[tabindex="-1"]:focus { outline: none; }
 .mobile-menu__cta-btn { flex: 1; min-height: 44px; }
 
 /* ── Hero ────────────────────────────────────────────────── */
-/* Vertical budget: header (~70px) + hero must fit a typical laptop
-   viewport (768-900px) so the CTAs land above the fold. Padding,
-   title cap, and inter-element margins all calibrated for that.
-   On very tall viewports the hero breathes naturally via the bottom
-   of the page — we don't grow it to fill. */
+/* Header + hero tiennent dans un écran de portable (768-900 px) : les CTA
+   restent au-dessus de la ligne de flottaison. */
 .hero {
   position: relative; overflow: hidden; padding: clamp(40px, 5vw, var(--space-7)) 0;
   background: var(--surface);
@@ -435,8 +415,6 @@ main[tabindex="-1"]:focus { outline: none; }
   position: relative; z-index: 1;
 }
 @media (min-width: 1024px) { .hero__inner { grid-template-columns: 1.4fr 1fr; gap: clamp(32px, 5vw, 56px); } }
-/* Title caps at 64px (was 78). 4 lines × 64 × 1.02 = 261px, saves ~57px
-   vs the previous cap, and the page still reads as "display" size. */
 .hero__title {
   font-family: var(--font-display); font-weight: 700;
   font-size: var(--fs-title-1); line-height: var(--lh-title-1); letter-spacing: var(--ls-title-1);
@@ -502,8 +480,6 @@ main[tabindex="-1"]:focus { outline: none; }
    passe au cyan quel que soit le thème. */
 .duo--on-dark .duo__big { fill: var(--cyan); }
 
-/* Partners — moved to <PartnerStrip> scoped style */
-
 /* ── Cards ───────────────────────────────────────────────── */
 .card {
   background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-lg);
@@ -518,7 +494,7 @@ main[tabindex="-1"]:focus { outline: none; }
 .card--method .card__step-num { font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--parent); margin-bottom: var(--space-5); }
 .card--method h3 { margin: 0 0 8px; font-family: var(--font-display); font-size: 22px; line-height: 1.15; }
 .card--method p { font-size: 15px; line-height: 1.6; }
-/* Petite marque en haut à droite des cartes d'étape (remplace le coin pixel). */
+/* Petite marque en haut à droite des cartes d'étape. */
 .card__duo { position: absolute; top: var(--space-3); right: var(--space-3); line-height: 0; }
 .card__tag { margin-top: var(--space-4); font-family: var(--font-label); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-quiet); }
 
@@ -538,10 +514,6 @@ main[tabindex="-1"]:focus { outline: none; }
 .badge--audience { background: var(--pxlc-bg-dark); color: var(--pxlc-cyan); border-color: transparent; }
 .badge--soft { background: var(--parent-soft); color: var(--parent); border-color: transparent; }
 .badge--child { background: var(--child-soft); color: var(--ink); border-color: transparent; }
-
-/* Image-with-badge — moved to <SessadCase> scoped style */
-
-/* Citation — moved to <CitationBlock> scoped style */
 
 /* ── Footer ──────────────────────────────────────────────── */
 .site-footer { background: var(--pxlc-bg-dark); color: var(--pxlc-ivory); padding: clamp(48px, 8vw, 56px) 0 24px; }
@@ -603,11 +575,9 @@ main[tabindex="-1"]:focus { outline: none; }
 .site-footer__legal a:hover { color: var(--pxlc-cyan); }
 .site-footer__legal-links { display: flex; flex-wrap: wrap; column-gap: var(--space-3); list-style: none; padding: 0; margin: 0; }
 
-/* Form inputs — moved to /contact scoped style */
-
 /* ── Typographic utility classes (semantic aliases) ──────── */
-/* Miroir des classes .pxlc-* du UI Kit — permettent de typer
-   le rôle d'un élément sans surcharger les balises HTML. */
+/* Alias documentés dans design.md : typent le rôle d'un élément sans
+   surcharger les balises HTML. */
 .pxlc-h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title-1); line-height: var(--lh-title-1); letter-spacing: var(--ls-title-1); color: var(--ink); text-wrap: balance; }
 .pxlc-h2 { font-family: var(--font-display); font-weight: 700; font-size: var(--fs-title-2); line-height: var(--lh-title-2); letter-spacing: var(--ls-title-2); color: var(--ink); text-wrap: balance; }
 .pxlc-h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); color: var(--ink); text-wrap: balance; }
@@ -672,8 +642,7 @@ main[tabindex="-1"]:focus { outline: none; }
   color: var(--pxlc-ivory);
 }
 .prose p a { text-decoration: underline; text-underline-offset: 3px; }
-/* Les URL citées en toutes lettres (avis HCSP, etc.) peuvent casser pour ne
-   pas déborder sur mobile étroit. */
+/* Les URL en toutes lettres peuvent casser pour ne pas déborder sur mobile. */
 .prose a { overflow-wrap: anywhere; }
 .prose ul, .prose ol { padding-left: var(--space-4); margin-bottom: var(--space-3); }
 .prose li { margin-bottom: 6px; }

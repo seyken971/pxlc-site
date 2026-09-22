@@ -29,8 +29,7 @@ const { partners = ['SESSAD Lékoklaya'] } = Astro.props
   .partners__item {
     display: flex; align-items: center; gap: var(--space-2);
     font-family: var(--font-display); font-weight: 500; font-size: 15px;
-    /* No opacity multiplier — diluting --ink-quiet by 15% pushed the
-       effective text below WCAG AA contrast on --surface-soft. */
+    /* Pas d'opacité : --ink-quiet dilué passe sous le contraste AA. */
     color: var(--ink-quiet);
   }
   .partners__item::before { content: ""; width: 10px; height: 10px; background: var(--line); border-radius: 2px; }

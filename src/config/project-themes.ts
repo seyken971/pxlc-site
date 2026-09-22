@@ -1,7 +1,7 @@
 export interface ProjectTheme {
   num: string
   title: string
-  /** Short pitch — used on the home overview grid. */
+  /** Short pitch — used on the plaquette (sheet 05). */
   short: string
   /** Detailed description — used on the /projets page. */
   long: string

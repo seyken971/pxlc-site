@@ -15,8 +15,7 @@
  * modification de la page se relance et se committe avec lui.
  *
  * Garde-fous (exit 1) :
- *  - texte de la couleur de son fond (un <strong> hérité en encre sombre sur
- *    une carte sombre a déjà rendu le CTA invisible) ;
+ *  - texte de la couleur de son fond (ex. encre sombre sur carte sombre) ;
  *  - contenu qui passe sous le pied de feuille (la feuille masque son
  *    débordement : à l'écran on ne voit rien, à l'impression le texte est coupé) ;
  *  - nombre de pages différent de la valeur attendue.

@@ -9,8 +9,8 @@ import { ID, pageGraph } from '../lib/schema'
 import { breadcrumbItems } from '../lib/breadcrumb'
 import { IDENTITY } from '../config/identity'
 
-// FAQ — mise en oeuvre d'un projet, plus catalogue d'offre. Double emploi :
-// source du rich result FAQPage (nœuds Question du @graph).
+// FAQ sur la mise en œuvre d'un projet. Double emploi : source du rich result
+// FAQPage (nœuds Question du @graph).
 const faqs = [
   {
     id: 'demarrage',
@@ -47,7 +47,7 @@ const frameworks = [
   { key: 'HCSP', year: '2020', title: 'De l’usage excessif à la dépendance', desc: 'Repères pour prévenir le basculement vers un usage problématique — calibration des indicateurs PXLC.', url: 'https://www.hcsp.fr/Explore.cgi/AvisRapportsDomaine?clefr=1074' },
 ]
 
-// Indicateurs d'évaluation — source : plaquette §"Indicateurs d'évaluation".
+// Indicateurs d'évaluation — même liste que la plaquette (« Indicateurs suivis »).
 // Suivis pendant le projet ; aucun résultat n'est publiable tant que l'équipe
 // n'a pas validé le bilan.
 const indicators = [
@@ -260,7 +260,6 @@ const schemaGraph = pageGraph({
   /* Le hero de cette page n'a pas de carte latérale : une seule colonne. */
   .hero__inner--solo { grid-template-columns: 1fr; }
 
-
   /* ── Rubrique projets ── */
   .projets-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
   /* Une carte seule ne flotte pas dans une grille prévue pour plusieurs. */
@@ -296,7 +295,6 @@ const schemaGraph = pageGraph({
   .framework-tag__dot { width: 8px; height: 8px; background: var(--pxlc-coral); border-radius: 2px; }
   .framework-tag__label { color: var(--ink); }
   .framework-title { font-size: 20px; margin-bottom: var(--space-2); }
-  /* .pxlc-body-sm (global) — 15px / 1.6 avec font-body et ink-quiet. */
   .framework-desc,
   .indicator-detail,
   .theme-desc { font-size: 15px; line-height: 1.6; }
