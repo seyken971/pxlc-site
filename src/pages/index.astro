@@ -54,19 +54,19 @@ const schemaGraph = pageGraph({
     ctaSecondary={{ label: 'Plaquette PDF · 6 pages', href: '/files/plaquette-pxlc.pdf', external: true }}
     ctaSecondaryAlt={{ label: 'Lire en ligne', href: '/plaquette/', ariaLabel: 'Lire en ligne (plaquette, version web accessible)' }}
     photo={andyEvent}
-    photoAlt="Andy Zébus en animation lors d’un événement gaming en Guadeloupe"
+    photoAlt="Andy Zébus en animation lors d’un événement de jeu vidéo en Guadeloupe"
   />
   <section class="section reperes-section" aria-labelledby="reperes-title">
     <div class="container">
       <h2 id="reperes-title" class="eyebrow">Quelques repères</h2>
-      <div class="reperes-grid">
+      <ul class="reperes-grid" role="list">
         {stats.map((s, i) => (
-          <div class="repere" style={`--anim-delay: ${i * 0.07}s`}>
+          <li class="repere" style={`--anim-delay: ${i * 0.07}s`}>
             <span class="repere__value">{s.value}</span>
             <span class="repere__label">{s.label}</span>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
   <PartnerStrip />
@@ -76,7 +76,7 @@ const schemaGraph = pageGraph({
   <CitationBlock
     source={'« Jouons Ensemble ! » · projet 2026'}
     quote="Jouer ensemble, c’est mieux comprendre, mieux se parler, et mieux grandir."
-    attribution="Tagline du projet · SESSAD Lékoklaya × PXLC"
+    attribution="Devise du projet · SESSAD Lékoklaya × PXLC"
   />
 </BaseLayout>
 
@@ -86,7 +86,9 @@ const schemaGraph = pageGraph({
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--space-4);
-    margin-top: var(--space-4);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
   }
   @media (max-width: 768px) { .reperes-grid { grid-template-columns: repeat(2, 1fr); } }
   .repere { display: flex; flex-direction: column; gap: var(--space-1); }
