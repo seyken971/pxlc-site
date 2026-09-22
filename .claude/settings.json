@@ -8,7 +8,7 @@
             "type": "command",
             "command": "py .claude/hooks/post-edit-checks.py",
             "timeout": 90,
-            "statusMessage": "Vérifications post-édition (astro sync / ESLint)…"
+            "statusMessage": "Vérifications post-édition (guillemets / ESLint)…"
           }
         ]
       }

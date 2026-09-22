@@ -16,8 +16,6 @@ export default tseslint.config(
       '.remember/**',
       '.agents/**',
       '.claude/**',
-      '.ds-sync/**',
-      'ds-bundle/**',
       'docs/**',
     ],
   },

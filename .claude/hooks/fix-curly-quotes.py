@@ -1,14 +1,15 @@
 """
-PostToolUse hook — remplace les guillemets typographiques par des apostrophes droites.
+PostToolUse hook — remplace les guillemets typographiques délimiteurs de
+string par des guillemets droits, dans le code uniquement.
 
 L'outil Edit peut introduire des guillemets typographiques comme délimiteurs
 de string JS, ce qui casse ESLint ("Parsing error: Invalid character").
+La copy du site, elle, exige l'apostrophe typographique (U+2019) : elle
+n'est jamais touchée quand elle est entre deux lettres.
 
-Remplacements globaux (toujours sûrs) :
-  U+2018 ' LEFT SINGLE QUOTATION MARK  → U+0027 ' (apostrophe droite)
-  U+201C " LEFT DOUBLE QUOTATION MARK  → U+0022 " (guillemet droit)
-
-Remplacement intelligent dans les blocs <script> des .vue (et dans .ts/.js/.mjs) :
+Remplacements dans le code :
+  U+2018 ' LEFT SINGLE QUOTATION MARK  → U+0027 ' (toujours)
+  U+201C " LEFT DOUBLE QUOTATION MARK  → U+0022 " (toujours)
   U+2019 ' RIGHT SINGLE QUOTATION MARK → U+0027 '
     SEULEMENT si U+2019 est en position de délimiteur, c'est-à-dire
     NON flanqué de deux word chars Unicode.
@@ -23,16 +24,15 @@ Remplacement intelligent dans les blocs <script> des .vue (et dans .ts/.js/.mjs)
     'indicateurs d'évaluation'           →  'indicateurs d'évaluation'
       ^U+2018                ^U+2019(×2)   ^U+0027        ^U+2019 conservé  ^U+0027
 
-Remplacement ciblé (contextes v-bind Vue uniquement) :
-  U+2019 dans les valeurs d'attributs Vue dynamiques (:prop="...",
-  @event="...", v-bind:prop="...", v-on:event="..."). Même logique
-  d'heuristique word-char appliquée.
+  U+201D " RIGHT DOUBLE QUOTATION MARK n'est pas remplacé.
 
-Remplacement ciblé (props statiques contenant du HTML) :
-  U+2019 → U+0027 dans les valeurs de props statiques dont le contenu
-  contient une balise HTML (signal : présence de < ou > dans la valeur).
-
-U+201D " RIGHT DOUBLE QUOTATION MARK n'est pas remplacé.
+Zones traitées selon le fichier :
+  .ts / .js / .mjs → tout le fichier.
+  .astro           → frontmatter (entre les `---` de tête) et blocs
+                     <script>. Le balisage (texte, attributs, expressions
+                     {…} du template) porte la copy : jamais modifié ; un
+                     délimiteur typographique qui s'y glisserait est signalé
+                     par ESLint (eslint-plugin-astro) dans post-edit-checks.
 """
 import json
 import re
@@ -42,8 +42,11 @@ import sys
 # Patterns compilés
 # ---------------------------------------------------------------------------
 
-# Blocs <script> dans les .vue (y compris <script setup lang="ts">).
-_SCRIPT_BLOCK_RE = re.compile(r'(<script[^>]*>)(.*?)(</script>)', re.DOTALL)
+# Frontmatter .astro : bloc `---` en tête de fichier.
+_FRONTMATTER_RE = re.compile(r'\A(---[^\S\r\n]*\r?\n)(.*?)(\r?\n---)', re.DOTALL)
+
+# Blocs <script> (y compris <script is:inline>, <script define:vars={…}>).
+_SCRIPT_BLOCK_RE = re.compile(r'(<script\b[^>]*>)(.*?)(</script>)', re.DOTALL)
 
 # U+2019 délimiteur : NON flanqué de deux word chars Unicode.
 # Exemple conservé  : d'évaluation  (d=\w, é=\w → pas de match)
@@ -54,14 +57,6 @@ _SCRIPT_BLOCK_RE = re.compile(r'(<script[^>]*>)(.*?)(</script>)', re.DOTALL)
 #   → on ne touche que les U+2019 qui ne sont pas entre deux lettres/chiffres.
 _U2019_DELIMITER_RE = re.compile(r'(?<!\w)’|’(?!\w)', re.UNICODE)
 
-# Attributs Vue dynamiques : :prop="...", @event="...", v-bind:prop="...", v-on:event="..."
-_VBIND_RE = re.compile(r'(?:v-bind:|v-on:|:|@)[\w.-]+="([^"]*)"')
-
-# Props statiques dont la valeur contient du HTML embarqué (signal : < ou >).
-_STATIC_HTML_PROP_RE = re.compile(
-    r'(?<![=:\w])(?:[\w-]+)="([^"]*(?:<|>)[^"]*)"'
-)
-
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -71,33 +66,21 @@ def _fix_js_quotes(text: str) -> str:
     """Corrige les guillemets typographiques dans du JS/TS.
 
     - U+2018 ' → ' (toujours délimiteur ouvrant, jamais apostrophe de contenu)
+    - U+201C " → " (toujours délimiteur ouvrant)
     - U+2019 ' → ' seulement si délimiteur (non flanqué de deux word chars)
     - U+2019 entre deux word chars (d'évaluation, l'équipe, s'étend…) → conservé
     """
-    text = text.replace('‘', "'")
+    text = text.replace('‘', "'").replace('“', '"')
     text = _U2019_DELIMITER_RE.sub("'", text)
     return text
 
 
-def _fix_script_block_quotes(content: str) -> str:
-    """Applique _fix_js_quotes dans tous les blocs <script>."""
+def _fix_astro_quotes(content: str) -> str:
+    """Applique _fix_js_quotes au frontmatter et aux blocs <script> d'un .astro."""
     def _replace(m: re.Match) -> str:
         return m.group(1) + _fix_js_quotes(m.group(2)) + m.group(3)
+    content = _FRONTMATTER_RE.sub(_replace, content, count=1)
     return _SCRIPT_BLOCK_RE.sub(_replace, content)
-
-
-def _fix_vbind_quotes(content: str) -> str:
-    """Corrige les guillemets dans les valeurs d'attributs Vue dynamiques."""
-    def _fix_match(m: re.Match) -> str:
-        return _fix_js_quotes(m.group(0))
-    return _VBIND_RE.sub(_fix_match, content)
-
-
-def _fix_static_html_prop_quotes(content: str) -> str:
-    """Corrige les guillemets dans les props statiques contenant du HTML embarqué."""
-    def _fix_match(m: re.Match) -> str:
-        return _fix_js_quotes(m.group(0))
-    return _STATIC_HTML_PROP_RE.sub(_fix_match, content)
 
 
 # ---------------------------------------------------------------------------
@@ -111,6 +94,7 @@ def _fix_static_html_prop_quotes(content: str) -> str:
 #   5. U+2019 en fin de ligne → délimiteur fermant
 #   6. U+2019 entre lettre et lettre accentuée (ex : d'évaluation)
 #   7. U+2018 en milieu de phrase → toujours remplacé
+#   8. U+201C ouvrant → guillemet droit
 # ---------------------------------------------------------------------------
 _TESTS = [
     # (input, expected_output, description)
@@ -159,13 +143,35 @@ _TESTS = [
     ("{ q: ‘test ?’, a: 'foo' }",
      "{ q: 'test ?', a: 'foo' }",
      "U+2019 après ? → délimiteur"),
+
+    # Cas 9 — U+201C ouvrant
+    ("x = “a”",
+     'x = "a”',
+     "U+201C remplacé, U+201D conservé"),
+]
+
+# Fichiers .astro complets : seules les zones de code bougent.
+_ASTRO_TESTS = [
+    ("---\nconst t = ‘Jouons’\n---\n<p>‘Aujourd’hui’ et “ici”</p>\n",
+     "---\nconst t = 'Jouons'\n---\n<p>‘Aujourd’hui’ et “ici”</p>\n",
+     "frontmatter corrigé, copy du template intacte"),
+
+    ("<p>l’atelier</p>\n<script>\nconst a = ‘x’\n</script>\n",
+     "<p>l’atelier</p>\n<script>\nconst a = 'x'\n</script>\n",
+     "bloc <script> corrigé, copy intacte"),
+
+    ("<p>Pas de frontmatter ‘ici’</p>\n---\nconst a = ‘x’\n---\n",
+     "<p>Pas de frontmatter ‘ici’</p>\n---\nconst a = ‘x’\n---\n",
+     "--- hors tête de fichier ignoré"),
 ]
 
 
 def _run_tests() -> None:
     errors = []
-    for inp, expected, desc in _TESTS:
-        result = _fix_js_quotes(inp)
+    cases = [(_fix_js_quotes, *t) for t in _TESTS]
+    cases += [(_fix_astro_quotes, *t) for t in _ASTRO_TESTS]
+    for fn, inp, expected, desc in cases:
+        result = fn(inp)
         if result != expected:
             errors.append(
                 f"FAIL [{desc}]\n"
@@ -186,33 +192,24 @@ def _run_tests() -> None:
 d = json.load(sys.stdin)
 f = d.get("tool_input", {}).get("file_path", "")
 
-if not f or not any(f.endswith(e) for e in (".vue", ".ts", ".js", ".mjs")):
+if not f or not f.endswith((".astro", ".ts", ".js", ".mjs")):
     sys.exit(0)
 
 _run_tests()
 
 try:
-    with open(f, encoding="utf-8") as fh:
+    # newline="" : conserve les fins de ligne (CRLF/LF) telles quelles.
+    with open(f, encoding="utf-8", newline="") as fh:
         content = fh.read()
 
-    # 1. Remplacements globaux (guillemets ouvrants + doubles)
-    fixed = (
-        content
-        .replace(chr(0x2018), "'")   # ' → '  (avant _fix_js_quotes, idempotent)
-        .replace(chr(0x201C), '"')   # " → "
-    )
-
-    # 2. U+2019 délimiteurs dans le JS
-    if f.endswith(".vue"):
-        fixed = _fix_script_block_quotes(fixed)
-        fixed = _fix_vbind_quotes(fixed)
-        fixed = _fix_static_html_prop_quotes(fixed)
+    if f.endswith(".astro"):
+        fixed = _fix_astro_quotes(content)
     else:
         # Fichiers JS/TS purs — pas de template, appliquer partout
-        fixed = _fix_js_quotes(fixed)
+        fixed = _fix_js_quotes(content)
 
     if fixed != content:
-        with open(f, "w", encoding="utf-8") as fh:
+        with open(f, "w", encoding="utf-8", newline="") as fh:
             fh.write(fixed)
         print(f"[hook] guillemets typographiques corrigés dans {f}")
 except Exception as e:
