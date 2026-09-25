@@ -3,7 +3,6 @@ import { Image } from 'astro:assets'
 import PlaquetteLayout from '../layouts/PlaquetteLayout.astro'
 import PlaquettePage from '../components/PlaquettePage.astro'
 import PxlcMark from '../components/PxlcMark.astro'
-import PxlcDuo from '../components/PxlcDuo.astro'
 import { IDENTITY, RCS_MENTION } from '../config/identity'
 import { SITE } from '../config/site'
 import { PROJECTS } from '../config/projects'
@@ -64,9 +63,6 @@ const schemaGraph = pageGraph({
           <span>PXLC</span>
         </div>
 
-        <div class="pq-cover__strip">
-          <PxlcDuo unit={12} onDark />
-        </div>
         <div class="pq-cover__eyebrow">Écrans en famille · Guadeloupe</div>
         <h1 class="pq-cover__title">Médiation numérique<span class="coral-dot" aria-hidden="true">.</span></h1>
         <p class="pq-cover__lead">PXLC accompagne les familles <strong>autour des écrans</strong>.</p>
@@ -394,7 +390,6 @@ const schemaGraph = pageGraph({
     letter-spacing: -0.035em;
     margin-bottom: 26mm;
   }
-  .pq-cover__strip { display: flex; margin-bottom: 12mm; }
   .pq-cover__eyebrow {
     font-family: var(--font-label);
     font-size: 9pt;

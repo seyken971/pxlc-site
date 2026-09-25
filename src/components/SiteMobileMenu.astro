@@ -10,7 +10,6 @@
  */
 import PxlcLockup from './PxlcLockup.astro'
 import PxlcMark from './PxlcMark.astro'
-import PxlcDuo from './PxlcDuo.astro'
 import { NAV_ITEMS, isActive, navHref } from '../config/nav'
 import { IDENTITY } from '../config/identity'
 
@@ -28,11 +27,6 @@ const pathname = Astro.url.pathname
   <!-- Decorative: PxlcMark watermark (bottom-right, 18 % opacity) -->
   <div class="mobile-menu__watermark">
     <PxlcMark size={400} decorative onDark />
-  </div>
-
-  <!-- Decorative: motif Duo (top-right, 40 % opacity) -->
-  <div class="mobile-menu__strip">
-    <PxlcDuo onDark />
   </div>
 
   <!-- Header row: lockup + close button -->
@@ -170,7 +164,7 @@ const pathname = Astro.url.pathname
   .mobile-menu__plaquette {
     text-align: center;
     font-family: var(--font-label);
-    font-size: 13px;
+    font-size: var(--fs-small);
     font-weight: 600;
     letter-spacing: 0.04em;
     color: var(--pxlc-text-on-dark-soft);

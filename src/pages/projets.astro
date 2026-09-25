@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
-import SiteBreadcrumb from '../components/SiteBreadcrumb.astro'
+import HeroSection from '../components/HeroSection.astro'
 import PxlcMark from '../components/PxlcMark.astro'
-import PxlcDuo from '../components/PxlcDuo.astro'
 import { PROJECTS } from '../config/projects'
 import { PROJECT_THEMES as themes } from '../config/project-themes'
 import { ID, pageGraph } from '../lib/schema'
@@ -77,39 +76,28 @@ const schemaGraph = pageGraph({
 ---
 
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
-  <section class="hero hero--soft" aria-labelledby="hero-title">
-    <div class="hero__strip"><PxlcDuo /></div>
-    <div class="container">
-      <div class="hero__inner hero__inner--solo">
-        <div>
-          <SiteBreadcrumb />
-          <h1 id="hero-title" class="hero__title">
-            Les projets que je conduis avec votre équipe<span class="coral-dot" aria-hidden="true">.</span>
-          </h1>
-          <p class="hero__lead">
-            Un projet en cours aujourd’hui, au SESSAD Lékoklaya. Cette page en détaille le déroulé, les thèmes de travail et ce que l’équipe reçoit à la fin.
-          </p>
-          <div class="hero__actions">
-            <a href={IDENTITY.bookingUrl} target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--lg" aria-label="Prendre rendez-vous (nouvel onglet)">Prendre rendez-vous</a>
-            <a href="/files/plaquette-pxlc.pdf" target="_blank" rel="noopener noreferrer" class="btn btn--ghost btn--lg btn--no-arrow" aria-label="Plaquette PDF · 6 pages (nouvel onglet)">Plaquette PDF · 6 pages</a>
-            <a href="/plaquette/" class="hero__alt" aria-label="Lire en ligne (plaquette, version web accessible)">Lire en ligne</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <HeroSection
+    breadcrumb
+    eyebrow="Projets"
+    title="Les projets que je conduis avec votre équipe"
+    titleDot
+    lead="Un projet en cours aujourd’hui, au SESSAD Lékoklaya. Cette page en détaille le déroulé, les thèmes de travail et ce que l’équipe reçoit à la fin."
+    ctaPrimary={{ label: 'Prendre rendez-vous', href: IDENTITY.bookingUrl, external: true }}
+    ctaSecondary={{ label: 'Plaquette PDF · 6 pages', href: '/files/plaquette-pxlc.pdf', external: true }}
+    ctaSecondaryAlt={{ label: 'Lire en ligne', href: '/plaquette/', ariaLabel: 'Lire en ligne (plaquette, version web accessible)' }}
+  />
 
   <section id="projets" class="section" aria-labelledby="projets-title">
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">La rubrique</span>
-        <h2 id="projets-title">Les projets menés<span class="coral-dot" aria-hidden="true">.</span></h2>
+        <h2 id="projets-title">Les projets menés</h2>
         <p class="lead">Chaque projet se construit avec un lieu qui accueille déjà des familles&nbsp;: il apporte le public, j’apporte l’atelier et le cadre.</p>
       </header>
-      <div class:list={['projets-grid', { 'projets-grid--solo': PROJECTS.length === 1 }]}>
+      <div class:list={['projets-grid', { 'projets-grid--solo': PROJECTS.length === 1 }]} data-reveal-stagger>
         {PROJECTS.map(p => (
           <article class="card projet-card" id={`projet-${p.slug}`}>
-            <div class="card__duo"><PxlcMark size={20} decorative /></div>
+            <div class="card__mark"><PxlcMark size={20} decorative /></div>
             <span class="badge badge--soft">{p.status} · {p.year}</span>
             <h3 class="projet-card__name mt-3">{p.name}</h3>
             <p class="projet-card__place">{p.localName && <Fragment>«&nbsp;{p.localName}&nbsp;» · </Fragment>}{p.place}</p>
@@ -139,14 +127,13 @@ const schemaGraph = pageGraph({
   </section>
 
   <section id="jouons-ensemble" class="leko-section" aria-labelledby="jouons-ensemble-title">
-    <PxlcDuo class="leko-section__strip" />
     <div class="container">
       <header class="section__head">
         <span class="eyebrow leko-eyebrow">Programme Parent-Écran-Enfant · SESSAD Lékoklaya · 2026</span>
-        <h2 id="jouons-ensemble-title" class="leko-title">D’où vient ce projet<span class="coral-dot" aria-hidden="true">.</span></h2>
+        <h2 id="jouons-ensemble-title" class="leko-title">D’où vient ce projet</h2>
         <p class="lead leko-lead">Porté par le psychologue du SESSAD, dans la continuité du Café-Parents «&nbsp;Enfants Écrans&nbsp;» de décembre 2023.</p>
       </header>
-      <div class="leko-prose">
+      <div class="leko-prose" data-reveal>
         <p>Le point de départ&nbsp;: le jeu vidéo revenait systématiquement dans les entretiens familiaux comme source de conflit. Le projet transforme ces tensions en matériau de travail pour l’équipe pluridisciplinaire.</p>
         <p>Les parents qui ne comprennent pas pourquoi leur enfant joue rejouent avec lui. Les profils ludiques sont transmis à l’équipe dans le bilan.</p>
       </div>
@@ -157,13 +144,13 @@ const schemaGraph = pageGraph({
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">Déroulé du projet</span>
-        <h2 id="deroule-title">Quatre étapes, de la préparation au bilan<span class="coral-dot" aria-hidden="true">.</span></h2>
+        <h2 id="deroule-title">Quatre étapes, de la préparation au bilan</h2>
         <p class="lead">Le déroulé de «&nbsp;Jouons Ensemble&nbsp;!&nbsp;», ancré dans le cadre HCSP&nbsp;2019-2020 · HAS&nbsp;2020&nbsp;: partir des usages réels de la famille, travailler par le jeu, outiller les parents, transmettre un bilan écrit à l’équipe.</p>
       </header>
-      <div class="grid grid--2 process-grid">
+      <div class="grid grid--2 process-grid" data-reveal-stagger>
         {steps.map(s => (
           <article class="card card--method">
-            <div class="card__duo"><PxlcMark size={20} decorative /></div>
+            <div class="card__mark"><PxlcMark size={20} decorative /></div>
             <div class="card__step-num">ÉTAPE {s.num}</div>
             <h3>{s.title}</h3>
             <p>{s.detail}</p>
@@ -173,14 +160,17 @@ const schemaGraph = pageGraph({
       <div class="deroule-eval">
         <h3 class="deroule-eval__title">Évaluation &amp; restitution</h3>
         <p class="lead">Quatre indicateurs qualitatifs suivis tout au long du projet. Le bilan est en cours&nbsp;: les résultats seront publiés quand l’équipe les aura validés.</p>
-        <div class="grid grid--2">
-          {indicators.map(i => (
-            <article class="card">
-              <h4 class="indicator-title">{i.title}</h4>
-              <p class="indicator-detail mt-3">{i.detail}</p>
-            </article>
+        <ol class="indicators" role="list" data-reveal-stagger>
+          {indicators.map((it, n) => (
+            <li class="indicator">
+              <span class="indicator__num" aria-hidden="true">{String(n + 1).padStart(2, '0')}</span>
+              <div>
+                <h4 class="indicator-title">{it.title}</h4>
+                <p class="indicator-detail">{it.detail}</p>
+              </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </div>
   </section>
@@ -189,12 +179,12 @@ const schemaGraph = pageGraph({
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">Ateliers du projet</span>
-        <h2 id="themes-title">Trois thèmes d’atelier, un protocole<span class="coral-dot" aria-hidden="true">.</span></h2>
+        <h2 id="themes-title">Trois thèmes d’atelier, un protocole</h2>
         <p class="lead">
           Les trois thèmes de «&nbsp;Jouons Ensemble&nbsp;!&nbsp;». Chaque atelier articule un temps de jeu partagé (30 à 45&nbsp;min) et un temps d’échange verbal (45&nbsp;min à 1&nbsp;h).
         </p>
       </header>
-      <div class="grid grid--3">
+      <div class="grid grid--3" data-reveal-stagger>
         {themes.map(t => (
           <article class="card">
             <span class="kicker">Thème</span>
@@ -210,10 +200,10 @@ const schemaGraph = pageGraph({
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">Cadre théorique</span>
-        <h2 id="cadre-title">Deux rapports qui structurent la démarche<span class="coral-dot" aria-hidden="true">.</span></h2>
+        <h2 id="cadre-title">Deux rapports qui structurent la démarche</h2>
         <p class="lead">Pas un avis personnel&nbsp;: un cadre bâti sur les rapports du Haut Conseil de la santé publique (HCSP) et de la Haute Autorité de santé (HAS), cités explicitement dans chaque bilan.</p>
       </header>
-      <div class="grid grid--2">
+      <div class="grid grid--2" data-reveal-stagger>
         {frameworks.map(c => (
           <article class="card">
             <div class="framework-tag">
@@ -241,7 +231,7 @@ const schemaGraph = pageGraph({
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">FAQ</span>
-        <h2 id="faq-title">Questions fréquentes<span class="coral-dot" aria-hidden="true">.</span></h2>
+        <h2 id="faq-title">Questions fréquentes</h2>
       </header>
       <div class="faq">
         {faqs.map(f => (
@@ -257,16 +247,13 @@ const schemaGraph = pageGraph({
 </BaseLayout>
 
 <style>
-  /* Le hero de cette page n'a pas de carte latérale : une seule colonne. */
-  .hero__inner--solo { grid-template-columns: 1fr; }
-
   /* ── Rubrique projets ── */
   .projets-grid { display: grid; gap: var(--space-4); grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
   /* Une carte seule ne flotte pas dans une grille prévue pour plusieurs. */
   .projets-grid--solo { grid-template-columns: 1fr; max-width: 820px; }
   .projet-card__name { font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); }
-  .projet-card__place { font-size: 15px; line-height: 1.6; color: var(--ink-quiet); }
-  .projet-card__summary { font-size: 15px; line-height: 1.6; }
+  .projet-card__place { font-size: var(--fs-body-sm); line-height: 1.6; color: var(--ink-quiet); }
+  .projet-card__summary { font-size: var(--fs-body-sm); line-height: 1.6; }
   .projet-card__facts { display: grid; gap: var(--space-3); margin: 0; }
   .projet-card__row {
     display: grid; gap: var(--space-1);
@@ -274,7 +261,7 @@ const schemaGraph = pageGraph({
   }
   .projet-card__row:last-child { border-bottom: 0; padding-bottom: 0; }
   .projet-card__row dd {
-    margin: 0; font-family: var(--font-body); font-size: 15px;
+    margin: 0; font-family: var(--font-body); font-size: var(--fs-body-sm);
     line-height: 1.5; color: var(--ink);
   }
   @media (min-width: 640px) {
@@ -283,7 +270,7 @@ const schemaGraph = pageGraph({
 
   /* ── Déroulé : bloc évaluation & restitution (sous les 4 étapes) ── */
   .deroule-eval { margin-top: var(--space-6); }
-  .deroule-eval__title { font-size: 20px; margin-bottom: var(--space-2); }
+  .deroule-eval__title { font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); margin-bottom: var(--space-2); }
 
   .process-grid { align-items: stretch; }
 
@@ -292,20 +279,34 @@ const schemaGraph = pageGraph({
     background: var(--surface); border: 1px solid var(--line);
     padding: 6px 12px; border-radius: var(--radius-sm); margin-bottom: var(--space-3);
   }
-  .framework-tag__dot { width: 8px; height: 8px; background: var(--pxlc-coral); border-radius: 2px; }
+  .framework-tag__dot { width: 8px; height: 8px; background: var(--child); border-radius: 2px; }
   .framework-tag__label { color: var(--ink); }
-  .framework-title { font-size: 20px; margin-bottom: var(--space-2); }
+  .framework-title { margin-bottom: var(--space-2); }
   .framework-desc,
   .indicator-detail,
-  .theme-desc { font-size: 15px; line-height: 1.6; }
+  .theme-desc { font-size: var(--fs-body-sm); line-height: 1.6; }
 
   .framework-meta { display: block; }
-  .framework-meta--link { color: var(--parent); transition: color var(--dur-fast); }
-  .framework-meta--link:hover { color: var(--pxlc-coral); text-decoration: none; }
+  /* Survol souligné : du texte corail sur fond clair passerait sous 3:1. */
+  .framework-meta--link { color: var(--parent); }
+  .framework-meta--link:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-  .indicator-title { font-size: 18px; }
-
-  .theme-title { font-size: 20px; }
+  /* Indicateurs : liste éditoriale à filets plutôt qu'une grille de cartes. */
+  .indicators {
+    display: grid; grid-template-columns: 1fr; column-gap: var(--space-6);
+    list-style: none; padding: 0; margin: var(--space-4) 0 0;
+  }
+  @media (min-width: 768px) { .indicators { grid-template-columns: 1fr 1fr; } }
+  .indicator {
+    display: grid; grid-template-columns: auto 1fr; gap: var(--space-3);
+    padding-block: var(--space-4); border-top: 1px solid var(--line);
+  }
+  .indicator__num {
+    font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600;
+    letter-spacing: var(--ls-label); color: var(--parent); padding-top: 5px;
+  }
+  .indicator-title { font-size: var(--fs-lead); line-height: 1.3; }
+  .indicator-detail { margin-top: var(--space-2); }
 
   .faq { display: grid; gap: var(--space-2-5); max-width: 820px; margin: 0 auto; }
   .faq__item {
@@ -313,21 +314,23 @@ const schemaGraph = pageGraph({
     background: var(--surface-raised); padding: 16px 20px;
     transition: border-color var(--dur-fast);
   }
-  .faq__item[open] { border-color: var(--pxlc-coral); }
+  .faq__item[open] { border-color: var(--child); }
   .faq__q {
-    font-family: var(--font-display); font-weight: 600; font-size: 16px;
+    font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body);
     color: var(--ink); cursor: pointer; list-style: none;
     display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
   }
   .faq__q::after {
     content: "+"; font-family: var(--font-label); font-weight: 400;
-    color: var(--pxlc-coral); font-size: 22px; transition: transform var(--dur-base);
+    color: var(--child-deep); font-size: 22px;
   }
   .faq__item[open] .faq__q::after { content: "−"; }
   .faq__q::-webkit-details-marker { display: none; }
   .faq__a {
-    margin-top: var(--space-2-5); font-size: 15px; line-height: 1.6; color: var(--ink-muted);
+    margin-top: var(--space-2-5); font-size: var(--fs-body-sm); line-height: 1.6; color: var(--ink-muted);
   }
+  /* La réponse apparaît en fondu à l'ouverture ; la fermeture est immédiate. */
+  .faq__item[open] .faq__a { animation: fade-in var(--dur-base) var(--ease-out); }
 
   /* Lekoklaya dark section — casse la monotonie des sections standard */
   .leko-section {
@@ -335,10 +338,9 @@ const schemaGraph = pageGraph({
     padding: clamp(var(--space-6), 8vw, var(--space-9)) 0;
     position: relative; overflow: hidden;
   }
-  .leko-section :global(.leko-section__strip) { position: absolute; top: 32px; right: clamp(20px, 4vw, 56px); }
   .leko-eyebrow { color: var(--pxlc-cyan); }
   .leko-title { color: var(--pxlc-ivory); }
   .leko-lead { color: var(--pxlc-text-on-dark-soft); }
   .leko-prose { display: grid; gap: var(--space-3); max-width: 820px; }
-  .leko-prose p { font-size: 15px; line-height: 1.6; color: var(--pxlc-text-on-dark-soft); margin: 0; }
+  .leko-prose p { font-size: var(--fs-body-sm); line-height: 1.6; color: var(--pxlc-text-on-dark-soft); margin: 0; }
 </style>

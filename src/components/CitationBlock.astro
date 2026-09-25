@@ -22,7 +22,7 @@ const { source, quote, attribution, soft = true } = Astro.props
 
 <section class:list={['section', { 'section--soft': soft }]} aria-label="Citation">
   <div class="container">
-    <figure class="citation">
+    <figure class="citation" data-reveal>
       <div class="citation__source">{source}</div>
       <blockquote class="citation__quote">
         <span class="quotemark" aria-hidden="true">«&nbsp;</span>{quote}<span class="quotemark" aria-hidden="true">&nbsp;»</span>
@@ -34,11 +34,11 @@ const { source, quote, attribution, soft = true } = Astro.props
 
 <style>
   .citation { text-align: center; max-width: 880px; margin: 0 auto; }
-  .citation__source { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--parent); margin-bottom: var(--space-4); }
+  .citation__source { font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: 0.22em; text-transform: uppercase; color: var(--parent); margin-bottom: var(--space-4); }
   .citation__quote {
     margin: 0 0 var(--space-3); font-family: var(--font-display); font-weight: 500;
     font-size: clamp(22px, 3vw, 30px); line-height: 1.25; letter-spacing: -0.015em; color: var(--ink);
   }
-  .citation__quote .quotemark { color: var(--pxlc-coral); }
-  .citation__attr { font-family: var(--font-body); font-size: 14px; letter-spacing: 0.04em; color: var(--ink-quiet); }
+  .citation__quote .quotemark { color: var(--child); }
+  .citation__attr { font-family: var(--font-body); font-size: var(--fs-small); letter-spacing: 0.04em; color: var(--ink-quiet); }
 </style>

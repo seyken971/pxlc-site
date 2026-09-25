@@ -38,24 +38,36 @@ type Props = Omit<HeadProps, 'colorScheme'>
     <SiteFooter />
 
     <script>
-      // Scroll reveal — ajoute .is-visible aux éléments animés quand ils
-      // entrent dans le viewport. Ignoré si prefers-reduced-motion (le CSS
-      // rend alors tout visible).
-      const TARGETS = '.animate-in:not(.is-visible), .card--method:not(.is-visible)'
+      // Scroll reveal — ajoute .is-visible une seule fois aux éléments
+      // [data-reveal] / [data-reveal-stagger] qui entrent dans le viewport.
+      // Les enfants d'un groupe reçoivent leur rang --i (le CSS plafonne le
+      // décalage à 6). En mouvement réduit, le CSS ne garde que le fondu.
+      const targets = document.querySelectorAll<HTMLElement>('[data-reveal], [data-reveal-stagger]')
 
-      if (window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-        const scrollIO = new IntersectionObserver(
+      document.querySelectorAll<HTMLElement>('[data-reveal-stagger]').forEach((group) => {
+        Array.from(group.children).forEach((child, i) => {
+          (child as HTMLElement).style.setProperty('--i', String(i))
+        })
+      })
+
+      if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver(
           (entries) => {
             entries.forEach((e) => {
-              if (e.isIntersecting) {
-                e.target.classList.add('is-visible')
-                scrollIO.unobserve(e.target)
-              }
+              if (!e.isIntersecting) return
+              e.target.classList.add('is-visible')
+              io.unobserve(e.target)
             })
           },
-          { threshold: 0.08 },
+          // Déclenche quand l'élément franchit les 85 % de la hauteur d'écran :
+          // équivaut à un seuil de 15 %, mais reste atteignable pour un
+          // groupe plus haut que l'écran (liste longue sur mobile).
+          { rootMargin: '0px 0px -15% 0px', threshold: 0 },
         )
-        document.querySelectorAll(TARGETS).forEach(el => scrollIO.observe(el))
+        targets.forEach(el => io.observe(el))
+      }
+      else {
+        targets.forEach(el => el.classList.add('is-visible'))
       }
     </script>
   </body>

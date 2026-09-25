@@ -4,7 +4,7 @@
  * lien vers la page projets.
  * @usage Accueil. Faits de copy : voir les garde-fous de CLAUDE.md
  * (intervenant culturel au singulier, « le psychologue »).
- * @a11y Section reliée à son h2 ; photo décrite ; point final décoratif.
+ * @a11y Section reliée à son h2 ; photo décrite.
  */
 import { Image } from 'astro:assets'
 import PxlcLinkout from './PxlcLinkout.astro'
@@ -13,7 +13,7 @@ import duoGaming from '../assets/photos/duo-gaming.jpg'
 
 <section class="section" aria-labelledby="sessad-title">
   <div class="container">
-    <div class="grid grid--asym">
+    <div class="grid grid--asym" data-reveal-stagger>
       <div class="image-with-badge">
         <div class="full-bleed-img">
           <Image
@@ -29,7 +29,7 @@ import duoGaming from '../assets/photos/duo-gaming.jpg'
       </div>
       <div>
         <span class="eyebrow">Programme Parent-Écran-Enfant · SESSAD Lékoklaya · 2026</span>
-        <h2 id="sessad-title">Un dispositif pensé avec l’équipe pluridisciplinaire<span class="coral-dot" aria-hidden="true">.</span></h2>
+        <h2 id="sessad-title">Un dispositif pensé avec l’équipe pluridisciplinaire</h2>
         <p class="lead mt-4">
           «&nbsp;Jouons Ensemble&nbsp;!&nbsp;» accompagne 8 enfants âgés de 12 à 17 ans (TSA, TDAH, TND, dystrophie musculaire) en binômes parent-enfant, sur des ateliers thématiques co-encadrés par le psychologue du SESSAD, la psychomotricienne, l’intervenant culturel — et moi en médiateur numérique.
         </p>

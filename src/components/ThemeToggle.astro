@@ -51,6 +51,7 @@ import Sun from '../icons/sun.svg'
     btn.addEventListener('click', () => {
       const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
       userOverride = true
+      btn.classList.add('is-toggled')
       try { localStorage.setItem(STORAGE_KEY, next) } catch {}
       apply(next)
     })
