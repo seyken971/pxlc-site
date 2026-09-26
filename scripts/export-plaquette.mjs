@@ -85,7 +85,10 @@ const main = async () => {
 
     // Garde-fou : rien ne déborde sous le pied de feuille. La feuille masque
     // son débordement (overflow hidden), le compte de pages ne le voit donc
-    // pas — on compare la géométrie de chaque bloc au haut du pied.
+    // pas — on compare la géométrie de chaque bloc au haut du pied, en média
+    // print : c'est la mise en page que page.pdf() imprime (en média screen,
+    // les feuilles sont plus hautes et un débordement passait inaperçu).
+    await page.emulateMedia({ media: 'print' })
     const overflow = await page.evaluate(() => {
       const out = []
       document.querySelectorAll('.pq-page').forEach((sheet, i) => {
