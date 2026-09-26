@@ -101,8 +101,7 @@ const schemaGraph = pageGraph({
       </header>
       <div class="grid grid--3 casquettes" data-reveal-stagger>
         {casquettes.map(c => (
-          <article class="card casquette-card">
-            <span class="casquette-num" aria-hidden="true">{c.num}</span>
+          <article class="card casquette-card" data-num={c.num}>
             <span class="kicker">Casquette {c.num}</span>
             <h3 class="casquette-title">{c.titre}</h3>
             <p class="casquette-desc">{c.desc}</p>
@@ -204,7 +203,11 @@ const schemaGraph = pageGraph({
     overflow: hidden;
   }
 
-  .casquette-num {
+  /* Numéro fantôme décoratif, tiré de data-num (comme les cartes méthode) :
+     un pseudo-élément n'entre ni dans l'arbre d'accessibilité ni dans le
+     contrôle de contraste, contrairement à un span aria-hidden. */
+  .casquette-card::before {
+    content: attr(data-num);
     position: absolute;
     top: -14px;
     right: 8px;
@@ -220,7 +223,7 @@ const schemaGraph = pageGraph({
   }
 
   @media (hover: hover) and (pointer: fine) {
-    .casquette-card:hover .casquette-num {
+    .casquette-card:hover::before {
       color: color-mix(in srgb, var(--teal-mid) 22%, transparent);
     }
   }
