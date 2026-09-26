@@ -34,11 +34,13 @@ const faqs = [
 ]
 
 // Déroulé en 4 étapes — activités : plaquette ; ancrage HCSP/HAS éditorial, cf. docs/references/CITATIONS.md
+// Chaque étape porte le temps de la méthode (accueil, plaquette) qu'elle met
+// en œuvre : les deux présentations se lisent l'une dans l'autre.
 const steps = [
-  { num: '01', title: 'Préparation', detail: 'Entretiens familiaux menés avec l’équipe pluridisciplinaire et le médiateur numérique : profil ludique de chaque enfant, usages et attentes des parents, construction des binômes parent-enfant. Le diagnostic partagé qui conditionne la suite.' },
-  { num: '02', title: 'Ateliers thématiques parent-enfant', detail: 'Coopération · Émotions & récits · Différence & complémentarité — travaillés par le jeu vidéo comme support de médiation, jamais comme problème.' },
-  { num: '03', title: 'Groupe de parole familiale', detail: 'Régulation, limites pour un usage régulé, repères d’usage problématique, posture parentale : l’accompagnement parental que le cadre HCSP désigne comme le facteur clé.' },
-  { num: '04', title: 'Bilan', detail: 'Synthèse des acquis parent et enfant, pistes de continuité à la maison, transmission écrite à l’équipe — avec les recommandations HCSP mobilisées.' },
+  { num: '01', phase: 'Temps 1 · diagnostic', title: 'Préparation', detail: 'Entretiens familiaux menés avec l’équipe pluridisciplinaire et le médiateur numérique : profil ludique de chaque enfant, usages et attentes des parents, construction des binômes parent-enfant. Le diagnostic partagé qui conditionne la suite.' },
+  { num: '02', phase: 'Temps 2 · stratégie', title: 'Ateliers thématiques parent-enfant', detail: 'Coopération · Émotions & récits · Différence & complémentarité — travaillés par le jeu vidéo comme support de médiation, jamais comme problème.' },
+  { num: '03', phase: 'Temps 2 · stratégie', title: 'Groupe de parole familiale', detail: 'Régulation, limites pour un usage régulé, repères d’usage problématique, posture parentale : l’accompagnement parental que le cadre HCSP désigne comme le facteur clé.' },
+  { num: '04', phase: 'Temps 3 · suivi', title: 'Bilan', detail: 'Synthèse des acquis parent et enfant, pistes de continuité à la maison, transmission écrite à l’équipe — avec les recommandations HCSP mobilisées.' },
 ]
 
 const frameworks = [
@@ -90,7 +92,7 @@ const schemaGraph = pageGraph({
   <section id="projets" class="section" aria-labelledby="projets-title">
     <div class="container">
       <header class="section__head">
-        <span class="eyebrow">La rubrique</span>
+        <span class="eyebrow">En cours</span>
         <h2 id="projets-title">Les projets menés</h2>
         <p class="lead">Chaque projet se construit avec un lieu qui accueille déjà des familles&nbsp;: il apporte le public, j’apporte l’atelier et le cadre.</p>
       </header>
@@ -102,40 +104,15 @@ const schemaGraph = pageGraph({
             <h3 class="projet-card__name mt-3">{p.name}</h3>
             <p class="projet-card__place">{p.localName && <Fragment>«&nbsp;{p.localName}&nbsp;» · </Fragment>}{p.place}</p>
             <p class="projet-card__summary mt-3">{p.summary}</p>
-            <dl class="projet-card__facts mt-4">
-              <div class="projet-card__row">
-                <dt class="kicker">Porteur</dt>
-                <dd>{p.owner}</dd>
-              </div>
-              <div class="projet-card__row">
-                <dt class="kicker">Public</dt>
-                <dd>{p.audience}</dd>
-              </div>
-              <div class="projet-card__row">
-                <dt class="kicker">Équipe</dt>
-                <dd>{p.team}</dd>
-              </div>
-              <div class="projet-card__row">
-                <dt class="kicker">Cadre</dt>
-                <dd>{p.framework}</dd>
-              </div>
+            {p.origin && <p class="projet-card__summary mt-3">{p.origin}</p>}
+            <dl class="facts facts--rows mt-4">
+              <div><dt>Porteur</dt><dd>{p.owner}</dd></div>
+              <div><dt>Public</dt><dd>{p.audience}</dd></div>
+              <div><dt>Équipe</dt><dd>{p.team}</dd></div>
+              <div><dt>Cadre</dt><dd>{p.framework}</dd></div>
             </dl>
           </article>
         ))}
-      </div>
-    </div>
-  </section>
-
-  <section id="jouons-ensemble" class="leko-section" aria-labelledby="jouons-ensemble-title">
-    <div class="container">
-      <header class="section__head">
-        <span class="eyebrow leko-eyebrow">Programme Parent-Écran-Enfant · SESSAD Lékoklaya · 2026</span>
-        <h2 id="jouons-ensemble-title" class="leko-title">D’où vient ce projet</h2>
-        <p class="lead leko-lead">Porté par le psychologue du SESSAD, dans la continuité du Café-Parents «&nbsp;Enfants Écrans&nbsp;» de décembre 2023.</p>
-      </header>
-      <div class="leko-prose" data-reveal>
-        <p>Le point de départ&nbsp;: le jeu vidéo revenait systématiquement dans les entretiens familiaux comme source de conflit. Le projet transforme ces tensions en matériau de travail pour l’équipe pluridisciplinaire.</p>
-        <p>Les parents qui ne comprennent pas pourquoi leur enfant joue rejouent avec lui. Les profils ludiques sont transmis à l’équipe dans le bilan.</p>
       </div>
     </div>
   </section>
@@ -145,32 +122,17 @@ const schemaGraph = pageGraph({
       <header class="section__head">
         <span class="eyebrow">Déroulé du projet</span>
         <h2 id="deroule-title">Quatre étapes, de la préparation au bilan</h2>
-        <p class="lead">Le déroulé de «&nbsp;Jouons Ensemble&nbsp;!&nbsp;», ancré dans le cadre HCSP&nbsp;2019-2020 · HAS&nbsp;2020&nbsp;: partir des usages réels de la famille, travailler par le jeu, outiller les parents, transmettre un bilan écrit à l’équipe.</p>
+        <p class="lead">Le déroulé de «&nbsp;Jouons Ensemble&nbsp;!&nbsp;» reprend les trois temps de la méthode&nbsp;: partir des usages réels de la famille, travailler par le jeu, outiller les parents, transmettre un bilan écrit à l’équipe. Chaque atelier articule un temps de jeu partagé (30 à 45&nbsp;min) et un temps d’échange verbal (45&nbsp;min à 1&nbsp;h).</p>
       </header>
       <div class="grid grid--2 process-grid" data-reveal-stagger>
         {steps.map(s => (
           <article class="card card--method">
             <div class="card__mark"><PxlcMark size={20} decorative /></div>
-            <div class="card__step-num">ÉTAPE {s.num}</div>
+            <div class="card__step-num">ÉTAPE {s.num} · {s.phase.toUpperCase()}</div>
             <h3>{s.title}</h3>
             <p>{s.detail}</p>
           </article>
         ))}
-      </div>
-      <div class="deroule-eval">
-        <h3 class="deroule-eval__title">Évaluation &amp; restitution</h3>
-        <p class="lead">Quatre indicateurs qualitatifs suivis tout au long du projet. Le bilan est en cours&nbsp;: les résultats seront publiés quand l’équipe les aura validés.</p>
-        <ol class="indicators" role="list" data-reveal-stagger>
-          {indicators.map((it, n) => (
-            <li class="indicator">
-              <span class="indicator__num" aria-hidden="true">{String(n + 1).padStart(2, '0')}</span>
-              <div>
-                <h4 class="indicator-title">{it.title}</h4>
-                <p class="indicator-detail">{it.detail}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
       </div>
     </div>
   </section>
@@ -179,9 +141,9 @@ const schemaGraph = pageGraph({
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">Ateliers du projet</span>
-        <h2 id="themes-title">Trois thèmes d’atelier, un protocole</h2>
+        <h2 id="themes-title">Trois thèmes d’atelier</h2>
         <p class="lead">
-          Les trois thèmes de «&nbsp;Jouons Ensemble&nbsp;!&nbsp;». Chaque atelier articule un temps de jeu partagé (30 à 45&nbsp;min) et un temps d’échange verbal (45&nbsp;min à 1&nbsp;h).
+          Les trois thèmes de «&nbsp;Jouons Ensemble&nbsp;!&nbsp;» et ce que chacun travaille.
         </p>
       </header>
       <div class="grid grid--3" data-reveal-stagger>
@@ -196,12 +158,33 @@ const schemaGraph = pageGraph({
     </div>
   </section>
 
-  <section id="cadre" class="section" aria-labelledby="cadre-title">
+  <section id="evaluation" class="section" aria-labelledby="evaluation-title">
+    <div class="container">
+      <header class="section__head">
+        <span class="eyebrow">Évaluation</span>
+        <h2 id="evaluation-title">Évaluation et restitution</h2>
+        <p class="lead">Quatre indicateurs qualitatifs suivis tout au long du projet. Le bilan est en cours&nbsp;: les résultats seront publiés quand l’équipe les aura validés.</p>
+      </header>
+      <ol class="indicators" role="list" data-reveal-stagger>
+        {indicators.map((it, n) => (
+          <li class="indicator">
+            <span class="indicator__num" aria-hidden="true">{String(n + 1).padStart(2, '0')}</span>
+            <div>
+              <h3 class="indicator-title">{it.title}</h3>
+              <p class="indicator-detail">{it.detail}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section id="cadre" class="section section--soft" aria-labelledby="cadre-title">
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">Cadre théorique</span>
-        <h2 id="cadre-title">Deux rapports qui structurent la démarche</h2>
-        <p class="lead">Pas un avis personnel&nbsp;: un cadre bâti sur les rapports du Haut Conseil de la santé publique (HCSP) et de la Haute Autorité de santé (HAS), cités explicitement dans chaque bilan.</p>
+        <h2 id="cadre-title">Le cadre de référence</h2>
+        <p class="lead">Pas un avis personnel&nbsp;: le cadre HCSP&nbsp;2019-2020 · HAS&nbsp;2020, cité explicitement dans chaque bilan. Ci-dessous, les deux rapports du Haut Conseil de la santé publique qui le structurent.</p>
       </header>
       <div class="grid grid--2" data-reveal-stagger>
         {frameworks.map(c => (
@@ -227,7 +210,7 @@ const schemaGraph = pageGraph({
     </div>
   </section>
 
-  <section id="faq" class="section section--soft" aria-labelledby="faq-title">
+  <section id="faq" class="section" aria-labelledby="faq-title">
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">FAQ</span>
@@ -254,24 +237,6 @@ const schemaGraph = pageGraph({
   .projet-card__name { font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); }
   .projet-card__place { font-size: var(--fs-body-sm); line-height: 1.6; color: var(--ink-quiet); }
   .projet-card__summary { font-size: var(--fs-body-sm); line-height: 1.6; }
-  .projet-card__facts { display: grid; gap: var(--space-3); margin: 0; }
-  .projet-card__row {
-    display: grid; gap: var(--space-1);
-    padding-bottom: var(--space-3); border-bottom: 1px dashed var(--line);
-  }
-  .projet-card__row:last-child { border-bottom: 0; padding-bottom: 0; }
-  .projet-card__row dd {
-    margin: 0; font-family: var(--font-body); font-size: var(--fs-body-sm);
-    line-height: 1.5; color: var(--ink);
-  }
-  @media (min-width: 640px) {
-    .projet-card__row { grid-template-columns: 120px 1fr; gap: var(--space-3); align-items: baseline; }
-  }
-
-  /* ── Déroulé : bloc évaluation & restitution (sous les 4 étapes) ── */
-  .deroule-eval { margin-top: var(--space-6); }
-  .deroule-eval__title { font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); margin-bottom: var(--space-2); }
-
   .process-grid { align-items: stretch; }
 
   .framework-tag {
@@ -331,16 +296,18 @@ const schemaGraph = pageGraph({
   }
   /* La réponse apparaît en fondu à l'ouverture ; la fermeture est immédiate. */
   .faq__item[open] .faq__a { animation: fade-in var(--dur-base) var(--ease-out); }
-
-  /* Lekoklaya dark section — casse la monotonie des sections standard */
-  .leko-section {
-    background: var(--pxlc-bg-dark); color: var(--pxlc-ivory);
-    padding: clamp(var(--space-6), 8vw, var(--space-9)) 0;
-    position: relative; overflow: hidden;
+  /* Hauteur animée à l'ouverture et à la fermeture là où le navigateur sait
+     interpoler vers `auto` (amélioration progressive) ; mouvement réduit :
+     le fondu seul. */
+  @supports (interpolate-size: allow-keywords) {
+    @media (prefers-reduced-motion: no-preference) {
+      .faq__item { interpolate-size: allow-keywords; }
+      .faq__item::details-content {
+        block-size: 0; overflow: clip;
+        transition: block-size var(--dur-base) var(--ease-out), content-visibility var(--dur-base) allow-discrete;
+      }
+      .faq__item[open]::details-content { block-size: auto; }
+    }
   }
-  .leko-eyebrow { color: var(--pxlc-cyan); }
-  .leko-title { color: var(--pxlc-ivory); }
-  .leko-lead { color: var(--pxlc-text-on-dark-soft); }
-  .leko-prose { display: grid; gap: var(--space-3); max-width: 820px; }
-  .leko-prose p { font-size: var(--fs-body-sm); line-height: 1.6; color: var(--pxlc-text-on-dark-soft); margin: 0; }
+
 </style>

@@ -1,19 +1,25 @@
 ---
 /**
- * Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») : photo, texte et
- * lien vers la page projets.
+ * Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») : photo, texte,
+ * faits du projet, devise et lien vers la page projets. Seul bloc de
+ * preuve de l'accueil : les faits viennent de src/config/projects.ts.
  * @usage Accueil. Faits de copy : voir les garde-fous de CLAUDE.md
  * (intervenant culturel au singulier, « le psychologue »).
- * @a11y Section reliée à son h2 ; photo décrite.
+ * @a11y Section reliée à son h2 ; photo décrite ; faits en liste de
+ * définitions ; devise en figure/blockquote, guillemets décoratifs en
+ * aria-hidden.
  */
 import { Image } from 'astro:assets'
 import PxlcLinkout from './PxlcLinkout.astro'
+import { PROJECTS } from '../config/projects'
 import duoGaming from '../assets/photos/duo-gaming.jpg'
+
+const lekoklaya = PROJECTS.find(p => p.slug === 'jouons-ensemble')!
 ---
 
 <section class="section" aria-labelledby="sessad-title">
   <div class="container">
-    <div class="grid grid--asym" data-reveal-stagger>
+    <div class="grid grid--asym sessad" data-reveal-stagger>
       <div class="image-with-badge">
         <div class="full-bleed-img">
           <Image
@@ -28,16 +34,25 @@ import duoGaming from '../assets/photos/duo-gaming.jpg'
         <span class="badge badge--audience image-with-badge__tag">Jouons Ensemble&nbsp;!</span>
       </div>
       <div>
-        <span class="eyebrow">Programme Parent-Écran-Enfant · SESSAD Lékoklaya · 2026</span>
-        <h2 id="sessad-title">Un dispositif pensé avec l’équipe pluridisciplinaire</h2>
+        <span class="eyebrow">Projet en cours · SESSAD Lékoklaya · {lekoklaya.year}</span>
+        <h2 id="sessad-title" class="pxlc-h2">Un dispositif pensé avec l’équipe pluridisciplinaire</h2>
         <p class="lead mt-4">
-          «&nbsp;Jouons Ensemble&nbsp;!&nbsp;» accompagne 8 enfants âgés de 12 à 17 ans (TSA, TDAH, TND, dystrophie musculaire) en binômes parent-enfant, sur des ateliers thématiques co-encadrés par le psychologue du SESSAD, la psychomotricienne, l’intervenant culturel — et moi en médiateur numérique.
+          «&nbsp;Jouons Ensemble&nbsp;!&nbsp;» réunit des enfants suivis au SESSAD (TSA, TDAH, TND, dystrophie musculaire) et leurs parents autour d’ateliers thématiques. L’objectif&nbsp;: faire du jeu vidéo un outil d’alliance entre parents et enfants, pas un terrain de conflit.
         </p>
-        <p class="mt-4">
-          Le projet s’inscrit dans la continuité du Café-Parents du 14 décembre 2023 «&nbsp;Enfants Écrans&nbsp;» et dans le cadre du Haut Conseil de la santé publique (HCSP, 2019-2020) et de la Haute Autorité de santé (HAS, 2020). L’objectif&nbsp;: faire du jeu vidéo un outil d’alliance entre parents et enfants, pas un terrain de conflit.
-        </p>
-        <div class="mt-5">
-          <PxlcLinkout href="/projets/">Voir le projet</PxlcLinkout>
+        <dl class="facts facts--rows mt-5">
+          <div><dt>Public</dt><dd>{lekoklaya.audience}</dd></div>
+          <div><dt>Porteur</dt><dd>{lekoklaya.owner}</dd></div>
+          <div><dt>Équipe</dt><dd>{lekoklaya.team}</dd></div>
+          <div><dt>Origine</dt><dd>Café-Parents «&nbsp;Enfants Écrans&nbsp;» du 14&nbsp;décembre 2023</dd></div>
+        </dl>
+        <figure class="sessad-motto">
+          <blockquote>
+            <span class="sessad-motto__mark" aria-hidden="true">«&nbsp;</span>Jouer ensemble, c’est mieux comprendre, mieux se parler, et mieux grandir.<span class="sessad-motto__mark" aria-hidden="true">&nbsp;»</span>
+          </blockquote>
+          <figcaption>Devise du projet</figcaption>
+        </figure>
+        <div class="mt-4">
+          <PxlcLinkout href="/projets/">Voir le projet en détail</PxlcLinkout>
         </div>
       </div>
     </div>
@@ -45,10 +60,22 @@ import duoGaming from '../assets/photos/duo-gaming.jpg'
 </section>
 
 <style>
+  /* Le texte, plus long que la photo, s'aligne en haut. */
+  .sessad { align-items: start; }
   .image-with-badge { position: relative; }
   .image-with-badge .full-bleed-img { width: 100%; aspect-ratio: 16 / 10; border-radius: var(--radius-lg); overflow: hidden; }
   /* :global() : l'<img> est rendu par le composant Image, hors de la portée
      du scope Astro de ce fichier. */
   .image-with-badge .full-bleed-img :global(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
   .image-with-badge__tag { position: absolute; top: 16px; left: 16px; }
+
+  /* Devise : filet parent à gauche, texte d'affichage — une citation dans
+     le bloc plutôt qu'une section à part. */
+  .sessad-motto { margin: var(--space-5) 0 0; padding-left: var(--space-3); border-left: 2px solid var(--parent-mid); }
+  .sessad-motto blockquote {
+    margin: 0; font-family: var(--font-display); font-weight: 500;
+    font-size: var(--fs-lead); line-height: 1.35; letter-spacing: -0.01em; color: var(--ink);
+  }
+  .sessad-motto__mark { color: var(--child); }
+  .sessad-motto figcaption { margin-top: var(--space-1-5); font-size: var(--fs-small); color: var(--ink-quiet); }
 </style>

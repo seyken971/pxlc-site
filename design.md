@@ -452,6 +452,11 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.badge--soft`
 - `.badge--child`
 
+### Faits
+
+- `.facts`
+- `.facts--rows`
+
 ### Footer
 
 - `.site-footer`
@@ -633,11 +638,11 @@ Aucune prop.
 
 #### `CitationBlock`
 
-Citation mise en exergue : source, extrait entre guillemets français, attribution.
+Citation mise en exergue : source (facultative), extrait entre guillemets français, attribution.
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
-| `source` * | `string` | — | Provenance, affichée au-dessus de l'extrait. |
+| `source` | `string` | — | Provenance, affichée au-dessus de l'extrait ; à omettre quand elle redirait l'attribution. |
 | `quote` * | `string` | — | Extrait exact, sans guillemets (ajoutés par le composant). |
 | `attribution` * | `string` | — | Auteur ou cadre de la citation. |
 | `soft` | `boolean` | `true` | Fond doux (.section--soft). |
@@ -689,21 +694,11 @@ Section « Ma méthode en trois temps » : une carte par étape, coiffée de la 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
 | `steps` * | `MethodStep[]` | — | Étapes dans l'ordre : numéro, titre, texte, étiquette facultative. |
+| `more` | `MoreLink \| null` | `null` | Lien facultatif sous la grille (ex. le déroulé appliqué sur /projets/). |
 
 - **Variantes** : `.card--featured`, `.card--method`
-- **Usage** : Accueil.
+- **Usage** : Accueil. Le lien « more » renvoie au déroulé concret d'un projet, qui reprend les mêmes trois temps.
 - **Accessibilité** : Section reliée à son h2 (aria-labelledby) ; une carte = un article titré en h3 ; marque et numéro fantôme décoratifs.
-
-#### `PartnerStrip`
-
-Bandeau des partenaires de confiance, en liste de noms.
-
-| Prop | Type | Défaut | Rôle |
-| --- | --- | --- | --- |
-| `partners` | `string[]` | `['SESSAD Lékoklaya']` | Noms des structures partenaires, affichés dans l'ordre. |
-
-- **Usage** : Accueil, sous le hero.
-- **Accessibilité** : Section nommée ; liste avec role="list" pour garder la sémantique malgré list-style: none.
 
 #### `PlaquettePage`
 
@@ -725,12 +720,12 @@ Feuille A4 de la plaquette : en-tête de navigation, contenu en slot, pied avec 
 
 #### `SessadCase`
 
-Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») : photo, texte et lien vers la page projets.
+Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») : photo, texte, faits du projet, devise et lien vers la page projets. Seul bloc de preuve de l'accueil : les faits viennent de src/config/projects.ts.
 
 Aucune prop.
 
 - **Usage** : Accueil. Faits de copy : voir les garde-fous de CLAUDE.md (intervenant culturel au singulier, « le psychologue »).
-- **Accessibilité** : Section reliée à son h2 ; photo décrite.
+- **Accessibilité** : Section reliée à son h2 ; photo décrite ; faits en liste de définitions ; devise en figure/blockquote, guillemets décoratifs en aria-hidden.
 
 #### `ThemeToggle`
 
@@ -779,7 +774,7 @@ Aucune prop.
 
 - **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
-- **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PartnerStrip`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
+- **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
 - Deux mots minimum par nom (évite les collisions avec de futurs éléments HTML natifs)
 
 ### Visuel

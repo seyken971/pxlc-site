@@ -1,15 +1,16 @@
 ---
 /**
- * Citation mise en exergue : source, extrait entre guillemets français,
- * attribution.
+ * Citation mise en exergue : source (facultative), extrait entre
+ * guillemets français, attribution.
  * @usage Une citation par page au plus (parole d'Andy, devise de projet) ;
  * citée telle quelle, jamais reformulée.
  * @a11y Section nommée « Citation » ; figure, blockquote et figcaption ;
  * guillemets décoratifs en aria-hidden.
  */
 interface Props {
-  /** Provenance, affichée au-dessus de l'extrait. */
-  source: string
+  /** Provenance, affichée au-dessus de l'extrait ; à omettre quand elle
+   *  redirait l'attribution. */
+  source?: string
   /** Extrait exact, sans guillemets (ajoutés par le composant). */
   quote: string
   /** Auteur ou cadre de la citation. */
@@ -23,7 +24,7 @@ const { source, quote, attribution, soft = true } = Astro.props
 <section class:list={['section', { 'section--soft': soft }]} aria-label="Citation">
   <div class="container">
     <figure class="citation" data-reveal>
-      <div class="citation__source">{source}</div>
+      {source && <div class="citation__source">{source}</div>}
       <blockquote class="citation__quote">
         <span class="quotemark" aria-hidden="true">«&nbsp;</span>{quote}<span class="quotemark" aria-hidden="true">&nbsp;»</span>
       </blockquote>

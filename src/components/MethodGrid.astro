@@ -3,18 +3,24 @@
  * Section « Ma méthode en trois temps » : une carte par étape, coiffée de
  * la petite marque ; la première étape est mise en vedette (plus grande,
  * fond parent-soft), les suivantes s'empilent à côté.
- * @usage Accueil.
+ * @usage Accueil. Le lien « more » renvoie au déroulé concret d'un projet,
+ * qui reprend les mêmes trois temps.
  * @a11y Section reliée à son h2 (aria-labelledby) ; une carte = un article
  * titré en h3 ; marque et numéro fantôme décoratifs.
  */
 import PxlcMark from './PxlcMark.astro'
+import PxlcLinkout from './PxlcLinkout.astro'
 
 export interface MethodStep { num: string, title: string, desc: string, tag?: string }
+/** Lien de sortie sous la grille. */
+interface MoreLink { label: string, href: string }
 interface Props {
   /** Étapes dans l'ordre : numéro, titre, texte, étiquette facultative. */
   steps: MethodStep[]
+  /** Lien facultatif sous la grille (ex. le déroulé appliqué sur /projets/). */
+  more?: MoreLink | null
 }
-const { steps } = Astro.props
+const { steps, more = null } = Astro.props
 ---
 
 <section class="section" aria-labelledby="methode-title">
@@ -33,13 +39,14 @@ const { steps } = Astro.props
           data-num={s.num}
         >
           <div class="card__mark"><PxlcMark size={20} decorative /></div>
-          <div class="card__step-num">ÉTAPE {s.num}</div>
+          <div class="card__step-num">TEMPS {s.num}</div>
           <h3>{s.title}</h3>
           <p>{s.desc}</p>
           {s.tag && <div class="card__tag">· {s.tag}</div>}
         </article>
       ))}
     </div>
+    {more && <div class="method-more"><PxlcLinkout href={more.href}>{more.label}</PxlcLinkout></div>}
   </div>
 </section>
 
@@ -57,6 +64,7 @@ const { steps } = Astro.props
     .method-grid .card--featured { grid-column: 1; grid-row: 1 / span 2; }
   }
   .card--method { min-height: 0; }
+  .method-more { margin-top: var(--space-5); }
   .card--featured {
     background: var(--parent-soft);
     border-color: transparent;

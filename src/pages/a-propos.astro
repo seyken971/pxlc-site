@@ -5,13 +5,17 @@ import CitationBlock from '../components/CitationBlock.astro'
 import { ID, pageGraph } from '../lib/schema'
 import { breadcrumbItems } from '../lib/breadcrumb'
 import { IDENTITY } from '../config/identity'
+import { ZONE } from '../config/site'
 import andyPortrait from '../assets/photos/andy-portrait.jpg'
 
+// Fiche d'identité : ce qu'une structure vérifie avant de signer. Le SIRET
+// vient de la source unique du NAP (identity.ts).
 const facts = [
   { label: 'Statut', value: 'Entreprise individuelle (EI)' },
-  { label: 'Territoire', value: 'Guadeloupe' },
-  { label: 'SIRET', value: '813 793 528 00031' },
+  { label: 'Basé à', value: `${IDENTITY.address.locality}, Guadeloupe` },
+  { label: 'Zone d’intervention', value: ZONE.join(', ') },
   { label: 'Cadre', value: 'HCSP 2019-2020 · HAS 2020' },
+  { label: 'SIRET', value: IDENTITY.siret },
 ]
 
 const casquettes = [
@@ -74,15 +78,16 @@ const schemaGraph = pageGraph({
     photoAlt="Portrait d'Andy Zébus, médiateur numérique"
   />
 
-  <!-- ── En bref — fiche technique du professionnel ─────────────── -->
-  <section class="about-facts-section" aria-label="En bref">
+  <!-- ── En bref — fiche d'identité du professionnel ─────────────── -->
+  <section class="section" aria-labelledby="bref-title">
     <div class="container">
-      <dl class="about-facts">
+      <header class="section__head">
+        <span class="eyebrow">En bref</span>
+        <h2 id="bref-title">Fiche d’identité</h2>
+      </header>
+      <dl class="facts" data-reveal-stagger>
         {facts.map(f => (
-          <div class="about-fact">
-            <dt class="about-fact__label">{f.label}</dt>
-            <dd class="about-fact__value">{f.value}</dd>
-          </div>
+          <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
         ))}
       </dl>
     </div>
@@ -135,69 +140,11 @@ const schemaGraph = pageGraph({
   </section>
 
   <CitationBlock
-    source="Andy Zébus · médiateur numérique"
     quote="Mon travail, ce n'est pas de juger l'usage des écrans. C'est de créer un espace de rencontre — autour du jeu vidéo, des réseaux, du temps d'écran — entre un enfant et son parent, entre une famille et votre équipe."
     attribution="Andy Zébus · médiateur numérique" soft={false} />
 </BaseLayout>
 
 <style>
-  /* ── En bref : bandeau fiche, sous le hero ──────────────────── */
-  .about-facts-section { padding-block: var(--space-5); border-bottom: 1px solid var(--line); }
-
-  /* ── Facts — bandeau spec sheet ──────────────────────────────── */
-  .about-facts {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    margin: 0;
-    position: relative;
-  }
-
-  .about-fact {
-    padding: var(--space-3) var(--space-4);
-    margin: 0;
-  }
-
-  .about-fact+.about-fact {
-    border-left: 1px solid var(--line);
-  }
-
-  .about-fact:first-child {
-    padding-left: 0;
-  }
-
-  @media (max-width: 899px) {
-    .about-facts {
-      grid-template-columns: 1fr 1fr;
-    }
-
-    .about-fact:nth-child(odd) {
-      border-left: 0;
-      padding-left: 0;
-    }
-
-    .about-fact:nth-child(n + 3) {
-      border-top: 1px solid var(--line);
-    }
-  }
-
-  .about-fact__label {
-    font-family: var(--font-label);
-    font-size: var(--fs-label);
-    letter-spacing: var(--ls-label);
-    text-transform: uppercase;
-    color: var(--ink-quiet);
-    margin-bottom: var(--space-2);
-  }
-
-  .about-fact__value {
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: var(--fs-lead);
-    font-variant-numeric: tabular-nums;
-    color: var(--ink);
-    margin: 0;
-  }
-
   /* ── Casquettes — numéros fantômes, escalier du parcours ─────── */
   .casquette-card {
     overflow: hidden;
