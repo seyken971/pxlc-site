@@ -3,7 +3,8 @@
  * Hero de page, gabarit unique de toutes les pages : fil d'Ariane
  * (facultatif), eyebrow, titre h1, chapô, zone d'action (CTA ou contenu
  * libre), photo facultative dans un cadre décalé. Sans photo, le texte garde
- * la même largeur de colonne.
+ * la même largeur de colonne et le filigrane du logo occupe la colonne
+ * droite (grand écran seulement).
  * @usage Une fois par page, en tête ; porte l'unique h1. Le slot par défaut
  * remplace ou complète les CTA (ex. réassurance du contact) ; le slot
  * « lead » remplace le chapô texte quand il faut du balisage.
@@ -119,6 +120,12 @@ const hasLeadSlot = Astro.slots.has('lead')
         )}
         <slot />
       </div>
+
+      {!photo && (
+        <div class="hero__watermark" aria-hidden="true">
+          <PxlcMark size={320} decorative />
+        </div>
+      )}
 
       {photo && (
         <div class="hero__media">
