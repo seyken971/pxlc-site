@@ -531,6 +531,25 @@ main[tabindex="-1"]:focus { outline: none; }
   border: 2px solid var(--teal-mid); border-radius: var(--radius-lg);
   pointer-events: none;
 }
+/* Sans photo : le filigrane du logo (−8°, 8 % en clair, 18 % en sombre)
+   tient la colonne droite pour que le hero ne penche pas à gauche. Centré
+   en absolu : il n'allonge pas le hero, qui le rogne s'il déborde. Masqué
+   sous 1024 px, où la grille n'a qu'une colonne. */
+.hero__watermark { display: none; }
+@media (min-width: 1024px) {
+  .hero__watermark {
+    display: block; position: relative; align-self: stretch;
+    opacity: 0.08; pointer-events: none;
+    animation: fade-in var(--dur-enter) var(--ease-out) both;
+    animation-delay: calc(2 * var(--dur-stagger));
+  }
+  [data-theme="dark"] .hero__watermark { opacity: 0.18; }
+  .hero__watermark svg {
+    position: absolute; top: 50%; left: 50%;
+    width: clamp(240px, 22vw, 320px); height: auto;
+    transform: translate(-50%, -50%) rotate(-8deg);
+  }
+}
 .hero__media-img {
   position: relative; aspect-ratio: 4 / 5;
   border-radius: var(--radius-lg); overflow: hidden;

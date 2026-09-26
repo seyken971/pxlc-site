@@ -432,6 +432,7 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.hero__hint`
 - `.hero__alt`
 - `.hero__media`
+- `.hero__watermark`
 - `.hero__media-img`
 - `.hero__media-corner`
 - `.hero__pill`
@@ -665,7 +666,7 @@ Carte des communes de Guadeloupe, rendue en SVG inline au build depuis src/data/
 
 #### `HeroSection`
 
-Hero de page, gabarit unique de toutes les pages : fil d'Ariane (facultatif), eyebrow, titre h1, chapô, zone d'action (CTA ou contenu libre), photo facultative dans un cadre décalé. Sans photo, le texte garde la même largeur de colonne.
+Hero de page, gabarit unique de toutes les pages : fil d'Ariane (facultatif), eyebrow, titre h1, chapô, zone d'action (CTA ou contenu libre), photo facultative dans un cadre décalé. Sans photo, le texte garde la même largeur de colonne et le filigrane du logo occupe la colonne droite (grand écran seulement).
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
