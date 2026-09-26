@@ -1,32 +1,48 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
 import HeroSection from '../components/HeroSection.astro'
-import PartnerStrip from '../components/PartnerStrip.astro'
 import MethodGrid from '../components/MethodGrid.astro'
 import type { MethodStep } from '../components/MethodGrid.astro'
 import SessadCase from '../components/SessadCase.astro'
-import CitationBlock from '../components/CitationBlock.astro'
-import PxlcMarkSeparator from '../components/PxlcMarkSeparator.astro'
+import PxlcLinkout from '../components/PxlcLinkout.astro'
 import { pageGraph } from '../lib/schema'
-import { SITE } from '../config/site'
+import { SITE, ZONE } from '../config/site'
+import { IDENTITY } from '../config/identity'
 import andyEvent from '../assets/photos/andy-event.jpg'
+
+// L'accueil suit les questions d'une structure qui découvre PXLC : pour qui,
+// comment, concrètement quoi, avec quelle preuve. Un fait = un endroit.
+
+// Les structures clientes, regroupées par famille (liste « Clients » du
+// design system). Les familles sont bénéficiaires, pas clientes.
+const audiences = [
+  { title: 'Lecture publique et vie sociale', items: ['Médiathèques et bibliothèques', 'Centres sociaux et espaces de vie sociale', 'CCAS et dispositifs de réussite éducative'] },
+  { title: 'Éducation et parentalité', items: ['Écoles et centres socioculturels', 'Dispositifs CLAS', 'Lieux d’accueil enfants-parents (LAEP)'] },
+  { title: 'Médico-social', items: ['SESSAD', 'IME', 'CMPP', 'CAMSP'] },
+]
 
 // Méthode PXLC en trois temps — démarche comportementale alignée sur le rapport
 // DITP/MILDECA 2022 (diagnostic → stratégie partagée → dialogue). Générique à
-// toute structure — le programme détaillé (4 étapes Parent-Écran-Enfant) vit
-// sur /projets.
+// toute structure — le déroulé appliqué (4 étapes Parent-Écran-Enfant, mêmes
+// trois temps) vit sur /projets/#deroule.
 const methodSteps: MethodStep[] = [
-  { num: '01', title: 'Faire le point', desc: 'Je pars des usages réels de la famille — à quoi l’enfant joue, ce que l’écran représente. Observer avant de cadrer : la prise de conscience est déjà un levier.', tag: 'diagnostic' },
+  { num: '01', title: 'Faire le point', desc: 'Je pars des usages réels de la famille — à quoi l’enfant joue, ce que l’écran représente. Observer avant de cadrer : la prise de conscience est déjà un levier.', tag: 'diagnostic' },
   { num: '02', title: 'Choisir une stratégie', desc: 'La famille co-construit ses repères d’usage. L’enfant participe au choix des règles, ce qui désamorce les conflits plutôt que de les déplacer.', tag: 'stratégie' },
-  { num: '03', title: 'Dialogue continu', desc: 'Le cadre devient une clé d’explication impartiale : il ouvre la discussion parent-enfant au lieu de la fermer, et tient dans la durée.', tag: 'suivi' },
+  { num: '03', title: 'Dialogue continu', desc: 'Le cadre devient une clé d’explication impartiale : il ouvre la discussion parent-enfant au lieu de la fermer, et tient dans la durée.', tag: 'suivi' },
 ]
 
-// Trois repères, pas un tableau de bord : la structure partenaire est déjà
-// nommée par le bandeau PartnerStrip juste en dessous.
-const stats = [
-  { value: '8', label: 'familles accompagnées en 2026' },
-  { value: '6 ans', label: 'sur la scène esport guadeloupéenne' },
-  { value: 'HCSP · HAS', label: 'cadre de référence\u00A0: HCSP\u00A02019-2020 · HAS\u00A02020' },
+// L'essentiel d'une intervention — uniquement des faits déjà publiés
+// (plaquette, FAQ de /projets/, page contact). Tarif et nombre de séances :
+// aucun chiffre tant qu'Andy ne l'a pas fixé.
+const practice = [
+  { label: 'Format', value: 'Ateliers parent-enfant, conduits avec l’équipe de votre structure' },
+  { label: 'Une séance', value: 'Un temps de jeu partagé (30 à 45 min), puis un temps d’échange (45 min à 1 h)' },
+  { label: 'Restitution', value: 'Un bilan écrit, remis à l’équipe et discuté avec elle, réutilisable dans vos rapports d’activité' },
+  { label: 'Cadre', value: 'HCSP 2019-2020 · HAS 2020' },
+  { label: 'Matériel', value: 'Consoles et jeux prêtés, ou pris en charge par la structure' },
+  { label: 'Zone', value: ZONE.join(', ') },
+  { label: 'Tarif', value: 'Sur devis, selon le nombre d’ateliers, de familles et la durée' },
+  { label: 'Pour commencer', value: 'Un premier échange de 20 min, gratuit et sans engagement' },
 ]
 
 const seo = {
@@ -49,72 +65,65 @@ const schemaGraph = pageGraph({
     title="Médiation numérique en Guadeloupe"
     titleDot={true}
     lead={'J’aide les structures en Guadeloupe à accompagner les familles autour des écrans. Concrètement : résolution des conflits autour du temps d’écran, bonnes pratiques du numérique.'}
-    ctaPrimary={{ label: 'Voir les projets', href: '/projets/' }}
-    ctaSecondary={{ label: 'Plaquette PDF · 6 pages', href: '/files/plaquette-pxlc.pdf', external: true }}
-    ctaSecondaryAlt={{ label: 'Lire en ligne', href: '/plaquette/', ariaLabel: 'Lire en ligne (plaquette, version web accessible)' }}
+    ctaPrimary={{ label: 'Prendre rendez-vous', href: IDENTITY.bookingUrl, external: true }}
+    ctaSecondary={{ label: 'Voir les projets', href: '/projets/' }}
+    ctaSecondaryAlt={{ label: 'Lire la plaquette en ligne', href: '/plaquette/' }}
     photo={andyEvent}
     photoAlt="Andy Zébus en animation lors d’un événement de jeu vidéo en Guadeloupe"
   />
-  <section class="section reperes-section" aria-labelledby="reperes-title">
+
+  <section class="section" aria-labelledby="pour-qui-title">
     <div class="container">
-      <h2 id="reperes-title" class="eyebrow">Quelques repères</h2>
-      <ul class="reperes" role="list" data-reveal-stagger>
-        {stats.map(s => (
-          <li class="repere">
-            <span class="repere__value">{s.value}</span>
-            <span class="repere__label">{s.label}</span>
-          </li>
+      <header class="section__head">
+        <span class="eyebrow">Pour qui</span>
+        <h2 id="pour-qui-title">Les structures qui accueillent déjà des familles</h2>
+        <p class="lead">Le lieu apporte le public, j’apporte l’atelier et le cadre. Je viens en appui de votre équipe, pas à sa place.</p>
+      </header>
+      <div class="audiences" data-reveal-stagger>
+        {audiences.map(a => (
+          <div class="audience">
+            <h3 class="audience__title">{a.title}</h3>
+            <ul class="audience__list" role="list">
+              {a.items.map(item => <li>{item}</li>)}
+            </ul>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   </section>
-  <PartnerStrip />
-  <MethodGrid steps={methodSteps} />
-  <PxlcMarkSeparator />
+
+  <MethodGrid steps={methodSteps} more={{ label: 'Voir ces trois temps appliqués au SESSAD Lékoklaya', href: '/projets/#deroule' }} />
+
+  <section class="section section--soft" aria-labelledby="pratique-title">
+    <div class="container">
+      <header class="section__head">
+        <span class="eyebrow">En pratique</span>
+        <h2 id="pratique-title">Ce que comprend une intervention</h2>
+        <p class="lead">Un cycle d’ateliers parent-enfant conduit avec votre équipe, du diagnostic familial au bilan écrit. Le jeu vidéo en est le support, jamais le problème à résoudre.</p>
+      </header>
+      <dl class="facts" data-reveal-stagger>
+        {practice.map(f => (
+          <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+        ))}
+      </dl>
+      <div class="pratique-more">
+        <PxlcLinkout href="/contact/">Décrire votre projet pour recevoir un devis</PxlcLinkout>
+      </div>
+    </div>
+  </section>
+
   <SessadCase />
-  <CitationBlock
-    source={'« Jouons Ensemble ! » · projet 2026'}
-    quote="Jouer ensemble, c’est mieux comprendre, mieux se parler, et mieux grandir."
-    attribution="Devise du projet · SESSAD Lékoklaya × PXLC"
-  />
 </BaseLayout>
 
 <style>
-  /* Bandeau éditorial : trois repères séparés par des filets neutres, en
-     ligne sur bureau, en rangées sur mobile — pas de chiffres façon tableau
-     de bord. */
-  .reperes-section { padding-block: var(--space-6); }
-  .reperes {
-    display: grid;
-    grid-template-columns: 1fr;
-    margin: var(--space-3) 0 0;
-    padding: 0;
-    list-style: none;
-    border-block: 1px solid var(--line);
-  }
-  .repere {
-    display: grid;
-    grid-template-columns: minmax(0, 8.5rem) 1fr;
-    align-items: baseline;
-    gap: var(--space-3);
-    padding-block: var(--space-3);
-  }
-  .repere + .repere { border-top: 1px solid var(--line); }
-  @media (min-width: 768px) {
-    .reperes { grid-template-columns: repeat(3, 1fr); }
-    .repere { grid-template-columns: 1fr; gap: var(--space-1-5); padding: var(--space-4) var(--space-4) var(--space-4) 0; }
-    .repere + .repere { border-top: 0; border-left: 1px solid var(--line); padding-left: var(--space-4); }
-  }
-  .repere__value {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--fs-title-3);
-    line-height: var(--lh-title-3);
-    letter-spacing: var(--ls-title-3);
-    color: var(--ink);
-  }
-  @media (min-width: 768px) {
-    .repere__value { font-size: var(--fs-title-2); line-height: var(--lh-title-2); letter-spacing: var(--ls-title-2); }
-  }
-  .repere__label { font-family: var(--font-body); font-size: var(--fs-small); line-height: var(--lh-small); color: var(--ink-muted); }
+  /* Pour qui : trois familles de structures en colonnes à filet haut,
+     sans cartes — une liste à lire, pas des boutons. */
+  .audiences { display: grid; grid-template-columns: 1fr; gap: var(--space-4); }
+  @media (min-width: 768px) { .audiences { grid-template-columns: repeat(3, 1fr); gap: var(--space-5); } }
+  .audience { padding-top: var(--space-3); border-top: 2px solid var(--parent-mid); }
+  .audience__title { font-size: var(--fs-lead); line-height: 1.3; margin-bottom: var(--space-2-5); }
+  .audience__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-1-5); }
+  .audience__list li { font-size: var(--fs-body-sm); line-height: var(--lh-body-sm); color: var(--ink-muted); }
+
+  .pratique-more { margin-top: var(--space-5); }
 </style>

@@ -8,7 +8,7 @@
  *   [BreadcrumbList] · #photo-event · #logo · #photo-andy
  */
 import { createLastmod } from '../../scripts/sitemap-lastmod.mjs'
-import { SITE } from '../config/site'
+import { SITE, ZONE } from '../config/site'
 import { IDENTITY, RCS_MENTION, SIREN_COMPACT, SIRET_COMPACT } from '../config/identity'
 import type { Crumb } from './breadcrumb'
 import type {
@@ -126,10 +126,7 @@ const identityNode: MultiType<ProfessionalService, ['Organization', 'Professiona
   'address': postalAddress,
   'areaServed': [
     { '@type': 'AdministrativeArea', 'name': 'Guadeloupe' },
-    { '@type': 'City', 'name': 'Les Abymes' },
-    { '@type': 'City', 'name': 'Pointe-à-Pitre' },
-    { '@type': 'City', 'name': 'Baie-Mahault' },
-    { '@type': 'City', 'name': 'Le Gosier' },
+    ...ZONE.map(name => ({ '@type': 'City' as const, name })),
   ],
   'contactPoint': {
     '@type': 'ContactPoint',

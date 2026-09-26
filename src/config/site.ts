@@ -13,3 +13,8 @@ export const SITE = {
   // Budget : titre de page ≤ 53 caractères pour un <title> complet ≤ 60.
   titleSuffix: ' · PXLC',
 } as const
+
+// Zone d'intervention en présentiel : source unique de l'accueil, de
+// /a-propos/, de la carte de /contact/ et de `areaServed` (#identity).
+// L'ordre fixe les numéros de la légende de la carte.
+export const ZONE = ['Les Abymes', 'Pointe-à-Pitre', 'Baie-Mahault', 'Le Gosier'] as const

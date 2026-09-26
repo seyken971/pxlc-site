@@ -6,13 +6,14 @@ import HeroSection from '../components/HeroSection.astro'
 import PxlcInput from '../components/PxlcInput.astro'
 import CommuneMap from '../components/CommuneMap.astro'
 import { IDENTITY } from '../config/identity'
+import { ZONE } from '../config/site'
 import { pageGraph } from '../lib/schema'
 import { breadcrumbItems } from '../lib/breadcrumb'
 
 const seo = {
   title: 'Contacter Andy Zébus — devis ou premier échange',
   description: 'Devis ou premier échange de 20 min — gratuit, sans engagement. Pour les structures qui accompagnent des familles.',
-  ogDescription: 'Réponse sous 2 jours ouvrés — formulaire, WhatsApp ou visio. Premier échange de 20 min gratuit pour cadrer votre projet.',
+  ogDescription: 'Réponse sous 2 jours ouvrés — formulaire, e-mail ou visio. Premier échange de 20 min gratuit pour cadrer votre projet.',
 }
 
 const schemaGraph = pageGraph({
@@ -23,13 +24,10 @@ const schemaGraph = pageGraph({
   crumbs: breadcrumbItems('/contact/'),
 })
 
-// Zone d'intervention en présentiel — les mêmes 4 communes que `areaServed`
-// du nœud #identity (src/lib/schema.ts). L'ordre fixe les numéros de la légende.
-const ZONE = ['Les Abymes', 'Pointe-à-Pitre', 'Baie-Mahault', 'Le Gosier']
-
 // Types de structure proposés au formulaire — la valeur choisie est reprise
 // dans le sujet et le corps du mailto:.
-const STRUCTURE_TYPES = ['Association', 'École', 'Collectivité / CCAS', 'Médico-social', 'Autre']
+// Mêmes familles que le « Pour qui » de l'accueil.
+const STRUCTURE_TYPES = ['Médiathèque ou bibliothèque', 'Centre social ou EVS', 'École ou CLAS', 'Collectivité ou CCAS', 'Médico-social', 'Association', 'Autre']
 
 const { address } = IDENTITY
 const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} ${address.locality}`)
@@ -119,7 +117,11 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
 
         <!-- ── Colonne droite — territoire + coordonnées ─────── -->
         <div class="contact-terr">
-          <CommuneMap zone={ZONE} label="Communes de Guadeloupe — zone d’intervention PXLC" />
+          <div class="contact-terr__head">
+            <h2 class="contact-h2">Zone d’intervention</h2>
+            <p class="contact-note">En présentiel à {ZONE.join(', ')}. Premier échange en visio ou sur site.</p>
+          </div>
+          <CommuneMap zone={[...ZONE]} label="Communes de Guadeloupe — zone d’intervention PXLC" />
 
           <div class="contact-terr__side">
             <span class="eyebrow">Coordonnées</span>
@@ -380,6 +382,8 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     /* Aligné sur scroll-padding-top (header sticky ≈ 81 px). */
     .contact-terr { position: sticky; top: 96px; }
   }
+  .contact-terr__head { padding: var(--space-4) var(--space-4) 0; }
+  .contact-terr__head .contact-note { margin-bottom: var(--space-3); }
   .contact-terr__side { padding: var(--space-4); border-top: 1px solid var(--line); }
 
   /* ── NAP (adresse visible + itinéraires) ─────────────────────── */

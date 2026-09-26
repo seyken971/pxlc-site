@@ -601,6 +601,33 @@ main[tabindex="-1"]:focus { outline: none; }
 .badge--soft { background: var(--parent-soft); color: var(--parent); border-color: transparent; }
 .badge--child { background: var(--child-soft); color: var(--ink); border-color: transparent; }
 
+/* ── Faits ───────────────────────────────────────────────── */
+/* Liste de faits (dl) : un seul traitement sur tout le site — l'essentiel
+   d'une intervention, la fiche « En bref », les repères d'un projet.
+   Étiquette en capitales au-dessus, valeur en texte courant, filet haut.
+   Autant de colonnes que la largeur le permet (une sur mobile).
+   --rows : étiquette à gauche de la valeur, pour une carte étroite. */
+.facts {
+  display: grid; margin: 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  column-gap: var(--space-5);
+}
+.facts > div { padding-block: var(--space-3); border-top: 1px solid var(--line); }
+.facts dt {
+  font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600;
+  letter-spacing: var(--ls-label); text-transform: uppercase;
+  color: var(--ink-quiet); margin-bottom: var(--space-1-5);
+}
+.facts dd {
+  margin: 0; font-family: var(--font-body);
+  font-size: var(--fs-body-sm); line-height: var(--lh-body-sm); color: var(--ink);
+}
+.facts--rows { grid-template-columns: 1fr; }
+@media (min-width: 640px) {
+  .facts--rows > div { display: grid; grid-template-columns: 8rem 1fr; gap: var(--space-3); align-items: baseline; }
+  .facts--rows dt { margin-bottom: 0; }
+}
+
 /* ── Footer ──────────────────────────────────────────────── */
 .site-footer { background: var(--pxlc-bg-dark); color: var(--pxlc-ivory); padding: clamp(48px, 8vw, 56px) 0 24px; }
 /* Mission sous le lockup, au format tagline : discrète, sans étage dédié. */
