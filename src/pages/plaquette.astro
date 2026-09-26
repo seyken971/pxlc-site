@@ -7,6 +7,7 @@ import { IDENTITY, RCS_MENTION } from '../config/identity'
 import { SITE } from '../config/site'
 import { PROJECTS } from '../config/projects'
 import { PROJECT_THEMES } from '../config/project-themes'
+import { AUDIENCES, PRACTICE } from '../config/offer'
 import { pageGraph } from '../lib/schema'
 import { breadcrumbItems } from '../lib/breadcrumb'
 import andyPortrait from '../assets/photos/andy-portrait.jpg'
@@ -16,7 +17,7 @@ import andyPortrait from '../assets/photos/andy-portrait.jpg'
 // depuis dist/ (npm run plaquette). Toute modification ici se relance et se
 // committe avec le PDF. Identité, contact, thèmes et données du projet
 // viennent de src/config (jamais retapés).
-const VERSION = 'v6'
+const VERSION = 'v7'
 const lekoklaya = PROJECTS[0]
 const TOTAL = '06'
 const PDF_HREF = '/files/plaquette-pxlc.pdf'
@@ -26,6 +27,9 @@ const website = SITE.url.replace(/^https?:\/\//, '').replace(/\/$/, '')
 const nbsp = (s: string) => s.replace(/ /g, ' ')
 /** +590690717618 → +590 690 71 76 18 (forme de la page contact). */
 const phone = IDENTITY.telephone.replace(/^(\+590)(\d{3})(\d{2})(\d{2})(\d{2})$/, '$1 $2 $3 $4 $5')
+// Feuille 02 : l'essentiel d'une intervention. Le cadre est déjà dans « Le
+// parti-pris » et le premier échange dans la promesse : pas de doublon.
+const practice = PRACTICE.filter(f => f.key !== 'cadre' && f.key !== 'demarrage')
 const address = `${IDENTITY.address.street}, ${IDENTITY.address.postalCode} ${IDENTITY.address.locality}`
 
 const seo = {
@@ -70,7 +74,7 @@ const schemaGraph = pageGraph({
         <div class="pq-cover__meta">
           <div>Cadre<strong>HCSP&nbsp;2019-2020 · HAS&nbsp;2020</strong></div>
           <div>Format<strong>Ateliers parent-enfant</strong></div>
-          <div>Public<strong>Médiathèques · centres sociaux · écoles · SESSAD · IME</strong></div>
+          <div>Public<strong>Lecture publique · vie sociale · éducation · médico-social</strong></div>
         </div>
       </div>
     </PlaquettePage>
@@ -81,30 +85,36 @@ const schemaGraph = pageGraph({
       <h2>Le numérique, une histoire de lien<span class="coral-dot" aria-hidden="true">.</span></h2>
       <p class="pq-lead">PXLC accompagne les familles <strong>autour des écrans</strong>. J'interviens dans les structures de Guadeloupe qui accueillent déjà des familles&nbsp;: le lieu apporte le public, j'apporte l'atelier et le cadre.</p>
 
-      <div class="pq-grid-3 pq-mb-8">
-        <div class="pq-card">
+      <div class="pq-grid-2 pq-duo pq-mb-6">
+        <div>
           <span class="eyebrow">Le constat</span>
           <p>Votre équipe accompagne des familles où les écrans — jeux vidéo en tête — reviennent en entretien comme point de friction récurrent. Sans que vous ayez toujours les ressources spécifiques pour y répondre dans le cadre de votre accompagnement.</p>
         </div>
-        <div class="pq-card">
+        <div>
           <span class="eyebrow">Le parti-pris</span>
           <p>Le cadre HCSP&nbsp;2019-2020 · HAS&nbsp;2020 invite à <strong>soutenir la fonction parentale</strong> dans la médiation des écrans plutôt qu'à les interdire. Je traduis ce cadre en ateliers directement intégrables dans votre projet de service ou d'établissement.</p>
         </div>
-        <div class="pq-card">
-          <span class="eyebrow">Pour qui</span>
-          <p>Les structures qui accueillent déjà des familles — médiathèques, centres sociaux, écoles, CCAS, SESSAD, IME — et qui cherchent un <strong>intervenant spécialisé</strong>, pas un module numérique générique, pour les familles où le jeu vidéo est source de tension.</p>
-        </div>
       </div>
 
-      <div class="pq-quote">
-        <span class="pq-quote__mark" aria-hidden="true">«&nbsp;</span>Mon travail, ce n'est pas de juger l'usage des écrans. C'est de créer un espace de rencontre — autour du jeu vidéo, des réseaux, du temps d'écran — entre un enfant et son parent, entre une famille et votre équipe.<span class="pq-quote__mark" aria-hidden="true">&nbsp;»</span>
-        <span class="pq-quote__src">Andy Zébus · médiateur numérique</span>
+      <span class="eyebrow pq-sub__eyebrow">Pour qui</span>
+      <div class="pq-audiences pq-mb-6">
+        {AUDIENCES.map(a => (
+          <div class="pq-audience">
+            <h3 class="pq-audience__title">{a.title}</h3>
+            <p>{a.items.join(' · ')}</p>
+          </div>
+        ))}
       </div>
+
+      <span class="eyebrow pq-sub__eyebrow">En pratique</span>
+      <dl class="pq-facts pq-practice pq-mb-6">
+        {practice.map(f => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+      </dl>
 
       <div class="pq-card pq-card--dark">
         <span class="eyebrow">Ma promesse aux structures</span>
         <p>Je m'adapte à votre cadre de confidentialité, à vos bilans et à vos objectifs de service ou de soin. Je viens en appui de l'équipe — pas à sa place. Je reviens autant de fois que nécessaire, sur la durée du projet. <strong>Premier échange de 20&nbsp;min gratuit, sans engagement.</strong></p>
-        <p class="pq-card__contact">{BOOKING} ·{IDENTITY.email} · {nbsp(phone)}</p>
+        <p class="pq-card__contact">{BOOKING} · {IDENTITY.email} · {nbsp(phone)}</p>
       </div>
     </PlaquettePage>
 
@@ -144,6 +154,11 @@ const schemaGraph = pageGraph({
         </div>
       </div>
 
+      <div class="pq-quote">
+        <span class="pq-quote__mark" aria-hidden="true">«&nbsp;</span>Mon travail, ce n'est pas de juger l'usage des écrans. C'est de créer un espace de rencontre — autour du jeu vidéo, des réseaux, du temps d'écran — entre un enfant et son parent, entre une famille et votre équipe.<span class="pq-quote__mark" aria-hidden="true">&nbsp;»</span>
+        <span class="pq-quote__src">Andy Zébus · médiateur numérique</span>
+      </div>
+
       <div class="pq-card pq-card--ivory">
         <span class="eyebrow">Ce que ça change pour vous</span>
         <p>Un seul interlocuteur qui fait le pont entre 3 mondes qui se parlent rarement&nbsp;: la culture joueur, le cadre du soin, le langage institutionnel. Côté enfant&nbsp;: un adulte qui joue sans juger. Côté parent&nbsp;: quelqu'un qui traduit. Côté équipe&nbsp;: un partenaire qui rend compte.</p>
@@ -171,7 +186,7 @@ const schemaGraph = pageGraph({
         <div>
           <div class="pq-step__phase">Stratégie <span class="pq-step__duration">ateliers parent-enfant</span></div>
           <h3 class="pq-step__title">Choisir une stratégie</h3>
-          <p class="pq-step__desc">La famille co-construit ses repères d'usage. L'enfant participe au choix des règles, ce qui désamorce les conflits plutôt que de les déplacer. Chaque atelier articule un temps de jeu partagé (30 à 45&nbsp;min) et un temps d'échange (45&nbsp;min à 1&nbsp;h).</p>
+          <p class="pq-step__desc">La famille co-construit ses repères d'usage. L'enfant participe au choix des règles, ce qui désamorce les conflits plutôt que de les déplacer.</p>
           <span class="pq-step__deliv">Repères d'usage co-construits, observation des interactions</span>
         </div>
       </div>
@@ -359,6 +374,23 @@ const schemaGraph = pageGraph({
   }
   .pq-lead strong { color: var(--ink); }
   .pq-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5mm; }
+  .pq-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .pq-mb-6 { margin-bottom: 5.5mm; }
+
+  /* ── Sous-blocs de feuille (Pour qui, En pratique) ─────── */
+  .pq-sub__eyebrow { margin: 0 0 2mm 0; }
+  /* Constat et parti-pris : deux colonnes à filet, comme « Pour qui ». */
+  .pq-duo > div { padding-top: 3mm; border-top: 1px solid var(--line); }
+  .pq-duo .eyebrow { margin-bottom: 0; }
+  .pq-duo p { margin: 2mm 0 0 0; font-size: 10pt; line-height: 1.5; }
+  .pq-duo strong { color: var(--ink); }
+  .pq-audiences { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5mm; }
+  .pq-audience { padding-top: 2.5mm; border-top: 2px solid var(--teal-mid); }
+  .pq-audience__title { font-size: 10.5pt; margin-bottom: 1.5mm; }
+  .pq-audience p { margin: 0; font-size: 9pt; line-height: 1.45; }
+  /* Faits en grille à filets, même traitement que la fiche du cas. */
+  .pq-practice { grid-template-columns: repeat(3, 1fr); column-gap: 5mm; row-gap: 0; margin-top: 0; }
+  .pq-practice > div { padding: 2.5mm 0; border-top: 1px dashed var(--line); }
 
   /* ── Couverture ────────────────────────────────────────── */
   .pq-cover__inner {
@@ -474,12 +506,12 @@ const schemaGraph = pageGraph({
     border-left: 3px solid var(--pxlc-coral);
     padding: 3mm 6mm;
     font-family: var(--font-display);
-    font-size: 14pt;
+    font-size: 12.5pt;
     line-height: 1.4;
     color: var(--ink);
     font-weight: 500;
     letter-spacing: -0.015em;
-    margin: 7mm 0;
+    margin: 5mm 0;
   }
   .pq-quote__mark { color: var(--pxlc-coral); }
   .pq-quote__src {
@@ -627,8 +659,8 @@ const schemaGraph = pageGraph({
   .pq-indicateurs__label { color: var(--teal-deep); }
   .pq-indicateurs p { margin: 0; font-size: 9pt; line-height: 1.45; }
   .pq-cas .pq-cas__intro { margin-top: 2.5mm; font-size: 9.5pt; }
-  .pq-cas__facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 3mm 0 0 0; }
-  .pq-cas__facts dt {
+  .pq-cas__facts, .pq-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; margin: 3mm 0 0 0; }
+  .pq-cas__facts dt, .pq-facts dt {
     font-family: var(--font-label);
     font-size: 7.5pt;
     font-weight: 600;
@@ -637,7 +669,7 @@ const schemaGraph = pageGraph({
     color: var(--teal-deep);
     margin-bottom: 1mm;
   }
-  .pq-cas__facts dd { margin: 0; font-size: 9pt; line-height: 1.4; color: var(--ink); }
+  .pq-cas__facts dd, .pq-facts dd { margin: 0; font-size: 9pt; line-height: 1.4; color: var(--ink); }
 
   /* ── Consentement ──────────────────────────────────────── */
   .pq-consent { font-size: 9.5pt; line-height: 1.55; color: var(--ink-muted); }
@@ -736,7 +768,7 @@ const schemaGraph = pageGraph({
      320 px. L'impression et le PDF gardent la mise en page A4 (média
      print, fenêtre de 794 px dans export-plaquette). */
   @media screen and (max-width: 760px) {
-    .pq-grid-3, .pq-cover__meta, .pq-bio, .pq-frameworks, .pq-etapes,
+    .pq-grid-3, .pq-grid-2, .pq-audiences, .pq-practice, .pq-cover__meta, .pq-bio, .pq-frameworks, .pq-etapes,
     .pq-themes, .pq-cas__facts, .pq-consent__fields, .pq-consent__sigs,
     .pq-step, .pq-indicateurs { grid-template-columns: 1fr; }
     .pq-cover__inner { padding: var(--space-6) var(--space-3) var(--space-5); }

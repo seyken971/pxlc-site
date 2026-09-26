@@ -6,20 +6,13 @@ import type { MethodStep } from '../components/MethodGrid.astro'
 import SessadCase from '../components/SessadCase.astro'
 import PxlcLinkout from '../components/PxlcLinkout.astro'
 import { pageGraph } from '../lib/schema'
-import { SITE, ZONE } from '../config/site'
+import { SITE } from '../config/site'
+import { AUDIENCES as audiences, PRACTICE as practice } from '../config/offer'
 import { IDENTITY } from '../config/identity'
 import andyEvent from '../assets/photos/andy-event.jpg'
 
 // L'accueil suit les questions d'une structure qui découvre PXLC : pour qui,
 // comment, concrètement quoi, avec quelle preuve. Un fait = un endroit.
-
-// Les structures clientes, regroupées par famille (liste « Clients » du
-// design system). Les familles sont bénéficiaires, pas clientes.
-const audiences = [
-  { title: 'Lecture publique et vie sociale', items: ['Médiathèques et bibliothèques', 'Centres sociaux et espaces de vie sociale', 'CCAS et dispositifs de réussite éducative'] },
-  { title: 'Éducation et parentalité', items: ['Écoles et centres socioculturels', 'Dispositifs CLAS', 'Lieux d’accueil enfants-parents (LAEP)'] },
-  { title: 'Médico-social', items: ['SESSAD', 'IME', 'CMPP', 'CAMSP'] },
-]
 
 // Méthode PXLC en trois temps — démarche comportementale alignée sur le rapport
 // DITP/MILDECA 2022 (diagnostic → stratégie partagée → dialogue). Générique à
@@ -29,20 +22,6 @@ const methodSteps: MethodStep[] = [
   { num: '01', title: 'Faire le point', desc: 'Je pars des usages réels de la famille — à quoi l’enfant joue, ce que l’écran représente. Observer avant de cadrer : la prise de conscience est déjà un levier.', tag: 'diagnostic' },
   { num: '02', title: 'Choisir une stratégie', desc: 'La famille co-construit ses repères d’usage. L’enfant participe au choix des règles, ce qui désamorce les conflits plutôt que de les déplacer.', tag: 'stratégie' },
   { num: '03', title: 'Dialogue continu', desc: 'Le cadre devient une clé d’explication impartiale : il ouvre la discussion parent-enfant au lieu de la fermer, et tient dans la durée.', tag: 'suivi' },
-]
-
-// L'essentiel d'une intervention — uniquement des faits déjà publiés
-// (plaquette, FAQ de /projets/, page contact). Tarif et nombre de séances :
-// aucun chiffre tant qu'Andy ne l'a pas fixé.
-const practice = [
-  { label: 'Format', value: 'Ateliers parent-enfant, conduits avec l’équipe de votre structure' },
-  { label: 'Une séance', value: 'Un temps de jeu partagé (30 à 45 min), puis un temps d’échange (45 min à 1 h)' },
-  { label: 'Restitution', value: 'Un bilan écrit, remis à l’équipe et discuté avec elle, réutilisable dans vos rapports d’activité' },
-  { label: 'Cadre', value: 'HCSP 2019-2020 · HAS 2020' },
-  { label: 'Matériel', value: 'Consoles et jeux prêtés, ou pris en charge par la structure' },
-  { label: 'Zone', value: ZONE.join(', ') },
-  { label: 'Tarif', value: 'Sur devis, selon le nombre d’ateliers, de familles et la durée' },
-  { label: 'Pour commencer', value: 'Un premier échange de 20 min, gratuit et sans engagement' },
 ]
 
 const seo = {
