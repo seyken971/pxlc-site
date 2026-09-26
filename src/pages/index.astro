@@ -21,11 +21,12 @@ const methodSteps: MethodStep[] = [
   { num: '03', title: 'Dialogue continu', desc: 'Le cadre devient une clé d’explication impartiale : il ouvre la discussion parent-enfant au lieu de la fermer, et tient dans la durée.', tag: 'suivi' },
 ]
 
+// Trois repères, pas un tableau de bord : la structure partenaire est déjà
+// nommée par le bandeau PartnerStrip juste en dessous.
 const stats = [
   { value: '8', label: 'familles accompagnées en 2026' },
   { value: '6 ans', label: 'sur la scène esport guadeloupéenne' },
-  { value: '1', label: 'structure partenaire engagée' },
-  { value: 'HCSP · HAS', label: 'cadre de référence (2019–2020)' },
+  { value: 'HCSP · HAS', label: 'cadre de référence\u00A0: HCSP\u00A02019-2020 · HAS\u00A02020' },
 ]
 
 const seo = {
@@ -57,9 +58,9 @@ const schemaGraph = pageGraph({
   <section class="section reperes-section" aria-labelledby="reperes-title">
     <div class="container">
       <h2 id="reperes-title" class="eyebrow">Quelques repères</h2>
-      <ul class="reperes-grid" role="list">
-        {stats.map((s, i) => (
-          <li class="repere" style={`--anim-delay: ${i * 0.07}s`}>
+      <ul class="reperes" role="list" data-reveal-stagger>
+        {stats.map(s => (
+          <li class="repere">
             <span class="repere__value">{s.value}</span>
             <span class="repere__label">{s.label}</span>
           </li>
@@ -79,27 +80,41 @@ const schemaGraph = pageGraph({
 </BaseLayout>
 
 <style>
+  /* Bandeau éditorial : trois repères séparés par des filets neutres, en
+     ligne sur bureau, en rangées sur mobile — pas de chiffres façon tableau
+     de bord. */
   .reperes-section { padding-block: var(--space-6); }
-  .reperes-grid {
+  .reperes {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-4);
-    margin: var(--space-4) 0 0;
+    grid-template-columns: 1fr;
+    margin: var(--space-3) 0 0;
     padding: 0;
     list-style: none;
+    border-block: 1px solid var(--line);
   }
-  @media (max-width: 768px) { .reperes-grid { grid-template-columns: repeat(2, 1fr); } }
-  .repere { display: flex; flex-direction: column; gap: var(--space-1); }
+  .repere {
+    display: grid;
+    grid-template-columns: minmax(0, 8.5rem) 1fr;
+    align-items: baseline;
+    gap: var(--space-3);
+    padding-block: var(--space-3);
+  }
+  .repere + .repere { border-top: 1px solid var(--line); }
+  @media (min-width: 768px) {
+    .reperes { grid-template-columns: repeat(3, 1fr); }
+    .repere { grid-template-columns: 1fr; gap: var(--space-1-5); padding: var(--space-4) var(--space-4) var(--space-4) 0; }
+    .repere + .repere { border-top: 0; border-left: 1px solid var(--line); padding-left: var(--space-4); }
+  }
   .repere__value {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: clamp(40px, 5vw, 56px);
+    font-size: var(--fs-title-3);
+    line-height: var(--lh-title-3);
+    letter-spacing: var(--ls-title-3);
     color: var(--ink);
-    line-height: 1;
-    letter-spacing: -0.04em;
-    border-top: 2px solid var(--pxlc-coral);
-    padding-top: var(--space-2);
-    display: block;
   }
-  .repere__label { font-family: var(--font-label); font-size: 12px; letter-spacing: 0.04em; color: var(--ink-muted); line-height: 1.4; }
+  @media (min-width: 768px) {
+    .repere__value { font-size: var(--fs-title-2); line-height: var(--lh-title-2); letter-spacing: var(--ls-title-2); }
+  }
+  .repere__label { font-family: var(--font-body); font-size: var(--fs-small); line-height: var(--lh-small); color: var(--ink-muted); }
 </style>

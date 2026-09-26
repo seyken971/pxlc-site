@@ -1,10 +1,11 @@
 ---
 /**
  * Section « Ma méthode en trois temps » : une carte par étape, coiffée de
- * la petite marque.
+ * la petite marque ; la première étape est mise en vedette (plus grande,
+ * fond parent-soft), les suivantes s'empilent à côté.
  * @usage Accueil.
  * @a11y Section reliée à son h2 (aria-labelledby) ; une carte = un article
- * titré en h3 ; marque et point final décoratifs.
+ * titré en h3 ; marque et numéro fantôme décoratifs.
  */
 import PxlcMark from './PxlcMark.astro'
 
@@ -20,19 +21,18 @@ const { steps } = Astro.props
   <div class="container">
     <header class="section__head">
       <span class="eyebrow">Méthode</span>
-      <h2 id="methode-title">Ma méthode en trois temps<span class="coral-dot" aria-hidden="true">.</span></h2>
+      <h2 id="methode-title">Ma méthode en trois temps</h2>
       <p class="lead">
         Une démarche en trois temps, pensée pour s’intégrer dans le projet d’un lieu qui accueille déjà des familles. Pas de discours moral, pas d’écran diabolisé — un cadre que votre équipe peut s’approprier.
       </p>
     </header>
-    <div class="grid grid--3">
+    <div class="method-grid" data-reveal-stagger>
       {steps.map((s, i) => (
         <article
-          class="card card--method"
+          class:list={['card', 'card--method', { 'card--featured': i === 0 }]}
           data-num={s.num}
-          style={`--anim-delay: ${i * 0.09}s`}
         >
-          <div class="card__duo"><PxlcMark size={20} decorative /></div>
+          <div class="card__mark"><PxlcMark size={20} decorative /></div>
           <div class="card__step-num">ÉTAPE {s.num}</div>
           <h3>{s.title}</h3>
           <p>{s.desc}</p>
@@ -44,8 +44,30 @@ const { steps } = Astro.props
 </section>
 
 <style>
-  /* Ghost step number — large decorative figure behind the card content.
-     Uses attr(data-num) so it matches the actual step without duplication. */
+  /* Grille éditoriale : l'étape 01 en vedette sur deux rangées à gauche,
+     02 et 03 empilées à droite (bureau) ; pleine largeur puis deux colonnes
+     (tablette) ; empilées (mobile). */
+  .method-grid { display: grid; gap: var(--space-3); grid-template-columns: 1fr; }
+  @media (min-width: 768px) {
+    .method-grid { gap: var(--space-4); grid-template-columns: 1fr 1fr; }
+    .method-grid .card--featured { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1024px) {
+    .method-grid { grid-template-columns: 1.25fr 1fr; }
+    .method-grid .card--featured { grid-column: 1; grid-row: 1 / span 2; }
+  }
+  .card--method { min-height: 0; }
+  .card--featured {
+    background: var(--parent-soft);
+    border-color: transparent;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  @media (min-width: 1024px) { .card--featured { padding: var(--space-6); } }
+  .card--featured h3 { font-size: var(--fs-title-2); line-height: var(--lh-title-2); letter-spacing: var(--ls-title-2); }
+  .card--featured p { font-size: var(--fs-lead); line-height: var(--lh-lead); max-width: 40ch; }
+
+  /* Numéro d'étape fantôme en fond de carte, tiré de data-num (pas de
+     doublon dans le balisage). Suit le thème via --parent. */
   .card--method::before {
     content: attr(data-num);
     position: absolute;
@@ -56,16 +78,14 @@ const { steps } = Astro.props
     font-size: clamp(72px, 9vw, 100px);
     line-height: 1;
     letter-spacing: -0.04em;
-    color: var(--pxlc-teal-deep);
-    opacity: 0.05;
+    color: color-mix(in srgb, var(--parent) 7%, transparent);
     pointer-events: none;
     user-select: none;
   }
-  :global([data-theme="dark"]) .card--method {
-    border-top: 2px solid var(--rule-accent);
-  }
-  :global([data-theme="dark"]) .card--method::before {
-    opacity: 0.09;
-    color: var(--pxlc-teal-mid);
+  .card--featured::before { color: color-mix(in srgb, var(--parent) 12%, transparent); }
+  /* Sur deux rangées, la vedette a la hauteur d'accueillir un grand chiffre
+     en haut, le texte restant calé en bas. */
+  @media (min-width: 1024px) {
+    .card--featured::before { top: var(--space-5); left: var(--space-6); right: auto; bottom: auto; font-size: 180px; }
   }
 </style>

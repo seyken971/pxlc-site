@@ -2,7 +2,7 @@
 // Legal / informational page — indexable : elle porte le NAP et engage
 // l’entité, donc elle a sa place dans l’index et dans le sitemap.
 import BaseLayout from '../layouts/BaseLayout.astro'
-import PxlcDuo from '../components/PxlcDuo.astro'
+import HeroSection from '../components/HeroSection.astro'
 import PxlcMark from '../components/PxlcMark.astro'
 import PxlcMarkSeparator from '../components/PxlcMarkSeparator.astro'
 import { pageGraph } from '../lib/schema'
@@ -27,20 +27,15 @@ const schemaGraph = pageGraph({
 
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
   <!-- ── Hero ──────────────────────────────────────────────── -->
-  <section class="legal-hero">
-    <div class="container">
-      <PxlcDuo class="legal-hero__strip" />
-      <span class="eyebrow eyebrow--lg">Informations légales</span>
-      <h1 class="legal-title">
-        Mentions légales<span class="coral-dot" aria-hidden="true">.</span>
-      </h1>
-      <p class="lead legal-lead">
-        Conformément à la loi pour la confiance dans l'économie numérique du 21 juin 2004, voici les
-        informations relatives à l'éditeur, à l'hébergeur et au traitement des données du site
-        <strong>pxlc.fr</strong>.
-      </p>
-    </div>
-  </section>
+  <HeroSection
+    breadcrumb
+    breadcrumbLabel="Mentions légales"
+    eyebrow="Informations légales"
+    title="Mentions légales"
+    titleDot
+  >
+    <p slot="lead">Conformément à la loi pour la confiance dans l'économie numérique du 21 juin 2004, voici les informations relatives à l'éditeur, à l'hébergeur et au traitement des données du site <strong>pxlc.fr</strong>.</p>
+  </HeroSection>
 
   <!-- ── Content ───────────────────────────────────────────── -->
   <section class="section">
@@ -48,7 +43,7 @@ const schemaGraph = pageGraph({
 
       <!-- Éditeur — carte branded -->
       <div class="legal-card">
-        <PxlcMark size={20} decorative class="card__duo legal-card__corner" />
+        <PxlcMark size={20} decorative class="card__mark legal-card__corner" />
         <h2 class="legal-card__label">Éditeur du site</h2>
         <div class="legal-card__name">Andy Zébus — Entrepreneur Individuel</div>
         <dl class="legal-dl">
@@ -139,30 +134,6 @@ const schemaGraph = pageGraph({
 </BaseLayout>
 
 <style>
-  /* ── Hero ─────────────────────────────────────────────────────── */
-  .legal-hero {
-    background: var(--surface-soft);
-    border-bottom: 1px solid var(--line);
-    padding: clamp(40px, 5vw, 64px) 0;
-    transition: background var(--dur-base);
-  }
-
-  .legal-hero :global(.legal-hero__strip) {
-    margin-bottom: var(--space-4);
-  }
-
-  .legal-title {
-    font-size: var(--fs-title-1);
-    letter-spacing: var(--ls-title-1);
-    line-height: var(--lh-title-1);
-    margin: var(--space-2) 0 var(--space-4);
-  }
-
-  .legal-lead {
-    max-width: 640px;
-    margin-bottom: 0;
-  }
-
   /* ── Content container ────────────────────────────────────────── */
   .legal-container { max-width: 760px; }
 
@@ -176,7 +147,7 @@ const schemaGraph = pageGraph({
     transition: background var(--dur-base);
   }
 
-  /* Surcharge de positionnement pour .card__duo. */
+  /* Surcharge de positionnement pour .card__mark. */
   .legal-card :global(.legal-card__corner) {
     top: var(--space-4);
     right: var(--space-4);
@@ -184,7 +155,7 @@ const schemaGraph = pageGraph({
 
   .legal-card__label {
     font-family: var(--font-label);
-    font-size: 11px;
+    font-size: var(--fs-label);
     font-weight: 600;
     letter-spacing: 0.18em;
     text-transform: uppercase;
@@ -195,7 +166,7 @@ const schemaGraph = pageGraph({
   .legal-card__name {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 18px;
+    font-size: var(--fs-lead);
     color: var(--ink);
     margin-bottom: var(--space-4);
   }
@@ -222,7 +193,7 @@ const schemaGraph = pageGraph({
 
   .legal-dl dt {
     font-family: var(--font-label);
-    font-size: 11px;
+    font-size: var(--fs-label);
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -230,14 +201,14 @@ const schemaGraph = pageGraph({
   }
 
   .legal-dl dd {
-    font-size: 14px;
+    font-size: var(--fs-small);
     color: var(--ink-muted);
     margin: 0;
   }
 
   .legal-dl dd code {
     font-family: var(--font-label);
-    font-size: 13px;
+    font-size: var(--fs-small);
     color: var(--parent);
     background: var(--surface-soft);
     padding: 1px 6px;

@@ -19,7 +19,20 @@ import { chromium } from 'playwright'
 import AxeBuilder from '@axe-core/playwright'
 import { startServer, discoverRoutes } from './static-server.mjs'
 
+// Le contenu à apparition (data-reveal*) reste à opacité 0 tant qu'il n'a
+// pas défilé à l'écran, et axe ignore le contraste d'un élément invisible ;
+// en plein fondu, axe mesure une couleur intermédiaire. Avant chaque scan :
+// tout révéler, puis attendre la fin de toutes les animations et transitions
+// — le contraste est mesuré sur l'état final, sur toute la page.
+const settle = page => page.evaluate(async () => {
+  document.querySelectorAll('[data-reveal], [data-reveal-stagger]')
+    .forEach(el => el.classList.add('is-visible'))
+  await new Promise(requestAnimationFrame)
+  await Promise.all(document.getAnimations().map(a => a.finished.catch(() => {})))
+})
+
 const runAxe = async (page, label) => {
+  await settle(page)
   const results = await new AxeBuilder({ page })
     .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'best-practice'])
     .analyze()

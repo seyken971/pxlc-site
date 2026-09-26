@@ -2,7 +2,7 @@
 import MapPin from '../icons/map-pin.svg'
 import Navigation from '../icons/navigation.svg'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import SiteBreadcrumb from '../components/SiteBreadcrumb.astro'
+import HeroSection from '../components/HeroSection.astro'
 import PxlcInput from '../components/PxlcInput.astro'
 import CommuneMap from '../components/CommuneMap.astro'
 import { IDENTITY } from '../config/identity'
@@ -36,27 +36,25 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
 ---
 
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
-  <section class="section section--page" aria-labelledby="contact-title">
+  <!-- Tête de page : gabarit commun ; la réassurance tient la place des CTA
+       (l'action de la page, c'est le formulaire juste en dessous). -->
+  <HeroSection
+    breadcrumb
+    eyebrow="Contact"
+    title="On en parle"
+    titleDot
+    titleMark={'\u00A0?'}
+    lead={'Décrivez votre structure, le public accompagné et le projet envisagé — je reviens sous 2\u00A0jours ouvrés.'}
+  >
+    <ul class="contact-assure" role="list">
+      <li>Premier échange de 20&nbsp;min, gratuit</li>
+      <li>Réponse sous 2&nbsp;jours ouvrés</li>
+      <li>Sans engagement</li>
+    </ul>
+  </HeroSection>
+
+  <section class="section">
     <div class="container">
-
-      <!-- ── Tête de page ─────────────────────────────────────── -->
-      <SiteBreadcrumb />
-      <div class="contact-head">
-        <span class="eyebrow eyebrow--lg">Contact</span>
-        <h1 id="contact-title" class="contact-title">
-          On en parle<span class="coral-dot" aria-hidden="true">&nbsp;?</span>
-        </h1>
-        <p class="contact-lead">
-          Décrivez votre structure, le public accompagné et le projet envisagé — je reviens sous 2&nbsp;jours ouvrés.
-        </p>
-      </div>
-      <ul class="contact-assure" role="list">
-        <li>Premier échange de 20&nbsp;min, gratuit</li>
-        <li>Réponse sous 2&nbsp;jours ouvrés</li>
-        <li>Sans engagement</li>
-      </ul>
-
-      <hr class="contact-sep" />
 
       <div class="contact-grid">
 
@@ -164,7 +162,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     <div class="container">
       <h2 id="steps-title" class="contact-h2">Ce qui se passe ensuite</h2>
       <p class="contact-note">Aucune étape n’engage à la suivante.</p>
-      <ol class="contact-steps__grid" role="list">
+      <ol class="contact-steps__grid" role="list" data-reveal-stagger>
         <li class="contact-step">
           <span class="contact-step__num" aria-hidden="true">01</span>
           <h3>Je vous réponds</h3>
@@ -239,42 +237,23 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
 </BaseLayout>
 
 <style>
-  /* ── Tête de page ────────────────────────────────────────────── */
-  .contact-head { max-width: 640px; }
-  .contact-title {
-    font-size: var(--fs-title-1);
-    line-height: var(--lh-title-1);
-    letter-spacing: var(--ls-title-1);
-    margin: 0 0 var(--space-3);
-  }
-  .contact-lead {
-    font-family: var(--font-body);
-    font-size: 17px;
-    line-height: 1.6;
-    color: var(--ink-muted);
-    margin: 0;
-    max-width: 52ch;
-    text-wrap: pretty;
-  }
-
   /* ── Réassurance ─────────────────────────────────────────────── */
   .contact-assure {
     display: flex; flex-wrap: wrap;
     gap: var(--space-2-5) var(--space-5);
-    margin: var(--space-5) 0 0; padding: 0; list-style: none;
-    font-family: var(--font-label); font-size: 13px;
+    margin: 0; padding: 0; list-style: none;
+    font-family: var(--font-label); font-size: var(--fs-small);
     color: var(--ink-muted);
   }
   .contact-assure li { display: flex; align-items: center; gap: 9px; }
   .contact-assure li::before {
     content: "";
     width: 6px; height: 6px; flex: 0 0 auto;
-    background: var(--pxlc-teal-mid);
+    background: var(--parent-mid);
     border-radius: 1px;
   }
 
-  /* ── Séparateur & titres de bloc ─────────────────────────────── */
-  .contact-sep { border: 0; border-top: 1px solid var(--line); margin: var(--space-5) 0; }
+  /* ── Titres de bloc ───────────────────────────────────────────── */
   .contact-h2 {
     font-size: var(--fs-title-3);
     line-height: var(--lh-title-3);
@@ -283,7 +262,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   }
   .contact-note {
     font-family: var(--font-body);
-    font-size: 14.5px;
+    font-size: var(--fs-small);
     color: var(--ink-quiet);
     margin: 0 0 var(--space-4);
   }
@@ -307,10 +286,10 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   @media (min-width: 640px) { .form-row { grid-template-columns: 1fr 1fr; } }
 
   .form-legend {
-    font-family: var(--font-label); font-size: 12px;
+    font-family: var(--font-label); font-size: var(--fs-small);
     color: var(--ink-quiet); margin: 0;
   }
-  .form-legend__req { color: var(--pxlc-coral); font-weight: 700; }
+  .form-legend__req { color: var(--child); font-weight: 700; }
 
   /* Chips « type de structure » : radios masqués mais focusables (jamais
      display: none), le label porte l'affordance. */
@@ -322,13 +301,15 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     display: flex; align-items: center;
     min-height: 38px; padding: 9px 15px;
     border: 1px solid var(--ink-quiet); border-radius: var(--radius-pill);
-    font-family: var(--font-label); font-size: 13px; font-weight: 500;
+    font-family: var(--font-label); font-size: var(--fs-small); font-weight: 500;
     color: var(--ink-muted);
     white-space: nowrap;
     cursor: pointer;
-    transition: color var(--dur-fast), border-color var(--dur-fast), background var(--dur-fast);
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
   }
-  .contact-chips label:hover { border-color: var(--parent-mid); }
+  @media (hover: hover) and (pointer: fine) {
+    .contact-chips label:hover { border-color: var(--parent-mid); }
+  }
   .contact-chips input:checked + label {
     border-color: var(--parent);
     color: var(--parent);
@@ -344,7 +325,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     gap: var(--space-3);
     margin-top: var(--space-1);
   }
-  .contact-submit-note { font-family: var(--font-label); font-size: 12.5px; color: var(--ink-quiet); }
+  .contact-submit-note { font-family: var(--font-label); font-size: var(--fs-small); color: var(--ink-quiet); }
 
   /* ── Carte de statut (remplace le formulaire) ────────────────── */
   .contact-sent {
@@ -360,29 +341,32 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   }
   .contact-sent__eyebrow {
     font-family: var(--font-label);
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.18em; text-transform: uppercase;
+    font-size: var(--fs-label); font-weight: 600;
+    letter-spacing: var(--ls-label); text-transform: uppercase;
     color: var(--parent);
     margin-bottom: var(--space-2-5);
   }
-  .contact-sent__text { font-size: 15px; color: var(--ink-muted); margin: 0; }
+  .contact-sent__text { font-size: var(--fs-body-sm); color: var(--ink-muted); margin: 0; }
   .contact-sent__fallback {
     display: flex; flex-wrap: wrap; align-items: center;
     gap: var(--space-2-5); margin-top: var(--space-3);
   }
   .contact-sent__link {
-    font-family: var(--font-body); font-weight: 600; font-size: 15px;
+    font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body-sm);
     color: var(--parent);
   }
   .contact-sent__copy {
-    font-family: var(--font-label); font-size: 12px; font-weight: 600;
+    font-family: var(--font-label); font-size: var(--fs-small); font-weight: 600;
     letter-spacing: 0.04em; color: var(--ink-muted);
     background: var(--surface-raised);
     border: 1px solid var(--line); border-radius: var(--radius-pill);
     padding: 0 var(--space-3); min-height: 44px; cursor: pointer;
-    transition: color var(--dur-fast), border-color var(--dur-fast);
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
   }
-  .contact-sent__copy:hover { color: var(--parent); border-color: var(--parent); }
+  .contact-sent__copy:active { transform: scale(0.97); }
+  @media (hover: hover) and (pointer: fine) {
+    .contact-sent__copy:hover { color: var(--parent); border-color: var(--parent); }
+  }
   .contact-sent__copy:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 
   /* ── Bloc territoire (carte + coordonnées) ───────────────────── */
@@ -402,20 +386,20 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   .contact-nap { font-style: normal; }
   .contact-nap__name {
     font-family: var(--font-display);
-    font-weight: 600; font-size: 15px;
+    font-weight: 600; font-size: var(--fs-body-sm);
     color: var(--ink);
     margin: 0 0 var(--space-1-5);
   }
   .contact-nap__line {
     font-family: var(--font-body);
-    font-size: 14px; line-height: 1.55;
+    font-size: var(--fs-small); line-height: 1.55;
     color: var(--ink-muted);
     margin: 0;
   }
   .contact-nap__line--links { margin-top: var(--space-2-5); }
   /* Souligné : lien au milieu de l'adresse, la couleur seule ne suffit pas (RGAA 10.6). */
   .contact-nap__link { color: var(--parent); text-decoration: underline; text-underline-offset: 3px; }
-  .contact-nap__link:hover { color: var(--child); }
+  .contact-nap__link:hover { text-decoration-thickness: 2px; }
 
   .contact-maplinks { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
   .contact-maplinks__pill {
@@ -423,13 +407,15 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     flex: 0 0 auto;
     min-height: 40px; padding: 9px 15px;
     border: 1px solid var(--line); border-radius: var(--radius-pill);
-    font-family: var(--font-label); font-size: 13px; font-weight: 600;
+    font-family: var(--font-label); font-size: var(--fs-small); font-weight: 600;
     color: var(--ink-muted);
     white-space: nowrap;
     text-decoration: none;
-    transition: color var(--dur-fast), border-color var(--dur-fast);
+    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
   }
-  .contact-maplinks__pill:hover { border-color: var(--parent); color: var(--parent); }
+  @media (hover: hover) and (pointer: fine) {
+    .contact-maplinks__pill:hover { border-color: var(--parent); color: var(--parent); }
+  }
   .contact-maplinks__pill:focus-visible { outline: none; box-shadow: var(--focus-ring); }
   .contact-maplinks :global(.contact-maplinks__icon) { width: 15px; height: 15px; flex: 0 0 auto; }
 
@@ -450,15 +436,15 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   .contact-step__num {
     display: block;
     font-family: var(--font-label);
-    font-size: 11px; font-weight: 600;
-    letter-spacing: 0.18em;
+    font-size: var(--fs-label); font-weight: 600;
+    letter-spacing: var(--ls-label);
     color: var(--parent);
     margin-bottom: var(--space-2-5);
   }
-  .contact-step h3 { font-size: 16px; margin: 0 0 var(--space-1-5); }
+  .contact-step h3 { font-size: var(--fs-body); margin: 0 0 var(--space-1-5); }
   .contact-step p {
     font-family: var(--font-body);
-    font-size: 14px; line-height: 1.55;
+    font-size: var(--fs-small); line-height: 1.55;
     color: var(--ink-quiet);
     margin: 0; max-width: 30ch;
   }

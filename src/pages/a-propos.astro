@@ -1,10 +1,7 @@
 ---
-import { Image } from 'astro:assets'
 import BaseLayout from '../layouts/BaseLayout.astro'
-import SiteBreadcrumb from '../components/SiteBreadcrumb.astro'
+import HeroSection from '../components/HeroSection.astro'
 import CitationBlock from '../components/CitationBlock.astro'
-import PxlcDuo from '../components/PxlcDuo.astro'
-import PxlcMark from '../components/PxlcMark.astro'
 import { ID, pageGraph } from '../lib/schema'
 import { breadcrumbItems } from '../lib/breadcrumb'
 import { IDENTITY } from '../config/identity'
@@ -35,10 +32,6 @@ const casquettes = [
   },
 ]
 
-// Filet supérieur des cartes : progression de la palette teal → cyan
-// (le coral reste réservé au nœud final de la chronologie).
-const casqAccents = ['var(--teal-deep)', 'var(--teal-mid)', 'var(--cyan)']
-
 const timeline = [
   { year: '2005', title: 'Premières compétitions de jeux vidéo', desc: 'Organisation d\'événements JV chez Kayanim\' (Pointe-à-Pitre).' },
   { year: '2010', title: 'Animateur de communauté — 100 000 inscrits', desc: 'Lancement du serveur France d\'Atlantica Online (Ndoors Europe).' },
@@ -68,51 +61,22 @@ const schemaGraph = pageGraph({
 ---
 
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
-  <!-- ── Hero ──────────────────────────────────────────────── -->
-  <section class="about-hero">
-    <PxlcDuo class="about-hero__strip" />
+  <HeroSection
+    breadcrumb
+    eyebrow="À propos"
+    title="Andy Zébus, médiateur numérique"
+    titleDot
+    lead={"Vos équipes reçoivent des familles où les écrans sont souvent devenus un point de friction. Médiateur numérique basé aux Abymes (Guadeloupe), j'ai créé PXLC pour y répondre autrement : faire du jeu vidéo un terrain de rencontre entre l'enfant, son parent et votre équipe — jamais un problème à résoudre."}
+    ctaPrimary={{ label: 'Prendre rendez-vous', href: IDENTITY.bookingUrl, external: true }}
+    ctaSecondary={{ label: 'Plaquette PDF · 6 pages', href: '/files/plaquette-pxlc.pdf', external: true }}
+    ctaSecondaryAlt={{ label: 'Lire en ligne', href: '/plaquette/', ariaLabel: 'Lire en ligne (plaquette, version web accessible)' }}
+    photo={andyPortrait}
+    photoAlt="Portrait d'Andy Zébus, médiateur numérique"
+  />
+
+  <!-- ── En bref — fiche technique du professionnel ─────────────── -->
+  <section class="about-facts-section" aria-label="En bref">
     <div class="container">
-      <div class="about-grid">
-        <div>
-          <SiteBreadcrumb />
-          <span class="eyebrow eyebrow--lg">À propos</span>
-          <h1 class="about-title">
-            Andy Zébus, médiateur numérique<span class="coral-dot" aria-hidden="true">.</span>
-          </h1>
-          <p class="about-lead">
-            Vos équipes reçoivent des familles où les écrans sont souvent devenus un point de friction. Médiateur
-            numérique basé aux Abymes (Guadeloupe), j'ai créé PXLC pour y répondre autrement&nbsp;: faire du jeu vidéo
-            un terrain de rencontre entre l'enfant, son parent et votre équipe — jamais un problème à résoudre.
-          </p>
-          <div class="hero__actions">
-            <a
-              href={IDENTITY.bookingUrl} target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--lg"
-              aria-label="Prendre rendez-vous (nouvel onglet)">Prendre rendez-vous</a>
-            <a
-              href="/files/plaquette-pxlc.pdf" target="_blank" rel="noopener noreferrer"
-              class="btn btn--ghost btn--lg btn--no-arrow" aria-label="Plaquette PDF · 6 pages (nouvel onglet)">Plaquette
-              PDF · 6 pages</a>
-            <a href="/plaquette/" class="hero__alt" aria-label="Lire en ligne (plaquette, version web accessible)">Lire en ligne</a>
-          </div>
-        </div>
-
-        <div class="about-portrait">
-          <div class="about-portrait__img">
-            <Image
-              src={andyPortrait}
-              alt="Portrait d'Andy Zébus, médiateur numérique"
-              widths={[480, 960]}
-              sizes="(max-width: 767px) 100vw, 480px"
-              format="webp"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </div>
-          <PxlcMark size={20} decorative class="about-portrait__corner" />
-        </div>
-      </div>
-
-      <!-- Spec sheet — fiche technique du professionnel -->
       <dl class="about-facts">
         {facts.map(f => (
           <div class="about-fact">
@@ -129,19 +93,15 @@ const schemaGraph = pageGraph({
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">Parcours</span>
-        <h2 id="parcours-title">Trois casquettes, une cohérence<span class="coral-dot" aria-hidden="true">.</span></h2>
+        <h2 id="parcours-title">Trois casquettes, une cohérence</h2>
         <p class="lead">
           Trois expériences professionnelles distinctes — et une seule cohérence&nbsp;: mettre le jeu au service du
           lien.
         </p>
       </header>
-      <div class="grid grid--3 casquettes">
-        {casquettes.map((c, i) => (
-          <article
-            class="card casquette-card animate-in"
-            style={`--anim-delay: ${i * 0.09}s; --casq-accent: ${casqAccents[i]}`}
-          >
-            <span class="casquette-num" aria-hidden="true">{c.num}</span>
+      <div class="grid grid--3 casquettes" data-reveal-stagger>
+        {casquettes.map(c => (
+          <article class="card casquette-card" data-num={c.num}>
             <span class="kicker">Casquette {c.num}</span>
             <h3 class="casquette-title">{c.titre}</h3>
             <p class="casquette-desc">{c.desc}</p>
@@ -155,16 +115,11 @@ const schemaGraph = pageGraph({
     <div class="container">
       <header class="section__head">
         <span class="eyebrow">Chronologie</span>
-        <h2 id="timeline-title">De la compétition JV à la médiation familiale<span
-          class="coral-dot"
-          aria-hidden="true">.</span></h2>
+        <h2 id="timeline-title">De la compétition JV à la médiation familiale</h2>
       </header>
-      <ul class="timeline">
+      <ul class="timeline" data-reveal-stagger>
         {timeline.map((step, i) => (
-          <li
-            class="timeline__item animate-in"
-            style={`--anim-delay: ${i * 0.07}s`}
-          >
+          <li class="timeline__item">
             <span class:list={['timeline__year', { 'timeline__year--range': step.year.length > 4 }]}>{step.year}</span>
             <span
               class:list={['timeline__node', { 'timeline__node--last': i === timeline.length - 1 }]}
@@ -186,110 +141,14 @@ const schemaGraph = pageGraph({
 </BaseLayout>
 
 <style>
-  /* ── Hero ────────────────────────────────────────────────────── */
-  .about-hero {
-    position: relative;
-    background: var(--surface-soft);
-    border-bottom: 1px solid var(--line);
-    padding: clamp(40px, 5vw, 64px) 0;
-    transition: background var(--dur-base);
-  }
-
-  /* Texture dot-grid — la trame pixel de la marque, fondue vers le bas. */
-  .about-hero::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(var(--dot-grid) 1.5px, transparent 1.5px);
-    background-size: 22px 22px;
-    mask-image: radial-gradient(ellipse 150% 90% at 50% 0%, black 30%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 150% 90% at 50% 0%, black 30%, transparent 75%);
-    pointer-events: none;
-  }
-
-  .about-hero :global(.about-hero__strip) {
-    position: absolute;
-    top: 24px;
-    right: clamp(20px, 4vw, 56px);
-  }
-
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: clamp(32px, 5vw, 56px);
-    align-items: start;
-    position: relative;
-  }
-
-  @media (max-width: 900px) {
-    .about-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .about-title {
-    font-size: var(--fs-title-1);
-    line-height: var(--lh-title-1);
-    letter-spacing: var(--ls-title-1);
-    margin: 0 0 20px;
-    text-wrap: balance;
-  }
-
-  .about-lead {
-    font-size: 17px;
-    line-height: 1.55;
-    color: var(--ink-muted);
-    max-width: 580px;
-  }
-
-  /* ── Portrait — la photo se résout elle aussi en point coral ──── */
-  .about-portrait {
-    position: relative;
-  }
-
-  /* Cadre décalé — écho géométrique du pixel, derrière la photo. */
-  .about-portrait::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    transform: translate(12px, 12px);
-    border: 2px solid var(--teal-mid);
-    border-radius: var(--radius-lg);
-    pointer-events: none;
-  }
-
-  .about-portrait__img {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-  }
-
-  @media (max-width: 900px) {
-    .about-portrait__img {
-      max-height: 50vh;
-    }
-  }
-
-  .about-portrait__img :global(img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .about-portrait :global(.about-portrait__corner) {
-    position: absolute;
-    right: -6px;
-    bottom: -6px;
-  }
+  /* ── En bref : bandeau fiche, sous le hero ──────────────────── */
+  .about-facts-section { padding-block: var(--space-5); border-bottom: 1px solid var(--line); }
 
   /* ── Facts — bandeau spec sheet ──────────────────────────────── */
   .about-facts {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    border-block: 1px solid var(--line);
-    margin: var(--space-6) 0 0;
+    margin: 0;
     position: relative;
   }
 
@@ -323,8 +182,8 @@ const schemaGraph = pageGraph({
 
   .about-fact__label {
     font-family: var(--font-label);
-    font-size: 11px;
-    letter-spacing: 0.18em;
+    font-size: var(--fs-label);
+    letter-spacing: var(--ls-label);
     text-transform: uppercase;
     color: var(--ink-quiet);
     margin-bottom: var(--space-2);
@@ -333,7 +192,7 @@ const schemaGraph = pageGraph({
   .about-fact__value {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 17px;
+    font-size: var(--fs-lead);
     font-variant-numeric: tabular-nums;
     color: var(--ink);
     margin: 0;
@@ -344,19 +203,11 @@ const schemaGraph = pageGraph({
     overflow: hidden;
   }
 
-  /* Filet supérieur — progression teal-deep → teal-mid → cyan. */
+  /* Numéro fantôme décoratif, tiré de data-num (comme les cartes méthode) :
+     un pseudo-élément n'entre ni dans l'arbre d'accessibilité ni dans le
+     contrôle de contraste, contrairement à un span aria-hidden. */
   .casquette-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: var(--casq-accent, var(--teal-mid));
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  }
-
-  .casquette-num {
+    content: attr(data-num);
     position: absolute;
     top: -14px;
     right: 8px;
@@ -368,21 +219,22 @@ const schemaGraph = pageGraph({
     color: color-mix(in srgb, var(--ink) 7%, transparent);
     pointer-events: none;
     user-select: none;
-    transition: color var(--dur-base) var(--ease-step);
+    transition: color var(--dur-base) var(--ease-out);
   }
 
-  .casquette-card:hover .casquette-num {
-    color: color-mix(in srgb, var(--teal-mid) 22%, transparent);
+  @media (hover: hover) and (pointer: fine) {
+    .casquette-card:hover::before {
+      color: color-mix(in srgb, var(--teal-mid) 22%, transparent);
+    }
   }
 
   .casquette-title {
-    font-size: 18px;
     margin: var(--space-2) 0;
     position: relative;
   }
 
   .casquette-desc {
-    font-size: 15px;
+    font-size: var(--fs-body-sm);
     line-height: 1.6;
     position: relative;
   }
@@ -397,18 +249,9 @@ const schemaGraph = pageGraph({
       transform: translateY(24px);
     }
 
+    /* Le reveal anime `translate`, pas `transform` : l'escalier tient. */
     .casquette-card:nth-child(3) {
       transform: translateY(48px);
-    }
-
-    /* Le reveal .animate-in anime transform — une fois visible, on rend
-       la main au décalage de l'escalier via la transition existante. */
-    .casquette-card:nth-child(2):not(.is-visible) {
-      transform: translateY(42px);
-    }
-
-    .casquette-card:nth-child(3):not(.is-visible) {
-      transform: translateY(66px);
     }
   }
 
@@ -471,7 +314,7 @@ const schemaGraph = pageGraph({
     height: 12px;
     border-radius: 1px;
     background: var(--teal-mid);
-    box-shadow: 0 0 0 4px var(--surface-soft);
+    box-shadow: 0 0 0 4px var(--surface);
     z-index: 1;
   }
 
@@ -490,7 +333,7 @@ const schemaGraph = pageGraph({
   .timeline__node--last::before {
     width: 16px;
     height: 16px;
-    background: var(--pxlc-coral);
+    background: var(--child);
   }
 
   .timeline__node--last::after {
@@ -522,14 +365,14 @@ const schemaGraph = pageGraph({
   .timeline__title {
     font-family: var(--font-display);
     font-weight: 600;
-    font-size: 17px;
+    font-size: var(--fs-lead);
     color: var(--ink);
     display: block;
     padding-top: 6px;
   }
 
   .timeline__desc {
-    font-size: 15px;
+    font-size: var(--fs-body-sm);
     line-height: 1.6;
     color: var(--ink-muted);
     margin: var(--space-1) 0 0;

@@ -16,7 +16,8 @@
  *
  * Règles :
  *   R1 hex-brut       — #RRGGBB / #RGB dans <style> → utiliser var(--pxlc-*)
- *   R2 gradient       — linear/radial-gradient interdits
+ *   R2 gradient       — tout gradient interdit (linear, radial, conic,
+ *                       repeating-*)
  *   R3 font-famille   — "Sora", "DM Sans", "JetBrains Mono" hardcodés
  *   R4 radius-brut    — border-radius > 2 px sans var(--radius-*)
  *   R5 vocab-interdit — termes bannis dans le balisage
@@ -25,9 +26,7 @@
  *                       pages trop longs, et SITE.description de
  *                       src/config/site.ts
  *   R8 rgba-brut      — rgba()/rgb() dans <style> → utiliser un token
- *                       (radial-gradient reste autorisé, mais sa couleur
- *                       doit être un token, ex. var(--dot-grid))
- *   R9 ease-brut      — cubic-bezier() brut → utiliser var(--ease-step)
+ *   R9 ease-brut      — cubic-bezier() brut → utiliser var(--ease-out) ou var(--ease-in-out)
  *                       (les durées ne sont pas lintées : les delays de
  *                       chorégraphie hors échelle sont légitimes)
  *   R10 nommage       — composants src/components en PascalCase, deux
@@ -53,12 +52,13 @@ import { parseComponentDoc } from './component-docs.mjs'
 const ROOT      = process.cwd()
 const SCAN_DIRS = ['src/components', 'src/pages', 'src/layouts']
 const SCAN_EXTS = ['.astro']
-// Feuilles CSS globales soumises aux règles couleurs brutes (R1 hex, R8 rgba).
+// Feuilles CSS globales soumises aux règles couleurs brutes (R1 hex, R8 rgba),
+// aux courbes (R9) et à l'interdiction des gradients (R2).
 // tokens.css est exempté : c'est la source des valeurs hex/rgba — les
 // littéraux y sont légitimes, c'est partout ailleurs qu'ils sont interdits.
-// R2/R3/R4 restent scopés aux composants et pages.
+// R3/R4 restent scopés aux composants et pages.
 const CSS_FILES = ['src/styles/styles.css']
-const CSS_RULES = new Set(['hex-brut', 'rgba-brut', 'ease-brut'])
+const CSS_RULES = new Set(['hex-brut', 'gradient', 'rgba-brut', 'ease-brut'])
 
 // ── Vocabulaire interdit ───────────────────────────────────────────────────────
 // Classé du plus long au plus court pour éviter les faux-positifs en cas de
@@ -166,12 +166,12 @@ function lintStyle(raw, file, only = null) {
     },
   )
 
-  // R2 — Gradient (linear-gradient et repeating-* interdits ;
-  //   radial-gradient autorisé pour les textures type dot-grid)
+  // R2 — Gradient : aucun, sous aucune forme (design system PXLC 2026 :
+  //   couleurs plates uniquement)
   flag(
-    /(repeating-linear|repeating-radial|linear)-gradient/g,
+    /\b(?:repeating-)?(?:linear|radial|conic)-gradient/g,
     'gradient',
-    m => `${m[0]}(...) → les gradients linéaires et repeating sont interdits par le DS`,
+    m => `${m[0]}(...) → les gradients sont interdits par le DS (couleurs plates)`,
   )
 
   // R3 — Font-family hardcodée
@@ -192,14 +192,14 @@ function lintStyle(raw, file, only = null) {
   flag(
     /\brgba?\(/g,
     'rgba-brut',
-    () => 'rgba()/rgb() → utiliser un token (--shadow-*, --ring-*, --dot-grid, --rule-accent…)',
+    () => 'rgba()/rgb() → utiliser un token (--shadow-*, --ring-*, --rule-accent…)',
   )
 
-  // R9 — cubic-bezier() brut (la courbe de marque est var(--ease-step))
+  // R9 — cubic-bezier() brut (les deux courbes de marque : var(--ease-out), var(--ease-in-out))
   flag(
     /\bcubic-bezier\(/g,
     'ease-brut',
-    () => 'cubic-bezier() → utiliser var(--ease-step)',
+    () => 'cubic-bezier() → utiliser var(--ease-out) ou var(--ease-in-out)',
   )
 
   return vs

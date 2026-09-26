@@ -1,16 +1,20 @@
 ---
 /**
- * Hero de page : eyebrow, titre h1, chapô, un CTA primaire et un CTA
- * secondaire, photo et pastille facultatives, filigrane du logo.
- * @usage Une fois par page, en tête ; porte l'unique h1.
+ * Hero de page, gabarit unique de toutes les pages : fil d'Ariane
+ * (facultatif), eyebrow, titre h1, chapô, zone d'action (CTA ou contenu
+ * libre), photo facultative dans un cadre décalé. Sans photo, le texte garde
+ * la même largeur de colonne.
+ * @usage Une fois par page, en tête ; porte l'unique h1. Le slot par défaut
+ * remplace ou complète les CTA (ex. réassurance du contact) ; le slot
+ * « lead » remplace le chapô texte quand il faut du balisage.
  * @a11y Section reliée à son h1 ; CTA externes suffixés « (nouvel
- * onglet) » dans leur aria-label ; filigrane en aria-hidden ; photo
- * décrite par photoAlt.
+ * onglet) » dans leur aria-label ; marque finale du titre et cadre en
+ * aria-hidden ; photo décrite par photoAlt.
  */
 import type { ImageMetadata } from 'astro'
 import { Image } from 'astro:assets'
 import PxlcMark from './PxlcMark.astro'
-import PxlcDuo from './PxlcDuo.astro'
+import SiteBreadcrumb from './SiteBreadcrumb.astro'
 
 interface Cta { label: string, href: string, external?: boolean }
 /** Lien texte discret à côté du CTA secondaire (ex. version web de la plaquette PDF). */
@@ -18,13 +22,19 @@ interface AltLink { label: string, href: string, ariaLabel?: string }
 interface Pill { eyebrow: string, text: string }
 
 interface Props {
+  /** Affiche le fil d'Ariane au-dessus de l'eyebrow (pages intérieures). */
+  breadcrumb?: boolean
+  /** Libellé du dernier segment du fil d'Ariane quand la page n'est pas dans la nav. */
+  breadcrumbLabel?: string
   /** Surtitre au-dessus du h1. */
   eyebrow?: string
   /** Titre de la page, rendu en h1. */
   title: string
-  /** Ajoute un point final stylé (coral-dot) après le titre. */
+  /** Ajoute une marque finale corail après le titre. */
   titleDot?: boolean
-  /** Chapô sous le titre. */
+  /** Marque finale du titre (par défaut un point ; ex. « ? » précédé d'une insécable). */
+  titleMark?: string
+  /** Chapô sous le titre (texte simple ; slot « lead » pour du balisage). */
   lead?: string
   /** Le CTA primaire de la section (un seul). */
   ctaPrimary?: Cta | null
@@ -40,13 +50,14 @@ interface Props {
   photoAlt?: string
   /** Pastille posée sur la photo : surtitre et texte. */
   pill?: Pill | null
-  /** Affiche le logo en filigrane incliné en fond. */
-  showBgMark?: boolean
 }
 const {
+  breadcrumb = false,
+  breadcrumbLabel,
   eyebrow = 'PXLC · Guadeloupe',
   title,
   titleDot = false,
+  titleMark = '.',
   lead = '',
   ctaPrimary = null,
   ctaSecondary = null,
@@ -55,59 +66,58 @@ const {
   photo = null,
   photoAlt = '',
   pill = null,
-  showBgMark = true,
 } = Astro.props
+
+const hasCtas = Boolean(ctaPrimary || ctaSecondary || ctaSecondaryAlt || hint)
+const hasLeadSlot = Astro.slots.has('lead')
 ---
 
 <section class="hero" aria-labelledby="hero-title">
-  <div class="hero__strip"><PxlcDuo /></div>
-  {showBgMark && (
-    <div class="hero__bg-mark" aria-hidden="true">
-      <PxlcMark size={420} decorative />
-    </div>
-  )}
   <div class="container">
     <div class="hero__inner">
-      <div>
+      <div class="enter">
+        {breadcrumb && <SiteBreadcrumb currentLabel={breadcrumbLabel} />}
         <span class="eyebrow">{eyebrow}</span>
-        <h1
-          id="hero-title"
-          class:list={['hero__title', { 'hero__title--dot': titleDot }]}
-        >{title}</h1>
-        {lead && <p class="hero__lead">{lead}</p>}
-        <div class="hero__actions">
-          {ctaPrimary && !ctaPrimary.external && (
-            <a href={ctaPrimary.href} class="btn btn--primary btn--lg">{ctaPrimary.label}</a>
-          )}
-          {ctaPrimary && ctaPrimary.external && (
-            <a
-              href={ctaPrimary.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn--primary btn--lg"
-              aria-label={`${ctaPrimary.label} (nouvel onglet)`}
-            >{ctaPrimary.label}</a>
-          )}
+        <h1 id="hero-title" class="hero__title">{title}{titleDot && <span class="coral-dot" aria-hidden="true">{titleMark}</span>}</h1>
+        {hasLeadSlot
+          ? <div class="hero__lead"><slot name="lead" /></div>
+          : lead && <p class="hero__lead">{lead}</p>}
+        {hasCtas && (
+          <div class="hero__actions">
+            {ctaPrimary && !ctaPrimary.external && (
+              <a href={ctaPrimary.href} class="btn btn--primary btn--lg">{ctaPrimary.label}</a>
+            )}
+            {ctaPrimary && ctaPrimary.external && (
+              <a
+                href={ctaPrimary.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn--primary btn--lg"
+                aria-label={`${ctaPrimary.label} (nouvel onglet)`}
+              >{ctaPrimary.label}</a>
+            )}
 
-          {ctaSecondary && !ctaSecondary.external && (
-            <a href={ctaSecondary.href} class="btn btn--ghost btn--lg btn--no-arrow">{ctaSecondary.label}</a>
-          )}
-          {ctaSecondary && ctaSecondary.external && (
-            <a
-              href={ctaSecondary.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn btn--ghost btn--lg btn--no-arrow"
-              aria-label={`${ctaSecondary.label} (nouvel onglet)`}
-            >{ctaSecondary.label}</a>
-          )}
+            {ctaSecondary && !ctaSecondary.external && (
+              <a href={ctaSecondary.href} class="btn btn--ghost btn--lg btn--no-arrow">{ctaSecondary.label}</a>
+            )}
+            {ctaSecondary && ctaSecondary.external && (
+              <a
+                href={ctaSecondary.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn btn--ghost btn--lg btn--no-arrow"
+                aria-label={`${ctaSecondary.label} (nouvel onglet)`}
+              >{ctaSecondary.label}</a>
+            )}
 
-          {ctaSecondaryAlt && (
-            <a href={ctaSecondaryAlt.href} class="hero__alt" aria-label={ctaSecondaryAlt.ariaLabel}>{ctaSecondaryAlt.label}</a>
-          )}
+            {ctaSecondaryAlt && (
+              <a href={ctaSecondaryAlt.href} class="hero__alt" aria-label={ctaSecondaryAlt.ariaLabel}>{ctaSecondaryAlt.label}</a>
+            )}
 
-          {hint && <span class="hero__hint">{hint}</span>}
-        </div>
+            {hint && <span class="hero__hint">{hint}</span>}
+          </div>
+        )}
+        <slot />
       </div>
 
       {photo && (
@@ -123,6 +133,7 @@ const {
               fetchpriority="high"
             />
           </div>
+          <PxlcMark size={20} decorative class="hero__media-corner" />
           {pill && (
             <div class="hero__pill">
               <div class="hero__pill-eyebrow">{pill.eyebrow}</div>
@@ -134,10 +145,3 @@ const {
     </div>
   </div>
 </section>
-
-<style>
-  /* Coupures de ligne équilibrées par le navigateur (titre court). */
-  .hero__title { text-wrap: balance; }
-  /* Coral-dot period rendered via CSS — immune to source-whitespace sensitivity. */
-  .hero__title--dot::after { content: '.'; color: var(--pxlc-coral); }
-</style>

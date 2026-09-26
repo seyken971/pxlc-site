@@ -6,7 +6,6 @@ import '../styles/styles.css'
 import { SITE } from '../config/site'
 import { THEME_SCRIPT } from '../lib/theme-script'
 import PxlcLockup from '../components/PxlcLockup.astro'
-import PxlcDuo from '../components/PxlcDuo.astro'
 ---
 
 <html lang={SITE.lang}>
@@ -25,8 +24,7 @@ import PxlcDuo from '../components/PxlcDuo.astro'
     <main id="main" class="errpage">
       <div class="container errpage__inner">
         <PxlcLockup size="md" href="/" class="errpage__brand" />
-        <PxlcDuo class="errpage__strip" />
-        <span class="eyebrow eyebrow--lg">Erreur 404</span>
+        <span class="eyebrow">Erreur 404</span>
         <h1 class="errpage__title">
           Page introuvable<span class="coral-dot" aria-hidden="true">.</span>
         </h1>
@@ -54,7 +52,6 @@ import PxlcDuo from '../components/PxlcDuo.astro'
   .errpage__inner { max-width: 560px; }
 
   .errpage :global(.errpage__brand) { margin-bottom: var(--space-6); }
-  .errpage :global(.errpage__strip) { margin-bottom: var(--space-4); }
 
   .errpage__title {
     font-family: var(--font-display);
@@ -62,13 +59,13 @@ import PxlcDuo from '../components/PxlcDuo.astro'
     font-size: var(--fs-title-1);
     letter-spacing: var(--ls-title-1);
     line-height: var(--lh-title-1);
-    margin: var(--space-2) 0 var(--space-4);
+    margin: 0 0 var(--space-4);
     color: var(--ink);
   }
 
   .errpage__lead {
     max-width: 480px;
-    margin-bottom: var(--space-6);
+    margin-bottom: var(--space-5);
   }
 
   .errpage__actions {

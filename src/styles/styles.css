@@ -4,20 +4,38 @@
 @import "./tokens.css";
 
 /* ── Scroll reveal ────────────────────────────────────────── */
-/* Apparition au défilement : BaseLayout ajoute .is-visible
-   (IntersectionObserver). Désactivé si l'utilisateur réduit les animations. */
-@media (prefers-reduced-motion: no-preference) {
-  .animate-in,
-  .card--method {
-    opacity: 0;
-    transform: translateY(18px);
-    transition:
-      opacity 0.5s var(--ease-step),
-      transform 0.5s var(--ease-step);
-    transition-delay: var(--anim-delay, 0s);
-  }
-  .animate-in.is-visible,
-  .card--method.is-visible { opacity: 1; transform: translateY(0); }
+/* Apparition au défilement, une seule fois : BaseLayout ajoute .is-visible
+   (IntersectionObserver). [data-reveal] anime l'élément, [data-reveal-stagger]
+   ses enfants directs, décalés via --i (posé par le script, plafonné à 6).
+   Rien n'est masqué sans JS : .js est posée sur <html> par THEME_SCRIPT.
+   Une animation (et non une transition) : elle ne touche pas aux
+   transitions propres des éléments (survol des cartes) et n'y laisse aucun
+   délai. Elle anime la propriété `translate`, pas `transform`, pour ne pas
+   écraser un décalage de mise en page (escalier des casquettes). */
+@keyframes rise { from { opacity: 0; translate: 0 12px; } }
+@keyframes fade-in { from { opacity: 0; } }
+.js [data-reveal]:not(.is-visible),
+.js [data-reveal-stagger]:not(.is-visible) > * { opacity: 0; }
+.js [data-reveal].is-visible,
+.js [data-reveal-stagger].is-visible > * { animation: rise var(--dur-enter) var(--ease-out) both; }
+.js [data-reveal-stagger].is-visible > * { animation-delay: calc(min(var(--i, 0), 6) * var(--dur-stagger)); }
+/* Mouvement réduit : fondu seul, sans déplacement. */
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal].is-visible,
+  .js [data-reveal-stagger].is-visible > * { animation-name: fade-in; }
+}
+
+/* ── Entrée au chargement ─────────────────────────────────── */
+/* Cascade du hero : chaque enfant de .enter monte de 12 px en fondu,
+   décalé via --i. Animation CSS pure : sans JS, le contenu s'affiche. */
+.enter > * { animation: rise var(--dur-enter) var(--ease-out) both; animation-delay: calc(var(--i, 0) * var(--dur-stagger)); }
+.enter > :nth-child(2) { --i: 1; }
+.enter > :nth-child(3) { --i: 2; }
+.enter > :nth-child(4) { --i: 3; }
+.enter > :nth-child(5) { --i: 4; }
+.enter > :nth-child(n + 6) { --i: 5; }
+@media (prefers-reduced-motion: reduce) {
+  .enter > * { animation-name: fade-in; }
 }
 
 /* ── Reset & globals ─────────────────────────────────────── */
@@ -33,15 +51,17 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   font-weight: 400;
-  transition: background var(--dur-base) var(--ease-step), color var(--dur-base) var(--ease-step);
+  transition: background-color var(--dur-base) var(--ease-in-out), color var(--dur-base) var(--ease-in-out);
 }
 /* Wrap the global anchor color in :where() so it has 0,0,0 specificity.
    Without this, [data-theme="dark"] a (specificity 0,1,1) outranks any
    class rule like .btn--primary (0,1,0) or .mobile-menu__link (0,1,0),
    which silently turns buttons coral-on-coral and mobile-menu links cyan
    in dark mode. With :where() any class-scoped color wins automatically. */
-:where(a) { color: var(--link); text-decoration: none; transition: color var(--dur-fast); }
+:where(a) { color: var(--link); text-decoration: none; transition: color var(--dur-fast) var(--ease-out); }
 :where(a):hover { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+/* Titres : pas de veuve sur la dernière ligne. */
+h1, h2, h3 { text-wrap: balance; }
 /* WCAG 1.4.1 : un lien dans le texte se distingue autrement que par la
    couleur. Les liens sans classe sont soulignés ; boutons et liens de
    navigation portent leur propre classe. */
@@ -83,9 +103,9 @@ main[tabindex="-1"]:focus { outline: none; }
 /* ── Layout ──────────────────────────────────────────────── */
 .container { width: 100%; max-width: var(--container-max); margin: 0 auto; padding: 0 var(--container-pad); }
 .section { padding: clamp(var(--space-6), 8vw, var(--space-9)) 0; position: relative; }
-/* Couleur plate (design system PXLC 2026 : aucun dégradé) — le filet
-   haut et bas signale le changement de surface. */
-.section--soft { background: var(--surface-soft); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+/* Un seul fond de page (--surface) : une section « soft » ne change plus
+   de couleur, elle se détache par ses filets haut et bas. */
+.section--soft { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 /* Padding d'ouverture de page — aligné sur .hero pour cohérence visuelle */
 .section--page { padding: clamp(40px, 5vw, var(--space-7)) 0; }
 .section__head { max-width: 760px; margin-bottom: var(--space-6); }
@@ -119,8 +139,9 @@ main[tabindex="-1"]:focus { outline: none; }
   margin-top: calc((1.6em - 7px) / 2);
   border-radius: 2px; background: var(--child);
 }
-.kicker { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-quiet); }
-.coral-dot { color: var(--pxlc-coral); }
+.kicker { font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--ink-quiet); }
+/* Point final corail : réservé au titre de page (h1). */
+.coral-dot { color: var(--child); }
 
 /* ── Buttons ─────────────────────────────────────────────── */
 .btn {
@@ -139,13 +160,25 @@ main[tabindex="-1"]:focus { outline: none; }
   line-height: 1.2;
   min-height: 44px;
   text-decoration: none;
-  transition: background var(--dur-base) var(--ease-step), color var(--dur-base), transform var(--dur-base), box-shadow var(--dur-base);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out),
+    box-shadow var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }
+/* Retour de pression, sur tous les appareils (tactile compris). */
+.btn:active { transform: scale(0.97); }
 /* Pas de font-family sur la flèche : évite un décalage (CLS) au chargement
    des polices. */
-.btn::after { content: "→"; font-size: 13px; transform: translateY(-1px); }
+.btn::after {
+  content: "→"; font-size: 13px; transform: translateY(-1px);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover::after { transform: translate(3px, -1px); }
+}
 .btn--no-arrow::after { content: none; }
-.btn--lg { padding: 16px 28px; font-size: 16px; }
+.btn--lg { padding: 16px 28px; font-size: var(--fs-body); }
 /* Un bouton pleine largeur peut renvoyer un libellé long à la ligne plutôt
    que forcer un débordement horizontal (ex. « Envoyer un message WhatsApp »
    sur mobile étroit). Les boutons en ligne gardent le white-space: nowrap
@@ -157,21 +190,28 @@ main[tabindex="-1"]:focus { outline: none; }
    d'ombre ; focus clavier = --focus-ring. */
 .btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 .btn--primary { background: var(--child); color: var(--on-child); }
-.btn--primary:hover { background: var(--child-deep); color: var(--on-child); }
-
 /* Contraste : #036E73 sur #F4F1EA = 5.9:1 ✓  |  #00D2C8 sur #082B36 = 8.4:1 ✓ */
 .btn--secondary { background: transparent; color: var(--parent); box-shadow: inset 0 0 0 1px var(--parent); }
-.btn--secondary:hover { background: var(--parent-soft); color: var(--parent); }
 .btn--secondary:focus-visible { box-shadow: inset 0 0 0 1px var(--parent), var(--focus-ring); }
-
 .btn--ghost { background: transparent; color: var(--ink); }
-.btn--ghost:hover { background: var(--surface-soft); color: var(--ink); }
+/* Survols réservés aux pointeurs fins : pas d'état collant au toucher. */
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover { background: var(--child-deep); color: var(--on-child); }
+  .btn--secondary:hover { background: var(--parent-soft); color: var(--parent); }
+  .btn--ghost:hover { background: var(--surface-soft); color: var(--ink); }
+}
 
+/* Focus clavier unifié : le même anneau que les boutons et les champs. */
 .linkout:focus-visible,
 .site-nav__link:focus-visible {
-  outline: 3px solid var(--pxlc-coral);
-  outline-offset: 4px;
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-xs);
   text-decoration: none;
+}
+@media (forced-colors: active) {
+  .linkout:focus-visible,
+  .site-nav__link:focus-visible { outline: 2px solid ButtonText; outline-offset: 2px; }
 }
 .theme-toggle:focus-visible {
   outline: none;
@@ -181,20 +221,24 @@ main[tabindex="-1"]:focus { outline: none; }
 
 .linkout {
   display: inline-flex; align-items: center; gap: var(--space-2);
-  font-family: var(--font-body); font-weight: 600; font-size: 15px;
+  font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body-sm);
   color: var(--parent);
   border-bottom: 2px solid var(--parent);
   padding: 10px 0 6px;
-  transition: color var(--dur-fast), border-color var(--dur-fast), gap var(--dur-fast);
+  transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
-.linkout::after { content: "→"; font-family: var(--font-label); }
-.linkout:hover { gap: var(--space-3); text-decoration: none; }
+/* La flèche glisse en transform : animer gap relancerait la mise en page. */
+.linkout::after { content: "→"; font-family: var(--font-label); transition: transform var(--dur-base) var(--ease-out); }
+.linkout:hover { text-decoration: none; }
+@media (hover: hover) and (pointer: fine) {
+  .linkout:hover::after { transform: translateX(4px); }
+}
 
 /* ── Form fields ─────────────────────────────────────────── */
 .form-label {
   display: block;
   font-family: var(--font-label);
-  font-size: 11px;
+  font-size: var(--fs-label);
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -209,10 +253,13 @@ main[tabindex="-1"]:focus { outline: none; }
   /* Bordure en --ink-quiet : un champ doit se distinguer de son fond à 3:1
      au moins (RGAA 3.3) — --line n'atteint que 1,5:1. */
   border: 1px solid var(--ink-quiet); background: var(--surface-raised); color: var(--ink);
-  font-family: var(--font-body); font-size: 15px;
-  transition: border-color var(--dur-fast), box-shadow var(--dur-fast);
+  /* 16 px minimum : en dessous, iOS zoome la page au focus du champ. */
+  font-family: var(--font-body); font-size: var(--fs-body);
+  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
 }
-.form-input:hover, .form-textarea:hover { border-color: var(--parent-mid); }
+@media (hover: hover) and (pointer: fine) {
+  .form-input:hover, .form-textarea:hover { border-color: var(--parent-mid); }
+}
 .form-input:focus-visible, .form-textarea:focus-visible {
   outline: none;
   border-color: var(--parent);
@@ -227,30 +274,27 @@ main[tabindex="-1"]:focus { outline: none; }
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
-  transition: background var(--dur-base), border-color var(--dur-base),
-              box-shadow var(--dur-base), padding var(--dur-base);
+  transition:
+    background-color var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out);
 }
 @supports not (backdrop-filter: blur(1px)) {
   .site-header { background: var(--surface); }
 }
 [data-theme="dark"] .site-header { border-bottom-color: var(--pxlc-border-dark); }
-/* Scrolled state: collapses padding slightly and replaces the hairline rule
-   with a soft elevation shadow — signals "you've left the page top". */
+/* Scrolled state : hauteur fixe (animer le padding relancerait la mise en
+   page), le filet laisse place à une ombre douce en fondu — signale « vous
+   avez quitté le haut de page ». */
 .site-header.is-scrolled { border-bottom-color: transparent; box-shadow: var(--shadow-header); }
 .site-header__inner {
   display: flex; align-items: center; justify-content: space-between;
-  padding-block: 16px; gap: var(--space-3);
-  transition: padding-block var(--dur-base);
+  padding-block: 14px; gap: var(--space-3);
 }
-@media (min-width: 768px) { .site-header__inner { padding-block: 18px; } }
-.site-header.is-scrolled .site-header__inner { padding-block: 10px; }
-@media (min-width: 768px) { .site-header.is-scrolled .site-header__inner { padding-block: 12px; } }
+@media (min-width: 768px) { .site-header__inner { padding-block: 16px; } }
 .site-header__right { display: flex; align-items: center; gap: var(--space-2-5); }
-.site-header__cta { display: none; transition: opacity var(--dur-base), transform var(--dur-base); }
-@media (min-width: 768px) { .site-header__cta { display: inline-flex; padding: 13px 18px; font-size: 14px; min-height: 44px; } }
-@media (prefers-reduced-motion: reduce) {
-  .site-header, .site-header__inner, .site-header__cta { transition: none; }
-}
+.site-header__cta { display: none; }
+@media (min-width: 768px) { .site-header__cta { display: inline-flex; padding: 13px 18px; font-size: var(--fs-small); min-height: 44px; } }
 
 .lockup { display: inline-flex; align-items: center; gap: var(--space-2-5); color: var(--ink); text-decoration: none; }
 .lockup:hover { text-decoration: none; }
@@ -261,12 +305,15 @@ main[tabindex="-1"]:focus { outline: none; }
 .site-nav { display: none; align-items: center; gap: clamp(16px, 2vw, 30px); }
 @media (min-width: 1024px) { .site-nav { display: flex; } }
 .site-nav__link {
-  font-family: var(--font-display); font-size: 14px; font-weight: 500;
+  font-family: var(--font-display); font-size: var(--fs-small); font-weight: 500;
   color: var(--ink); position: relative; padding: 10px 4px; min-width: 44px;
   text-align: center;
-  transition: color var(--dur-fast);
+  transition: color var(--dur-fast) var(--ease-out);
 }
-.site-nav__link:hover { color: var(--parent); text-decoration: none; }
+.site-nav__link:hover { text-decoration: none; }
+@media (hover: hover) and (pointer: fine) {
+  .site-nav__link:hover { color: var(--parent); }
+}
 .site-nav__link.is-active { color: var(--parent); font-weight: 600; }
 .site-nav__link.is-active::after {
   content: ""; position: absolute; left: 4px; right: 4px; bottom: -16px;
@@ -277,10 +324,24 @@ main[tabindex="-1"]:focus { outline: none; }
   width: 44px; height: 44px; border-radius: var(--radius-md);
   border: 1px solid var(--line); background: transparent;
   color: var(--ink); display: inline-flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: background var(--dur-fast), border-color var(--dur-fast); flex: none;
+  cursor: pointer; flex: none;
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
 }
-.theme-toggle:hover { background: var(--surface-raised); border-color: var(--ink); }
+.theme-toggle:active, .burger:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover { background: var(--surface-raised); border-color: var(--ink); }
+}
 .theme-toggle svg { width: 18px; height: 18px; }
+/* Après un clic (.is-toggled, posée par ThemeToggle — jamais au chargement),
+   l'icône qui apparaît pivote d'un quart de tour en fondu. */
+@keyframes icon-in { from { opacity: 0; transform: rotate(-90deg) scale(0.6); } }
+.theme-toggle.is-toggled svg { animation: icon-in var(--dur-base) var(--ease-out); }
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle.is-toggled svg { animation-name: fade-in; }
+}
 .theme-toggle .icon--sun { display: none; }
 [data-theme="dark"] .theme-toggle .icon--moon { display: none; }
 [data-theme="dark"] .theme-toggle .icon--sun { display: block; }
@@ -291,12 +352,13 @@ main[tabindex="-1"]:focus { outline: none; }
   align-items: center; justify-content: center; flex-direction: column;
   gap: 5px; cursor: pointer; background: transparent;
   border: 1px solid var(--line); border-radius: var(--radius-md); padding: 0;
+  transition: transform var(--dur-fast) var(--ease-out);
 }
 @media (min-width: 1024px) { .burger { display: none; } }
 .burger span {
   display: block; width: 20px; height: 2px;
-  background: var(--pxlc-coral); border-radius: 1px;
-  transition: transform var(--dur-base) var(--ease-step), opacity var(--dur-fast) ease;
+  background: var(--child); border-radius: 1px;
+  transition: transform var(--dur-base) var(--ease-in-out), opacity var(--dur-fast) var(--ease-out);
 }
 .burger[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
 .burger[aria-expanded="true"] span:nth-child(2)  { opacity: 0; }
@@ -308,21 +370,30 @@ main[tabindex="-1"]:focus { outline: none; }
   background: var(--pxlc-bg-dark); color: var(--pxlc-ivory);
   z-index: var(--z-menu); display: flex; flex-direction: column;
   overflow: hidden;
+  /* Fermeture plus rapide que l'ouverture : 200 ms à la sortie, 320 ms à
+     l'entrée, en ease-out. visibility retire le panneau fermé du rendu
+     (en plus d'inert) une fois la sortie terminée. */
   transform: translateX(100%);
-  transition: transform var(--dur-slow) var(--ease-step);
+  visibility: hidden;
+  transition:
+    transform var(--dur-base) var(--ease-in-out),
+    visibility 0s linear var(--dur-base);
 }
-.mobile-menu.is-open { transform: translateX(0); }
-@media (prefers-reduced-motion: reduce) { .mobile-menu { transition: none; } }
+.mobile-menu.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  transition: transform var(--dur-slow) var(--ease-out), visibility 0s;
+}
+/* Mouvement réduit : le panneau apparaît en fondu, sans glisser. */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu { transform: none; opacity: 0; transition: opacity var(--dur-base) var(--ease-out), visibility 0s linear var(--dur-base); }
+  .mobile-menu.is-open { opacity: 1; transition: opacity var(--dur-base) var(--ease-out), visibility 0s; }
+}
 @media (min-width: 1024px) { .mobile-menu { display: none; } }
 /* PxlcMark watermark — large, bottom-right, 18 % sur fond sombre */
 .mobile-menu__watermark {
   position: absolute; right: -80px; bottom: -80px;
   opacity: 0.18; pointer-events: none;
-}
-/* Motif Duo — top-right */
-.mobile-menu__strip {
-  position: absolute; top: 48px; right: 28px;
-  opacity: 0.4; pointer-events: none;
 }
 /* Header row */
 .mobile-menu__head {
@@ -340,7 +411,11 @@ main[tabindex="-1"]:focus { outline: none; }
   display: flex; align-items: center; justify-content: center;
   color: var(--pxlc-text-on-dark-soft);
 }
-.mobile-menu__close:hover { background: var(--hover-on-dark); }
+.mobile-menu__close { transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
+.mobile-menu__close:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) {
+  .mobile-menu__close:hover { background: var(--hover-on-dark); }
+}
 .mobile-menu__close:focus-visible { outline: none; box-shadow: var(--focus-ring-on-dark); }
 /* Nav links — vertically centred, staggered entrance */
 .mobile-menu__nav {
@@ -361,21 +436,20 @@ main[tabindex="-1"]:focus { outline: none; }
      links fail WCAG contrast (2.05:1). Transform-only is sufficient:
      links are off-screen while the panel is closed (translateX(100%)). */
   transform: translateX(28px);
-  /* 280ms : durée de chorégraphie du menu, volontairement entre --dur-base
-     et --dur-slow — pas un cran d'échelle, reste littérale (comme les delays). */
-  transition: transform 280ms var(--ease-step), color var(--dur-fast);
+  transition: transform var(--dur-base) var(--ease-in-out), color var(--dur-fast) var(--ease-out);
   transition-delay: 0ms;
 }
 .mobile-menu.is-open .mobile-menu__link {
   transform: translateX(0);
-  transition-delay: calc(50ms + var(--i, 0) * 52ms);
+  transition: transform var(--dur-slow) var(--ease-out), color var(--dur-fast) var(--ease-out);
+  transition-delay: calc(50ms + var(--i, 0) * var(--dur-stagger)), 0ms;
 }
 .mobile-menu__link.is-active { color: var(--pxlc-cyan); }
 .mobile-menu__arrow {
   font-family: var(--font-label); font-size: 18px;
-  color: var(--pxlc-border-dark-2); transition: color var(--dur-base);
+  color: var(--pxlc-border-dark-2); transition: color var(--dur-fast) var(--ease-out);
 }
-.mobile-menu__link.is-active .mobile-menu__arrow { color: var(--pxlc-coral); }
+.mobile-menu__link.is-active .mobile-menu__arrow { color: var(--child); }
 /* Bottom bar — theme toggle + full-width CTA */
 .mobile-menu__bottom {
   padding: 20px 24px; border-top: 1px solid var(--pxlc-border-dark);
@@ -383,33 +457,33 @@ main[tabindex="-1"]:focus { outline: none; }
   position: relative; z-index: 1; flex-shrink: 0;
   /* Same rationale as .mobile-menu__link — transform-only, no opacity */
   transform: translateY(8px);
-  transition: transform 280ms var(--ease-step);
+  transition: transform var(--dur-base) var(--ease-in-out);
   transition-delay: 0ms;
 }
 .mobile-menu.is-open .mobile-menu__bottom {
   transform: translateY(0);
+  transition: transform var(--dur-slow) var(--ease-out);
+  /* Après le dernier lien de la cascade. */
   transition-delay: 260ms;
+}
+/* Mouvement réduit : ni glissement ni cascade, le panneau fond d'un bloc. */
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu__link, .mobile-menu__bottom,
+  .mobile-menu.is-open .mobile-menu__link,
+  .mobile-menu.is-open .mobile-menu__bottom { transform: none; transition-delay: 0ms; }
 }
 .mobile-menu__cta-btn { flex: 1; min-height: 44px; }
 
 /* ── Hero ────────────────────────────────────────────────── */
-/* Header + hero tiennent dans un écran de portable (768-900 px) : les CTA
-   restent au-dessus de la ligne de flottaison. */
+/* Gabarit unique (HeroSection) sur toutes les pages : même padding, même
+   grille, même filet bas. Header + hero tiennent dans un écran de portable
+   (768-900 px) : les CTA restent au-dessus de la ligne de flottaison. */
 .hero {
   position: relative; overflow: hidden; padding: clamp(40px, 5vw, var(--space-7)) 0;
-  background: var(--surface);
+  border-bottom: 1px solid var(--line);
 }
-.hero--soft { background: var(--surface-soft); }
-.hero__strip { position: absolute; top: 24px; right: clamp(20px, 4vw, 56px); }
-/* Filigrane de la marque : seule rotation admise (−8°), 8 % en clair,
-   18 % en sombre (design system PXLC 2026). */
-.hero__bg-mark {
-  position: absolute; right: -40px; bottom: -40px; opacity: 0.08; pointer-events: none;
-}
-[data-theme="dark"] .hero__bg-mark { opacity: 0.18; }
-.hero__bg-mark .mark-svg { width: 420px; height: 420px; transform: rotate(-8deg); }
-/* align-items: start anchors the text column to the top of the row so
-   the photo column can be taller without pushing the CTAs down with it. */
+/* align-items: start ancre le texte en haut : la photo peut être plus haute
+   sans pousser les CTA. Sans photo, la colonne de texte garde sa largeur. */
 .hero__inner {
   display: grid; grid-template-columns: 1fr; gap: 40px; align-items: start;
   position: relative; z-index: 1;
@@ -418,40 +492,57 @@ main[tabindex="-1"]:focus { outline: none; }
 .hero__title {
   font-family: var(--font-display); font-weight: 700;
   font-size: var(--fs-title-1); line-height: var(--lh-title-1); letter-spacing: var(--ls-title-1);
-  margin: 0 0 20px; color: var(--ink); max-width: 760px;
+  margin: 0 0 var(--space-4); color: var(--ink); max-width: 760px;
 }
 .hero__lead {
   font-family: var(--font-body); font-size: var(--fs-lead);
-  line-height: var(--lh-lead); color: var(--ink-muted); max-width: 580px; margin: 0 0 24px;
+  line-height: var(--lh-lead); color: var(--ink-muted); max-width: 580px; margin: 0 0 var(--space-5);
 }
+.hero__lead p { margin: 0; color: inherit; }
+.hero__lead strong { color: var(--ink); font-weight: 600; }
 .hero__actions { display: flex; flex-wrap: wrap; gap: var(--space-2-5); align-items: center; }
 @media (max-width: 767px) {
   .hero__actions .btn--primary { width: 100%; justify-content: center; }
   .hero__actions .btn:not(.btn--primary) { width: fit-content; align-self: center; }
 }
-.hero__hint { font-family: var(--font-label); font-size: 12px; color: var(--ink-quiet); letter-spacing: 0.1em; margin-left: var(--space-2); }
+.hero__hint { font-family: var(--font-label); font-size: var(--fs-label); color: var(--ink-quiet); letter-spacing: 0.1em; margin-left: var(--space-2); }
 /* Version web de la plaquette, à côté du bouton PDF (RGAA 13.3) : lien texte
    discret, pas un troisième bouton. Zone de toucher de 44 px. */
 .hero__alt {
   display: inline-flex; align-items: center; min-height: 44px;
-  font-family: var(--font-label); font-size: 14px; font-weight: 600;
+  font-family: var(--font-label); font-size: var(--fs-small); font-weight: 600;
   color: var(--parent); text-decoration: underline; text-underline-offset: 3px;
 }
 @media (max-width: 767px) { .hero__actions .hero__alt { align-self: center; } }
-.hero__media { position: relative; }
-/* Photo capped at 4/5 ratio but never taller than ~62vh so it can't
-   single-handedly push the page beyond the fold on short viewports.
-   The image stays object-fit:cover so the crop is benign. */
+
+/* Photo : un seul traitement sur tout le site, le cadre décalé (écho du
+   pixel, derrière la photo) et la petite marque en coin. La largeur est
+   bornée (48vh de large = 60vh de haut au format 4/5) plutôt que la
+   hauteur, pour que le cadre épouse toujours la photo. Suit la cascade du
+   texte (.enter) en fondu, sans déplacement. */
+.hero__media {
+  position: relative; width: min(100%, 48vh);
+  animation: fade-in var(--dur-enter) var(--ease-out) both;
+  animation-delay: calc(2 * var(--dur-stagger));
+}
+.hero__media::before {
+  content: ""; position: absolute; inset: 0;
+  transform: translate(12px, 12px);
+  border: 2px solid var(--teal-mid); border-radius: var(--radius-lg);
+  pointer-events: none;
+}
 .hero__media-img {
-  aspect-ratio: 4 / 5; border-radius: var(--radius-xl); overflow: hidden; position: relative;
-  max-height: 62vh;
+  position: relative; aspect-ratio: 4 / 5;
+  border-radius: var(--radius-lg); overflow: hidden;
 }
 .hero__media-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero__media-corner { position: absolute; right: -6px; bottom: -6px; }
+/* Pas d'ombre au repos (design system) : la bordure suffit à détacher la
+   pastille de la photo. */
 .hero__pill {
   background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-lg);
   padding: var(--space-3); width: 100%;
   margin-top: var(--space-3);
-  box-shadow: var(--shadow-card);
 }
 @media (min-width: 768px) {
   .hero__pill {
@@ -460,43 +551,38 @@ main[tabindex="-1"]:focus { outline: none; }
   }
 }
 .hero__pill-eyebrow {
-  font-family: var(--font-label); font-size: 10px; letter-spacing: 0.18em;
+  font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: var(--ls-label);
   text-transform: uppercase; color: var(--parent); margin-bottom: var(--space-2); font-weight: 600;
 }
 .hero__pill-text {
-  font-family: var(--font-display); font-weight: 600; font-size: 16px;
+  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body);
   line-height: 1.3; color: var(--ink);
 }
-
-/* ── Motif Duo ───────────────────────────────────────────── */
-/* Paires grand/petit tirées du logo ; seul le dernier petit carré est
-   corail. Micro-décoration, une fois par écran au plus. Couleurs portées
-   par les classes pour suivre le thème. */
-.duo { display: block; flex: none; }
-.duo__big   { fill: var(--parent); }
-.duo__small { fill: var(--parent-mid); }
-.duo__small.is-accent { fill: var(--child); }
-/* Sur une surface toujours sombre (footer, menu mobile), le grand carré
-   passe au cyan quel que soit le thème. */
-.duo--on-dark .duo__big { fill: var(--cyan); }
 
 /* ── Cards ───────────────────────────────────────────────── */
 .card {
   background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-lg);
   padding: var(--space-4); position: relative;
-  transition: transform var(--dur-base) var(--ease-step), box-shadow var(--dur-base) var(--ease-step), border-color var(--dur-base);
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
 }
+/* Titre de carte : un seul cran de l'échelle, title-3. */
+.card h3 { font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); }
 /* Cartes cliquables uniquement : élévation d'un pixel, ombre, bordure
    parent. Pas d'ombre au repos. */
-.card--hover:hover { transform: translateY(-1px); box-shadow: var(--shadow-card); border-color: var(--parent); }
+@media (hover: hover) and (pointer: fine) {
+  .card--hover:hover { transform: translateY(-1px); box-shadow: var(--shadow-card); border-color: var(--parent); }
+}
 
 .card--method { min-height: 240px; padding: var(--space-5) var(--space-5) var(--space-6); }
-.card--method .card__step-num { font-family: var(--font-label); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; color: var(--parent); margin-bottom: var(--space-5); }
-.card--method h3 { margin: 0 0 8px; font-family: var(--font-display); font-size: 22px; line-height: 1.15; }
-.card--method p { font-size: 15px; line-height: 1.6; }
+.card--method .card__step-num { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600; letter-spacing: var(--ls-label); color: var(--parent); margin-bottom: var(--space-5); }
+.card--method h3 { margin: 0 0 var(--space-2); }
+.card--method p { font-size: var(--fs-body); line-height: var(--lh-body); }
 /* Petite marque en haut à droite des cartes d'étape. */
-.card__duo { position: absolute; top: var(--space-3); right: var(--space-3); line-height: 0; }
-.card__tag { margin-top: var(--space-4); font-family: var(--font-label); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-quiet); }
+.card__mark { position: absolute; top: var(--space-3); right: var(--space-3); line-height: 0; }
+.card__tag { margin-top: var(--space-4); font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--ink-quiet); }
 
 /* ── Badges ──────────────────────────────────────────────── */
 /* Tons du design system : neutral (défaut, publics), parent (--soft :
@@ -505,7 +591,7 @@ main[tabindex="-1"]:focus { outline: none; }
 .badge {
   display: inline-flex; align-items: center; gap: var(--space-1-5);
   min-height: 26px;
-  font-family: var(--font-label); font-size: 11px; font-weight: 600;
+  font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600;
   letter-spacing: 0.14em; text-transform: uppercase;
   padding: 0 10px; border-radius: var(--radius-sm);
   background: var(--surface-soft); color: var(--ink);
@@ -518,16 +604,19 @@ main[tabindex="-1"]:focus { outline: none; }
 /* ── Footer ──────────────────────────────────────────────── */
 .site-footer { background: var(--pxlc-bg-dark); color: var(--pxlc-ivory); padding: clamp(48px, 8vw, 56px) 0 24px; }
 /* Mission sous le lockup, au format tagline : discrète, sans étage dédié. */
-.site-footer__mission { font-size: 13px; color: var(--pxlc-text-on-dark-soft); line-height: 1.6; max-width: 320px; margin-top: var(--space-3); }
+.site-footer__mission { font-size: var(--fs-small); color: var(--pxlc-text-on-dark-soft); line-height: 1.6; max-width: 320px; margin-top: var(--space-3); }
 .site-footer__mission-link {
-  font-family: var(--font-label); font-size: 13px; font-weight: 600;
+  font-family: var(--font-label); font-size: var(--fs-small); font-weight: 600;
   letter-spacing: 0.04em; color: var(--pxlc-cyan);
   display: inline-flex; align-items: center; gap: var(--space-1-5);
   margin-top: var(--space-2-5);
-  transition: color var(--dur-fast);
+  transition: color var(--dur-fast) var(--ease-out);
 }
-.site-footer__mission-link::after { content: "→"; }
-.site-footer__mission-link:hover { color: var(--pxlc-coral); }
+.site-footer__mission-link::after { content: "→"; transition: transform var(--dur-base) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__mission-link:hover { color: var(--child); }
+  .site-footer__mission-link:hover::after { transform: translateX(3px); }
+}
 /* The footer is always dark, but .lockup__name is themed for the page
    surface (--ink). In light mode that paints #082B36 on #082B36 →
    invisible "PXLC.". Force ivory here. */
@@ -538,12 +627,14 @@ main[tabindex="-1"]:focus { outline: none; }
 @media (min-width: 768px) { .site-footer__inner { grid-template-columns: 1.6fr 1fr 1fr; } }
 @media (min-width: 1024px) { .site-footer__inner { grid-template-columns: 2.4fr 1fr 1fr; } }
 .site-footer__col-title {
-  font-family: var(--font-label); font-size: 11px; letter-spacing: 0.22em;
+  font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: 0.22em;
   text-transform: uppercase; color: var(--pxlc-cyan); margin: 0 0 16px; font-weight: 600;
 }
 .site-footer__col-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-2); }
-.site-footer__col-link { color: var(--pxlc-ivory); font-size: 13.5px; transition: color var(--dur-fast); }
-.site-footer__col-link:hover { color: var(--pxlc-cyan); }
+.site-footer__col-link { color: var(--pxlc-ivory); font-size: var(--fs-small); transition: color var(--dur-fast) var(--ease-out); }
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__col-link:hover { color: var(--pxlc-cyan); }
+}
 .site-footer__col-list--icons { gap: var(--space-2-5); }
 .site-footer__col-link--icon { display: flex; align-items: center; gap: var(--space-2); }
 .site-footer__contact-icon { color: var(--pxlc-text-on-dark-soft); flex-shrink: 0; width: 14px; height: 14px; }
@@ -552,19 +643,26 @@ main[tabindex="-1"]:focus { outline: none; }
   width: 44px; height: 44px; border-radius: var(--radius-md);
   background: var(--pxlc-bg-dark-soft); border: 1px solid var(--pxlc-border-dark);
   display: inline-flex; align-items: center; justify-content: center;
-  color: var(--pxlc-white); transition: background var(--dur-fast), color var(--dur-fast), border-color var(--dur-fast);
-  font-family: var(--font-label); font-size: 14px;
+  color: var(--pxlc-white);
+  transition:
+    background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out),
+    transform var(--dur-fast) var(--ease-out);
+  font-family: var(--font-label); font-size: var(--fs-small);
 }
+.site-footer__social-btn:active { transform: scale(0.97); }
 /* Glyphes en blanc (permis LinkedIn/X) au repos ; au hover, le coral porte sur
    le fond + la bordure, jamais sur le glyphe de marque. */
-.site-footer__social-btn:hover { background: var(--pxlc-bg-dark-deep); border-color: var(--pxlc-coral); }
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__social-btn:hover { background: var(--pxlc-bg-dark-deep); border-color: var(--child); }
+}
 .site-footer__social-btn svg { width: 21px; height: 21px; }
 .site-footer__legal {
   border-top: 1px solid var(--pxlc-border-dark); padding-top: var(--space-3);
   display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3);
 }
 .site-footer__legal p, .site-footer__legal a {
-  font-family: var(--font-label); font-size: 11px;
+  font-family: var(--font-label); font-size: var(--fs-label);
   /* on-dark-soft (#A9C8D0) hits ~7.7:1 contrast on the dark footer;
      --pxlc-text-secondary (#5A6B70) is only 2.67:1 — too dim. */
   color: var(--pxlc-text-on-dark-soft);
@@ -572,7 +670,9 @@ main[tabindex="-1"]:focus { outline: none; }
 }
 /* Zone de tap ≥ 44 px sans grossir le texte légal de 11 px. */
 .site-footer__legal a { display: inline-flex; align-items: center; min-height: 44px; }
-.site-footer__legal a:hover { color: var(--pxlc-cyan); }
+@media (hover: hover) and (pointer: fine) {
+  .site-footer__legal a:hover { color: var(--pxlc-cyan); }
+}
 .site-footer__legal-links { display: flex; flex-wrap: wrap; column-gap: var(--space-3); list-style: none; padding: 0; margin: 0; }
 
 /* ── Typographic utility classes (semantic aliases) ──────── */
@@ -583,12 +683,12 @@ main[tabindex="-1"]:focus { outline: none; }
 .pxlc-h3 { font-family: var(--font-display); font-weight: 600; font-size: var(--fs-title-3); line-height: var(--lh-title-3); letter-spacing: var(--ls-title-3); color: var(--ink); text-wrap: balance; }
 .pxlc-lead { font-family: var(--font-body); font-size: var(--fs-lead); line-height: var(--lh-lead); color: var(--ink-muted); }
 .pxlc-body { font-family: var(--font-body); font-size: var(--fs-body); line-height: var(--lh-body); color: var(--ink-muted); }
-.pxlc-body-sm { font-family: var(--font-body); font-size: 15px; line-height: 1.6; color: var(--ink-muted); }
+.pxlc-body-sm { font-family: var(--font-body); font-size: var(--fs-body-sm); line-height: 1.6; color: var(--ink-muted); }
 .pxlc-eyebrow { font-family: var(--font-label); font-size: var(--fs-label); font-weight: 600; letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--parent); display: block; }
-.pxlc-kicker { font-family: var(--font-label); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-quiet); }
-.pxlc-tag { font-family: var(--font-label); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-quiet); }
-.pxlc-mono { font-family: var(--font-label); font-size: 14px; }
-.pxlc-coral-dot { color: var(--pxlc-coral); }
+.pxlc-kicker { font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--ink-quiet); }
+.pxlc-tag { font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-quiet); }
+.pxlc-mono { font-family: var(--font-label); font-size: var(--fs-small); }
+.pxlc-coral-dot { color: var(--child); }
 
 /* ── Utility helpers ─────────────────────────────────────── */
 /* Spacing utilities map straight to the 8 px rhythm tokens. */
@@ -598,13 +698,10 @@ main[tabindex="-1"]:focus { outline: none; }
 .mt-6 { margin-top: var(--space-6); }
 
 
-.prose .eyebrow,
-.eyebrow--lg {
-  font-size: 12px;
-}
+.prose .eyebrow { font-size: var(--fs-small); }
 
 /* ── Long-form prose (mentions légales, etc.) ─────────────────────────── */
-.prose { font-size: 16px; line-height: 1.65; color: var(--ink-muted); max-width: 72ch; }
+.prose { font-size: var(--fs-body); line-height: 1.65; color: var(--ink-muted); max-width: 72ch; }
 .prose h2 {
   font-family: var(--font-display);
   font-size: clamp(20px, 2vw, 24px);
@@ -618,7 +715,7 @@ main[tabindex="-1"]:focus { outline: none; }
 .prose h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
 .prose h3 {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: var(--fs-lead);
   letter-spacing: -0.015em;
   line-height: 1.2;
   color: var(--ink);

@@ -7,7 +7,6 @@
  * @a11y Chaque feuille est une section nommée par screenLabel.
  */
 import PxlcMark from './PxlcMark.astro'
-import PxlcDuo from './PxlcDuo.astro'
 
 interface Props {
   /** Numéro de feuille, deux chiffres (« 02 »). */
@@ -44,7 +43,6 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
   {!cover && (
     <footer class="pq-page__foot">
       <span>PXLC · Plaquette de présentation · {version} · {website}</span>
-      <PxlcDuo unit={6} />
       <span>{num} / {total}</span>
     </footer>
   )}

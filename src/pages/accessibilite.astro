@@ -3,7 +3,7 @@
 // tests, limites, contact, voies de recours). Rien n'y est revendiqué qui
 // ne soit vérifié : pas d'audit RGAA à ce jour, donc « non audité ».
 import BaseLayout from '../layouts/BaseLayout.astro'
-import PxlcDuo from '../components/PxlcDuo.astro'
+import HeroSection from '../components/HeroSection.astro'
 import PxlcMark from '../components/PxlcMark.astro'
 import PxlcMarkSeparator from '../components/PxlcMarkSeparator.astro'
 import { pageGraph } from '../lib/schema'
@@ -28,19 +28,15 @@ const schemaGraph = pageGraph({
 
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
   <!-- ── Hero ──────────────────────────────────────────────── -->
-  <section class="a11y-hero">
-    <div class="container">
-      <PxlcDuo class="a11y-hero__strip" />
-      <span class="eyebrow eyebrow--lg">Informations légales</span>
-      <h1 class="a11y-title">
-        Accessibilité<span class="coral-dot" aria-hidden="true">.</span>
-      </h1>
-      <p class="lead a11y-lead">
-        Je veux que ce site se consulte sans obstacle, au clavier, avec un lecteur d’écran ou avec un
-        zoom important. Voici où il en est, et comment me signaler ce qui bloque.
-      </p>
-    </div>
-  </section>
+  <HeroSection
+    breadcrumb
+    breadcrumbLabel="Accessibilité"
+    eyebrow="Informations légales"
+    title="Accessibilité"
+    titleDot
+  >
+    <p slot="lead">Je veux que ce site se consulte sans obstacle, au clavier, avec un lecteur d’écran ou avec un zoom important. Voici où il en est, et comment me signaler ce qui bloque.</p>
+  </HeroSection>
 
   <!-- ── Content ───────────────────────────────────────────── -->
   <section class="section">
@@ -48,7 +44,7 @@ const schemaGraph = pageGraph({
 
       <!-- État de conformité -->
       <div class="a11y-card">
-        <PxlcMark size={20} decorative class="card__duo a11y-card__corner" />
+        <PxlcMark size={20} decorative class="card__mark a11y-card__corner" />
         <h2 class="a11y-card__label">État de conformité</h2>
         <p class="a11y-card__status">Non audité</p>
         <p class="a11y-card__text">
@@ -127,21 +123,6 @@ const schemaGraph = pageGraph({
 </BaseLayout>
 
 <style>
-  /* ── Hero ─────────────────────────────────────────────────────── */
-  .a11y-hero {
-    background: var(--surface-soft);
-    border-bottom: 1px solid var(--line);
-    padding: clamp(40px, 5vw, 64px) 0;
-  }
-  .a11y-hero :global(.a11y-hero__strip) { margin-bottom: var(--space-4); }
-  .a11y-title {
-    font-size: var(--fs-title-1);
-    letter-spacing: var(--ls-title-1);
-    line-height: var(--lh-title-1);
-    margin: var(--space-2) 0 var(--space-4);
-  }
-  .a11y-lead { max-width: 640px; }
-
   /* ── Content ──────────────────────────────────────────────────── */
   .a11y-container { max-width: 760px; }
 

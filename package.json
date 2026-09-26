@@ -28,6 +28,7 @@
     "typecheck": "astro check",
     "gen:communes": "node scripts/build-communes.mjs",
     "plaquette": "npm run build && node scripts/export-plaquette.mjs",
+    "logo": "node scripts/build-logo.mjs",
     "plaquette:previews": "npm run build && node scripts/export-plaquette.mjs --previews"
   },
   "dependencies": {

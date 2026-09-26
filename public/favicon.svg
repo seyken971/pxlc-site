@@ -1,5 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="PXLC">
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 100 100" role="img" aria-label="PXLC">
   <title>PXLC</title>
-  <rect x="48" y="48" width="268" height="268" rx="32" fill="#036E73"/>
-  <rect x="344" y="344" width="120" height="120" rx="12" fill="#FF5E3A"/>
+  <style>@media (prefers-color-scheme: dark) { rect:first-of-type { fill: #00D2C8; } }</style>
+  <rect x="2" y="2" width="62.66" height="62.66" rx="7.5" fill="#036E73"/>
+  <rect x="68.67" y="68.67" width="29.33" height="29.33" rx="3.5" fill="#FF5E3A"/>
 </svg>

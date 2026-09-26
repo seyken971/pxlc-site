@@ -67,8 +67,6 @@
   /* Header / overlay surfaces. Tinted variants of --surface with alpha for
      backdrop-filter glass effect. Overridden in [data-theme="dark"]. */
   --bg-glass:     rgba(244, 241, 234, 0.92);
-  /* Points du motif dot-grid — bascule seul en dark. */
-  --dot-grid:     rgba(8, 43, 54, 0.09);
   /* Hover sur surface toujours sombre (menu mobile) — pas de variante. */
   --hover-on-dark: rgba(255, 255, 255, 0.06);
   /* Carte des communes (CommuneMap) : terre, frontières, contour de la zone. */
@@ -116,6 +114,9 @@
   /* Texte courant, puis légendes et notes (Lora). */
   --fs-body: 16px;
   --lh-body: 1.6;
+  /* Texte courant compact : descriptions de cartes, listes, FAQ. */
+  --fs-body-sm: 15px;
+  --lh-body-sm: 1.6;
   --fs-small: 14px;
   --lh-small: 1.5;
   /* Eyebrows et étiquettes, en capitales. */
@@ -160,14 +161,27 @@
   --focus-ring-on-dark: 0 0 0 2px var(--pxlc-bg-dark), 0 0 0 4px var(--pxlc-cyan);
 
   /* ── Motion ─────────────────────────────────────────────── */
-  --ease-step: cubic-bezier(.6, 0, .2, 1);
-  --dur-fast:  120ms;
+  /* Deux courbes seulement : --ease-out pour ce qui entre ou répond au
+     geste (apparitions, hovers, ouverture), --ease-in-out pour ce qui se
+     déplace d'un état à un autre à l'écran (burger, bascules). On n'anime
+     que transform, translate, opacity et les couleurs ; jamais la mise en
+     page. La fermeture est plus rapide que l'ouverture. */
+  --ease-out:    cubic-bezier(.23, 1, .32, 1);
+  --ease-in-out: cubic-bezier(.77, 0, .175, 1);
+  /* Retour de survol, couleur, pression. */
+  --dur-fast:  150ms;
+  /* Transitions d'état courantes, fermeture du menu. */
   --dur-base:  200ms;
+  /* Ouverture du menu mobile. */
   --dur-slow:  320ms;
+  /* Apparitions (hero au chargement, reveal au défilement). */
+  --dur-enter: 480ms;
+  /* Décalage entre enfants d'un groupe qui apparaît (plafonné à 6). */
+  --dur-stagger:   60ms;
 
   /* ── Layout ─────────────────────────────────────────────── */
   --container-max: 1200px;
-  --container-pad: clamp(20px, 4vw, 56px);
+  --container-pad: clamp(24px, 6vw, 64px);
 
   /* ── Z-index — empilement global ────────────────────────── */
   /* Seuls les contextes globaux sont tokenisés ; les z-index 0/1
@@ -193,7 +207,6 @@
   --child-soft:     var(--pxlc-coral-soft-dark);
 
   --bg-glass:     rgba(8, 43, 54, 0.92);
-  --dot-grid:     rgba(255, 255, 255, 0.06);
   --map-land:        var(--pxlc-bg-dark-soft);
   --map-stroke:      var(--pxlc-text-quiet-dark);
   --map-zone-stroke: var(--pxlc-cyan);

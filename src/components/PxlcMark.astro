@@ -11,9 +11,10 @@
  * @a11y role="img" et aria-label « Logo PXLC » par défaut ; decorative
  * le passe en aria-hidden quand un texte voisin nomme déjà la marque.
  */
-// NB: la même géométrie vit dans src/lib/og-mark.ts (MARK_RECTS, fills
-// hex) pour la carte OG, rendue hors de tout contexte CSS. Garder les
-// deux copies synchronisées.
+// Géométrie : source unique src/lib/mark-geometry.ts, partagée avec la carte
+// OG (og-mark.ts) et le générateur des fichiers du logo (npm run logo).
+import { MARK_CHILD as C, MARK_PARENT as P, MARK_VIEWBOX } from '../lib/mark-geometry'
+
 interface Props {
   /** Côté du carré, en px. */
   size?: number
@@ -34,13 +35,13 @@ const childFill = mono ? 'var(--ink)' : 'var(--child)'
 
 <svg
   class:list={['mark-svg', className]}
-  viewBox="0 0 100 100"
+  viewBox={`0 0 ${MARK_VIEWBOX} ${MARK_VIEWBOX}`}
   width={size}
   height={size}
   role={decorative ? undefined : 'img'}
   aria-label={decorative ? undefined : 'Logo PXLC'}
   aria-hidden={decorative ? 'true' : undefined}
 >
-  <rect x="2" y="2" width="62.66" height="62.66" rx="7.5" fill={parentFill} />
-  <rect x="68.67" y="68.67" width="29.33" height="29.33" rx="3.5" fill={childFill} />
+  <rect x={P.x} y={P.y} width={P.size} height={P.size} rx={P.rx} fill={parentFill} />
+  <rect x={C.x} y={C.y} width={C.size} height={C.size} rx={C.rx} fill={childFill} />
 </svg>

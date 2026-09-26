@@ -36,8 +36,8 @@ const crumbs = breadcrumbItems(Astro.url.pathname, currentLabel)
   .breadcrumb__list {
     display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center;
     list-style: none; padding: 0; margin: 0;
-    font-family: var(--font-label); font-size: 11px;
-    letter-spacing: 0.18em; text-transform: uppercase;
+    font-family: var(--font-label); font-size: var(--fs-label);
+    letter-spacing: var(--ls-label); text-transform: uppercase;
     color: var(--ink-quiet);
   }
   .breadcrumb__item:not(:last-child)::after {
@@ -47,7 +47,8 @@ const crumbs = breadcrumbItems(Astro.url.pathname, currentLabel)
   .breadcrumb__link, .breadcrumb__current {
     display: inline-flex; align-items: center; min-height: 44px;
   }
-  .breadcrumb__link { color: var(--parent); transition: color var(--dur-fast); }
-  .breadcrumb__link:hover { color: var(--pxlc-coral); text-decoration: none; }
+  /* Survol souligné : du texte corail sur fond clair passerait sous 3:1. */
+  .breadcrumb__link { color: var(--parent); }
+  .breadcrumb__link:hover { text-decoration: underline; text-underline-offset: 3px; }
   .breadcrumb__current { color: var(--ink); font-weight: 600; }
 </style>

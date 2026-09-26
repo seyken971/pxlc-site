@@ -38,20 +38,20 @@
 
 ### Nommage des composants
 
-- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcDuo`, `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
+- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
 - **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PartnerStrip`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
 - Deux mots minimum par nom (évite les collisions avec de futurs éléments HTML natifs)
 
 ### Visuel
 
-- Coral max **5 %** des pixels par page ou image
+- Coral max **5 %** des pixels par page ou image — exception : le logo lui-même (son petit carré en occupe environ 9 %), qu’on ne redimensionne jamais pour tenir la règle ; elle vaut pour tout le reste
 - Un seul CTA primaire par section
 - Jamais de texte blanc sur fond coral — utiliser `--on-child`
 - Pas de gradients, pas d'emoji en iconographie
-- **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale
+- **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-body-sm`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale
 - **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)
-- **Motif Duo** (`PxlcDuo`) : paires grand/petit, seul le dernier petit carré est corail — une fois par écran au plus ; la petite marque (`PxlcMark` 20 px) coiffe les cartes d'étape
+- **Petite marque** (`PxlcMark` 20 px) : coiffe les cartes d'étape ; le motif Duo a été retiré du design system
 
 ### OG Images
 

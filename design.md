@@ -72,9 +72,6 @@ colors:
     bg-glass:
       light: "rgba(244, 241, 234, 0.92)"
       dark: "rgba(8, 43, 54, 0.92)"
-    dot-grid:
-      light: "rgba(8, 43, 54, 0.09)"
-      dark: "rgba(255, 255, 255, 0.06)"
     hover-on-dark: "rgba(255, 255, 255, 0.06)"
     map-land:
       light: "var(--pxlc-white)"
@@ -115,6 +112,8 @@ typography:
   lh-lead: "1.55"
   fs-body: "16px"
   lh-body: "1.6"
+  fs-body-sm: "15px"
+  lh-body-sm: "1.6"
   fs-small: "14px"
   lh-small: "1.5"
   fs-label: "11px"
@@ -141,13 +140,16 @@ radius:
   radius-xl: "24px"
   radius-pill: "999px"
 motion:
-  ease-step: "cubic-bezier(.6, 0, .2, 1)"
-  dur-fast: "120ms"
+  ease-out: "cubic-bezier(.23, 1, .32, 1)"
+  ease-in-out: "cubic-bezier(.77, 0, .175, 1)"
+  dur-fast: "150ms"
   dur-base: "200ms"
   dur-slow: "320ms"
+  dur-enter: "480ms"
+  dur-stagger: "60ms"
 layout:
   container-max: "1200px"
-  container-pad: "clamp(20px, 4vw, 56px)"
+  container-pad: "clamp(24px, 6vw, 64px)"
   z-header: "50"
   z-menu: "100"
   z-skip: "1000"
@@ -241,7 +243,6 @@ Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.
 | Token | Light | Dark |
 | --- | --- | --- |
 | `--bg-glass` | `rgba(244, 241, 234, 0.92)` | `rgba(8, 43, 54, 0.92)` |
-| `--dot-grid` | `rgba(8, 43, 54, 0.09)` | `rgba(255, 255, 255, 0.06)` |
 | `--hover-on-dark` | `rgba(255, 255, 255, 0.06)` | — |
 | `--map-land` | `var(--pxlc-white)` | `var(--pxlc-bg-dark-soft)` |
 | `--map-stroke` | `var(--pxlc-text-secondary)` | `var(--pxlc-text-quiet-dark)` |
@@ -285,6 +286,8 @@ Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.
 | `--lh-lead` | `1.55` |
 | `--fs-body` | `16px` |
 | `--lh-body` | `1.6` |
+| `--fs-body-sm` | `15px` |
+| `--lh-body-sm` | `1.6` |
 | `--fs-small` | `14px` |
 | `--lh-small` | `1.5` |
 | `--fs-label` | `11px` |
@@ -326,17 +329,20 @@ Rythme 8 px.
 
 | Token | Valeur |
 | --- | --- |
-| `--ease-step` | `cubic-bezier(.6, 0, .2, 1)` |
-| `--dur-fast` | `120ms` |
+| `--ease-out` | `cubic-bezier(.23, 1, .32, 1)` |
+| `--ease-in-out` | `cubic-bezier(.77, 0, .175, 1)` |
+| `--dur-fast` | `150ms` |
 | `--dur-base` | `200ms` |
 | `--dur-slow` | `320ms` |
+| `--dur-enter` | `480ms` |
+| `--dur-stagger` | `60ms` |
 
 ## Layout
 
 | Token | Valeur |
 | --- | --- |
 | `--container-max` | `1200px` |
-| `--container-pad` | `clamp(20px, 4vw, 56px)` |
+| `--container-pad` | `clamp(24px, 6vw, 64px)` |
 | `--z-header` | `50` |
 | `--z-menu` | `100` |
 | `--z-skip` | `1000` |
@@ -344,6 +350,14 @@ Rythme 8 px.
 ## Composants CSS globaux
 
 Classes issues de `styles.css`. Les variantes scoped des composants sont listées dans « Composants ».
+
+### Scroll reveal
+
+- `.js`
+
+### Entrée au chargement
+
+- `.enter`
 
 ### Page root guards
 
@@ -400,7 +414,6 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 
 - `.mobile-menu`
 - `.mobile-menu__watermark`
-- `.mobile-menu__strip`
 - `.mobile-menu__head`
 - `.mobile-menu__close`
 - `.mobile-menu__nav`
@@ -412,9 +425,6 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 ### Hero
 
 - `.hero`
-- `.hero--soft`
-- `.hero__strip`
-- `.hero__bg-mark`
 - `.hero__inner`
 - `.hero__title`
 - `.hero__lead`
@@ -423,22 +433,16 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.hero__alt`
 - `.hero__media`
 - `.hero__media-img`
+- `.hero__media-corner`
 - `.hero__pill`
 - `.hero__pill-eyebrow`
 - `.hero__pill-text`
-
-### Motif Duo
-
-- `.duo`
-- `.duo__big`
-- `.duo__small`
-- `.duo--on-dark`
 
 ### Cards
 
 - `.card`
 - `.card--method`
-- `.card__duo`
+- `.card__mark`
 - `.card__tag`
 
 ### Badges
@@ -486,7 +490,6 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.mt-5`
 - `.mt-6`
 - `.prose`
-- `.eyebrow--lg`
 
 ### Long-form prose (mentions légales, etc.)
 
@@ -497,20 +500,6 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 Généré depuis `src/components/` : description et tags `@usage` / `@a11y` du bloc JSDoc de tête, props depuis `interface Props`, variantes et états depuis le `<style>` du composant.
 
 ### Primitives de marque (`Pxlc*`)
-
-#### `PxlcDuo`
-
-Motif Duo (design system « PXLC 2026 ») : des paires grand/petit tirées du logo, alignées ; seul le dernier petit carré est corail.
-
-| Prop | Type | Défaut | Rôle |
-| --- | --- | --- | --- |
-| `count` | `number` | `3` | Nombre de paires grand/petit. |
-| `unit` | `number` | `8` | Côté du petit carré, en px. |
-| `onDark` | `boolean` | `false` | Surface toujours sombre (footer, menu mobile) : grand carré en cyan. |
-| `class` | `string` | — | Classes ajoutées au SVG (placement dans le parent). |
-
-- **Usage** : Micro-décoration, une fois par écran au plus : en-têtes de page, pied de page, menu mobile, feuilles de la plaquette.
-- **Accessibilité** : Purement décoratif : SVG en aria-hidden, aucun contenu à annoncer.
 
 #### `PxlcInput`
 
@@ -671,14 +660,17 @@ Carte des communes de Guadeloupe, rendue en SVG inline au build depuis src/data/
 
 #### `HeroSection`
 
-Hero de page : eyebrow, titre h1, chapô, un CTA primaire et un CTA secondaire, photo et pastille facultatives, filigrane du logo.
+Hero de page, gabarit unique de toutes les pages : fil d'Ariane (facultatif), eyebrow, titre h1, chapô, zone d'action (CTA ou contenu libre), photo facultative dans un cadre décalé. Sans photo, le texte garde la même largeur de colonne.
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
+| `breadcrumb` | `boolean` | `false` | Affiche le fil d'Ariane au-dessus de l'eyebrow (pages intérieures). |
+| `breadcrumbLabel` | `string` | — | Libellé du dernier segment du fil d'Ariane quand la page n'est pas dans la nav. |
 | `eyebrow` | `string` | `'PXLC · Guadeloupe'` | Surtitre au-dessus du h1. |
 | `title` * | `string` | — | Titre de la page, rendu en h1. |
-| `titleDot` | `boolean` | `false` | Ajoute un point final stylé (coral-dot) après le titre. |
-| `lead` | `string` | `''` | Chapô sous le titre. |
+| `titleDot` | `boolean` | `false` | Ajoute une marque finale corail après le titre. |
+| `titleMark` | `string` | `'.'` | Marque finale du titre (par défaut un point ; ex. « ? » précédé d'une insécable). |
+| `lead` | `string` | `''` | Chapô sous le titre (texte simple ; slot « lead » pour du balisage). |
 | `ctaPrimary` | `Cta \| null` | `null` | Le CTA primaire de la section (un seul). |
 | `ctaSecondary` | `Cta \| null` | `null` | CTA secondaire, en bouton ghost. |
 | `ctaSecondaryAlt` | `AltLink \| null` | `null` | Lien texte discret à côté du CTA secondaire. |
@@ -686,23 +678,21 @@ Hero de page : eyebrow, titre h1, chapô, un CTA primaire et un CTA secondaire, 
 | `photo` | `ImageMetadata \| null` | `null` | Photo importée depuis src/assets (astro:assets génère les variantes webp). |
 | `photoAlt` | `string` | `''` | Texte alternatif de la photo. |
 | `pill` | `Pill \| null` | `null` | Pastille posée sur la photo : surtitre et texte. |
-| `showBgMark` | `boolean` | `true` | Affiche le logo en filigrane incliné en fond. |
 
-- **Variantes** : `.hero__title--dot`
-- **Usage** : Une fois par page, en tête ; porte l'unique h1.
-- **Accessibilité** : Section reliée à son h1 ; CTA externes suffixés « (nouvel onglet) » dans leur aria-label ; filigrane en aria-hidden ; photo décrite par photoAlt.
+- **Usage** : Une fois par page, en tête ; porte l'unique h1. Le slot par défaut remplace ou complète les CTA (ex. réassurance du contact) ; le slot « lead » remplace le chapô texte quand il faut du balisage.
+- **Accessibilité** : Section reliée à son h1 ; CTA externes suffixés « (nouvel onglet) » dans leur aria-label ; marque finale du titre et cadre en aria-hidden ; photo décrite par photoAlt.
 
 #### `MethodGrid`
 
-Section « Ma méthode en trois temps » : une carte par étape, coiffée de la petite marque.
+Section « Ma méthode en trois temps » : une carte par étape, coiffée de la petite marque ; la première étape est mise en vedette (plus grande, fond parent-soft), les suivantes s'empilent à côté.
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
 | `steps` * | `MethodStep[]` | — | Étapes dans l'ordre : numéro, titre, texte, étiquette facultative. |
 
-- **Variantes** : `.card--method`
+- **Variantes** : `.card--featured`, `.card--method`
 - **Usage** : Accueil.
-- **Accessibilité** : Section reliée à son h2 (aria-labelledby) ; une carte = un article titré en h3 ; marque et point final décoratifs.
+- **Accessibilité** : Section reliée à son h2 (aria-labelledby) ; une carte = un article titré en h3 ; marque et numéro fantôme décoratifs.
 
 #### `PartnerStrip`
 
@@ -740,7 +730,7 @@ Feuille A4 de la plaquette : en-tête de navigation, contenu en slot, pied avec 
 Aucune prop.
 
 - **Usage** : Accueil. Faits de copy : voir les garde-fous de CLAUDE.md (intervenant culturel au singulier, « le psychologue »).
-- **Accessibilité** : Section reliée à son h2 ; photo décrite ; point final décoratif.
+- **Accessibilité** : Section reliée à son h2 ; photo décrite.
 
 #### `ThemeToggle`
 
@@ -787,20 +777,20 @@ Aucune prop.
 
 ### Nommage des composants
 
-- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcDuo`, `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
+- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
 - **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PartnerStrip`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
 - Deux mots minimum par nom (évite les collisions avec de futurs éléments HTML natifs)
 
 ### Visuel
 
-- Coral max **5 %** des pixels par page ou image
+- Coral max **5 %** des pixels par page ou image — exception : le logo lui-même (son petit carré en occupe environ 9 %), qu’on ne redimensionne jamais pour tenir la règle ; elle vaut pour tout le reste
 - Un seul CTA primaire par section
 - Jamais de texte blanc sur fond coral — utiliser `--on-child`
 - Pas de gradients, pas d'emoji en iconographie
-- **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale
+- **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-body-sm`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale
 - **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)
-- **Motif Duo** (`PxlcDuo`) : paires grand/petit, seul le dernier petit carré est corail — une fois par écran au plus ; la petite marque (`PxlcMark` 20 px) coiffe les cartes d'étape
+- **Petite marque** (`PxlcMark` 20 px) : coiffe les cartes d'étape ; le motif Duo a été retiré du design system
 
 ### OG Images
 
