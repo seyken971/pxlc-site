@@ -2,9 +2,8 @@
 // lien de rendez-vous. Les mêmes valeurs alimentent le JSON-LD
 // (src/lib/schema.ts), la page des mentions légales, le chrome du site et la
 // plaquette : toute divergence casse la cohérence NAP avec la fiche Google
-// Business Profile, d'où la source unique.
-// Note : contact.astro et a-propos.astro affichent encore ces valeurs en dur,
-// mêlées à des libellés formatés — à câbler ici si elles bougent.
+// Business Profile, d'où la source unique : aucune de ces valeurs ne doit
+// être écrite en dur ailleurs.
 export const IDENTITY = {
   legalName: 'Andy Zébus - Entrepreneur Individuel',
   brandName: 'PXLC - Médiation numérique',
@@ -17,6 +16,8 @@ export const IDENTITY = {
   // Format E.164 pour les liens tel: et le JSON-LD.
   telephone: '+590690717618',
   telephoneDisplay: '0690 71 76 18',
+  // Forme internationale affichée (page contact, plaquette).
+  telephoneDisplayIntl: '+590 690 71 76 18',
   // Lien de prise de rendez-vous : conversion primaire unique du site (header,
   // footer, menu mobile, pages, mentions légales, plaquette). Si l'outil change,
   // c'est ici et seulement ici — puis `npm run plaquette` pour régénérer le PDF.
@@ -31,6 +32,10 @@ export const IDENTITY = {
     region: 'Guadeloupe',
     country: 'FR',
   },
+  // Lien court de la fiche Google Business Profile (itinéraire, hasMap et
+  // sameAs du JSON-LD) et coordonnées du point de la fiche.
+  mapsUrl: 'https://maps.app.goo.gl/4UPhQWdzboD6HnAs8',
+  geo: { latitude: 16.1496296, longitude: -61.39705 },
   // Horaires publiés sur la fiche Google Business Profile (relevés le
   // 06/09/2026) : lundi à vendredi, fermé le week-end. Format HH:MM attendu
   // par schema.org (opens / closes).

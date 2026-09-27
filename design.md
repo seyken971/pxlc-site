@@ -387,6 +387,8 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.btn--primary`
 - `.btn--secondary`
 - `.btn--ghost`
+- `.mobile-menu`
+- `.site-footer`
 - `.linkout`
 
 ### Form fields
@@ -633,7 +635,7 @@ Aucune prop.
 
 - **États** : `:hover`
 - **Usage** : Toutes les pages, via BaseLayout ; ouvert par le burger de SiteHeader.
-- **Accessibilité** : Dialog modal nommé, inert tant qu'il est fermé ; focus piégé à l'ouverture, Échap ferme et rend le focus au burger ; page courante en aria-current="page".
+- **Accessibilité** : Dialog modal nommé, inert tant qu'il est fermé ; focus piégé à l'ouverture et reste de la page inert, Échap ferme et rend le focus au burger, refermé au passage en grand écran ; page courante en aria-current="page".
 
 ### Sections et blocs
 
@@ -735,7 +737,7 @@ Bascule clair / sombre. Suit le thème système tant que la personne n'a pas cho
 Aucune prop.
 
 - **Usage** : Dans l'en-tête du site.
-- **Accessibilité** : Bouton natif en aria-pressed ; aria-pressed et aria-label sont resynchronisés au chargement sur le thème réel ; icônes en aria-hidden.
+- **Accessibilité** : Bouton bascule natif, libellé fixe « Thème sombre » : l’état passe par aria-pressed, resynchronisé au chargement sur le thème réel. Un libellé qui change en plus de l’état ferait annoncer « Passer en thème clair, activé ». Icônes en aria-hidden.
 
 > `*` = prop obligatoire.
 

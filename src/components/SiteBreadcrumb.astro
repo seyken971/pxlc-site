@@ -41,7 +41,7 @@ const crumbs = breadcrumbItems(Astro.url.pathname, currentLabel)
     color: var(--ink-quiet);
   }
   .breadcrumb__item:not(:last-child)::after {
-    content: "/"; margin-left: var(--space-2); color: var(--ink-quiet);
+    content: "/"; content: "/" / ""; margin-left: var(--space-2); color: var(--ink-quiet);
   }
   /* Zone de tap ≥ 44 px sans grossir le libellé de 11 px. */
   .breadcrumb__link, .breadcrumb__current {

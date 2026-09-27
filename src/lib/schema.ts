@@ -139,8 +139,8 @@ const identityNode: MultiType<ProfessionalService, ['Organization', 'Professiona
   'email': IDENTITY.email,
   'founder': { '@id': ID.andy },
   'foundingDate': '2015',
-  'geo': { '@type': 'GeoCoordinates', 'latitude': 16.1496296, 'longitude': -61.39705 },
-  'hasMap': 'https://maps.app.goo.gl/4UPhQWdzboD6HnAs8',
+  'geo': { '@type': 'GeoCoordinates', 'latitude': IDENTITY.geo.latitude, 'longitude': IDENTITY.geo.longitude },
+  'hasMap': IDENTITY.mapsUrl,
   // Immatriculations. PropertyValue plutôt que taxID, déjà pris par le SIRET.
   // propertyID porte le référentiel, value la valeur du référentiel — donc la
   // forme compacte pour le SIREN, sauf pour le RCS dont la mention publiée
@@ -168,7 +168,7 @@ const identityNode: MultiType<ProfessionalService, ['Organization', 'Professiona
     'opens': IDENTITY.openingHours.opens,
   },
   'sameAs': [
-    'https://maps.app.goo.gl/4UPhQWdzboD6HnAs8',
+    IDENTITY.mapsUrl,
     'https://www.linkedin.com/company/pxlc-mediation-numerique/',
   ],
   'taxID': SIRET_COMPACT,
