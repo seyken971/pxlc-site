@@ -25,8 +25,7 @@ const BOOKING = IDENTITY.bookingUrlDisplay
 
 const website = SITE.url.replace(/^https?:\/\//, '').replace(/\/$/, '')
 const nbsp = (s: string) => s.replace(/ /g, ' ')
-/** +590690717618 → +590 690 71 76 18 (forme de la page contact). */
-const phone = IDENTITY.telephone.replace(/^(\+590)(\d{3})(\d{2})(\d{2})(\d{2})$/, '$1 $2 $3 $4 $5')
+const phone = IDENTITY.telephoneDisplayIntl
 // Feuille 02 : l'essentiel d'une intervention. Le cadre est déjà dans « Le
 // parti-pris » et le premier échange dans la promesse : pas de doublon.
 const practice = PRACTICE.filter(f => f.key !== 'cadre' && f.key !== 'demarrage')
@@ -51,6 +50,7 @@ const schemaGraph = pageGraph({
     <a class="btn btn--ghost btn--no-arrow" href="/">Retour au site</a>
     <a
       class="btn btn--ghost btn--no-arrow" href={PDF_HREF} target="_blank" rel="noopener noreferrer"
+      data-astro-prefetch="false"
       aria-label="Télécharger le PDF (plaquette, 6 pages, nouvel onglet)">Télécharger le PDF</a>
   </nav>
 

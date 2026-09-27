@@ -114,7 +114,7 @@ const schemaGraph = pageGraph({
           Le site pxlc.fr ne dépose aucun cookie de traçage publicitaire ni d'analytics tiers. Seul un
           élément de stockage local (<code>localStorage</code>, clé <code>pxlc-theme</code>) mémorise votre
           préférence de thème&nbsp;; il ne quitte jamais votre navigateur. Le formulaire de contact envoie
-          votre message via la boîte mail <a href="mailto:contact@pxlc.fr">contact@pxlc.fr</a>&nbsp;;
+          votre message via la boîte mail <a href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>&nbsp;;
           aucune donnée n'est stockée sur un serveur tiers à cette occasion.
         </p>
         <p>
@@ -122,7 +122,7 @@ const schemaGraph = pageGraph({
           je conserve vos coordonnées au plus pendant 3 ans à compter du dernier échange. La prise de
           rendez-vous passe par Vyte (Vyte.in SAS, Paris), qui héberge les réservations en France. Conformément au
           règlement européen 2016/679 (RGPD), vous disposez des droits d'accès, de rectification, d'effacement,
-          de portabilité et d'opposition sur vos données&nbsp;: écrivez à <a href="mailto:contact@pxlc.fr">contact@pxlc.fr</a>.
+          de portabilité et d'opposition sur vos données&nbsp;: écrivez à <a href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>.
         </p>
 
         <p class="kicker legal-updated">

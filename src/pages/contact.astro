@@ -132,14 +132,14 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
               <p class="contact-nap__line">{address.street}</p>
               <p class="contact-nap__line">{address.postalCode} {address.locality}, {address.region}</p>
               <p class="contact-nap__line contact-nap__line--links">
-                <a class="contact-nap__link" href={`tel:${IDENTITY.telephone}`}>+590 690 71 76 18</a><br />
+                <a class="contact-nap__link" href={`tel:${IDENTITY.telephone}`}>{IDENTITY.telephoneDisplayIntl}</a><br />
                 <a class="contact-nap__link" href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>
               </p>
             </address>
             <div class="contact-maplinks">
               <a
                 class="contact-maplinks__pill"
-                href="https://maps.app.goo.gl/4UPhQWdzboD6HnAs8"
+                href={IDENTITY.mapsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Itinéraire sur Google Maps (nouvel onglet)"
@@ -184,6 +184,8 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     </div>
   </section>
 <script>
+  import { IDENTITY } from '../config/identity'
+
   // GitHub Pages ne traite pas de POST — on construit un mailto: avec les
   // champs du formulaire et on ouvre le client mail de l'utilisateur.
   const form = document.getElementById('contact-form') as HTMLFormElement | null
@@ -212,7 +214,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     ].filter((l): l is string => l !== null)
 
     const subject = `Contact PXLC — ${name}${type ? ` (${type})` : ''}`
-    const href = `mailto:contact@pxlc.fr?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
+    const href = `mailto:${IDENTITY.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
     if (sentLink) sentLink.href = href
     window.location.href = href
     form.hidden = true
@@ -226,7 +228,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   // pas disponible — le lien mailto reste la voie de secours visible.
   copyBtn?.addEventListener('click', async () => {
     try {
-      await navigator.clipboard.writeText('contact@pxlc.fr')
+      await navigator.clipboard.writeText(IDENTITY.email)
       copyBtn.textContent = 'Copié'
       clearTimeout(copyTimer)
       copyTimer = setTimeout(() => { copyBtn.textContent = 'Copier l’adresse' }, 2000)

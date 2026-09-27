@@ -6,7 +6,12 @@
  *  - tout href interne doit résoudre vers un fichier émis (page/, asset) ;
  *  - toute page interne doit porter le slash final (parité canonical
  *    GitHub Pages — la forme sans slash 301-redirige) ;
- *  - les ancres #fragment vers une page interne doivent exister dans la cible.
+ *  - les ancres #fragment vers une page interne doivent exister dans la cible ;
+ *  - tout lien vers un asset (PDF…) porte data-astro-prefetch="false" : le
+ *    prefetch viewport d'Astro ne filtre pas les extensions et chargerait le
+ *    fichier entier dès que le lien devient visible.
+ *
+ * La 404 racine est vérifiée comme les autres pages.
  *
  *   node scripts/check-links.mjs [buildDir]
  */
@@ -21,7 +26,7 @@ const findHtml = async (dir) => {
   for (const entry of await readdir(dir, { withFileTypes: true })) {
     const p = join(dir, entry.name)
     if (entry.isDirectory()) out.push(...await findHtml(p))
-    else if (entry.isFile() && entry.name === 'index.html') out.push(p)
+    else if (entry.isFile() && (entry.name === 'index.html' || (dir === BUILD_DIR && entry.name === '404.html'))) out.push(p)
   }
   return out
 }
@@ -58,14 +63,17 @@ const main = async () => {
     idsByRoute.set(route, new Set([...doc.querySelectorAll('[id]')].map(el => el.id)))
     linksByPage.push({
       route,
-      hrefs: [...doc.querySelectorAll('a[href]')].map(a => a.getAttribute('href')),
+      links: [...doc.querySelectorAll('a[href]')].map(a => ({
+        href: a.getAttribute('href'),
+        prefetch: a.getAttribute('data-astro-prefetch'),
+      })),
     })
     dom.window.close()
   }
 
   const errors = []
-  for (const { route, hrefs } of linksByPage) {
-    for (const href of hrefs) {
+  for (const { route, links } of linksByPage) {
+    for (const { href, prefetch } of links) {
       // Externes, mailto/tel et ancres locales : hors périmètre.
       if (/^(https?:|mailto:|tel:|#)/.test(href)) continue
 
@@ -75,6 +83,9 @@ const main = async () => {
         // Asset (PDF, image…) — le fichier doit exister.
         if (!await exists(join(BUILD_DIR, ...pathname.split('/').filter(Boolean)))) {
           errors.push(`${route} → ${href} : fichier introuvable`)
+        }
+        if (prefetch !== 'false') {
+          errors.push(`${route} → ${href} : data-astro-prefetch="false" manquant (le prefetch chargerait le fichier)`)
         }
         continue
       }

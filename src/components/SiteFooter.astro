@@ -40,7 +40,7 @@ const year = new Date().getFullYear()
             </a>
           </li>
           <li>
-            <a class="site-footer__social-btn" href="mailto:contact@pxlc.fr" aria-label="Écrire à contact@pxlc.fr">
+            <a class="site-footer__social-btn" href={`mailto:${IDENTITY.email}`} aria-label={`Écrire à ${IDENTITY.email}`}>
               <Mail aria-hidden="true" />
             </a>
           </li>
@@ -62,6 +62,7 @@ const year = new Date().getFullYear()
           </li>
           <li><a
               class="site-footer__col-link" href="/files/plaquette-pxlc.pdf" target="_blank"
+              data-astro-prefetch="false"
               rel="noopener noreferrer"
               aria-label="Télécharger la plaquette (PDF, 6 pages, nouvel onglet)">Télécharger la plaquette</a></li>
           <li>
