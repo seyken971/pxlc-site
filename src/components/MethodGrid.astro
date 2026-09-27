@@ -75,9 +75,12 @@ const { steps, more = null } = Astro.props
   .card--featured p { font-size: var(--fs-lead); line-height: var(--lh-lead); max-width: 40ch; }
 
   /* Numéro d'étape fantôme en fond de carte, tiré de data-num (pas de
-     doublon dans le balisage). Suit le thème via --parent. */
+     doublon dans le balisage). Suit le thème via --parent. Texte
+     alternatif vide (/ "") : sans lui, le contenu généré est lu par les
+     lecteurs d'écran ; la première déclaration sert de repli. */
   .card--method::before {
     content: attr(data-num);
+    content: attr(data-num) / "";
     position: absolute;
     bottom: 20px;
     right: 24px;

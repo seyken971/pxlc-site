@@ -151,10 +151,12 @@ const schemaGraph = pageGraph({
   }
 
   /* Numéro fantôme décoratif, tiré de data-num (comme les cartes méthode) :
-     un pseudo-élément n'entre ni dans l'arbre d'accessibilité ni dans le
-     contrôle de contraste, contrairement à un span aria-hidden. */
+     un pseudo-élément échappe au contrôle de contraste, contrairement à un
+     span aria-hidden. Le texte alternatif vide (/ "") le retire de l'arbre
+     d'accessibilité ; la première déclaration sert de repli. */
   .casquette-card::before {
     content: attr(data-num);
+    content: attr(data-num) / "";
     position: absolute;
     top: -14px;
     right: 8px;

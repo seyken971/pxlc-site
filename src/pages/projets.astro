@@ -286,10 +286,10 @@ const schemaGraph = pageGraph({
     display: flex; align-items: center; justify-content: space-between; gap: var(--space-3);
   }
   .faq__q::after {
-    content: "+"; font-family: var(--font-label); font-weight: 400;
+    content: "+"; content: "+" / ""; font-family: var(--font-label); font-weight: 400;
     color: var(--child-deep); font-size: 22px;
   }
-  .faq__item[open] .faq__q::after { content: "−"; }
+  .faq__item[open] .faq__q::after { content: "−"; content: "−" / ""; }
   .faq__q::-webkit-details-marker { display: none; }
   .faq__a {
     margin-top: var(--space-2-5); font-size: var(--fs-body-sm); line-height: 1.6; color: var(--ink-muted);

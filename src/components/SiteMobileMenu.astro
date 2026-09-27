@@ -5,7 +5,8 @@
  * @usage Toutes les pages, via BaseLayout ; ouvert par le burger de
  * SiteHeader.
  * @a11y Dialog modal nommé, inert tant qu'il est fermé ; focus piégé à
- * l'ouverture, Échap ferme et rend le focus au burger ; page courante en
+ * l'ouverture et reste de la page inert, Échap ferme et rend le focus au
+ * burger, refermé au passage en grand écran ; page courante en
  * aria-current="page".
  */
 import PxlcLockup from './PxlcLockup.astro'
@@ -81,6 +82,7 @@ const pathname = Astro.url.pathname
     <div class="mobile-menu__plaquettes">
       <a
         href="/files/plaquette-pxlc.pdf"
+        data-astro-prefetch="false"
         target="_blank"
         rel="noopener noreferrer"
         class="mobile-menu__plaquette"
@@ -103,6 +105,12 @@ const pathname = Astro.url.pathname
 
   const FOCUSABLE = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
+  // Reste de la page rendu inerte tant que le menu est ouvert : aria-modal
+  // seul ne retire pas le fond de l'arbre d'accessibilité partout.
+  const background = Array.from(
+    document.querySelectorAll<HTMLElement>('.skip-link, .site-header, main, .site-footer'),
+  )
+
   const isOpen = () => menu?.classList.contains('is-open') ?? false
 
   const setOpen = (open: boolean) => {
@@ -110,6 +118,7 @@ const pathname = Astro.url.pathname
     menu.classList.toggle('is-open', open)
     if (open) menu.removeAttribute('inert')
     else menu.setAttribute('inert', '')
+    background.forEach((el) => { el.inert = open })
     burger.setAttribute('aria-expanded', String(open))
     burger.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu')
     document.body.style.overflow = open ? 'hidden' : ''
@@ -123,6 +132,11 @@ const pathname = Astro.url.pathname
   }
 
   burger?.addEventListener('click', () => setOpen(!isOpen()))
+  // Le menu est masqué en CSS dès 1024 px : ouvert au moment où la fenêtre
+  // s'élargit, il est refermé pour lever le verrou du scroll et l'inert du fond.
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+    if (e.matches && isOpen()) setOpen(false)
+  })
   closeBtn?.addEventListener('click', closeAndRestore)
   menu?.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', () => setOpen(false))

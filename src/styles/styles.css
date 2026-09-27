@@ -40,6 +40,10 @@
 
 /* ── Reset & globals ─────────────────────────────────────── */
 * { box-sizing: border-box; }
+/* Contrôles natifs (barres de défilement, champs) alignés sur le thème choisi
+   au bouton, pas seulement sur celui du système (meta color-scheme). */
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }
@@ -169,9 +173,10 @@ main[tabindex="-1"]:focus { outline: none; }
 /* Retour de pression, sur tous les appareils (tactile compris). */
 .btn:active { transform: scale(0.97); }
 /* Pas de font-family sur la flèche : évite un décalage (CLS) au chargement
-   des polices. */
+   des polices. Flèches décoratives : texte alternatif vide (/ ""), sinon
+   lues « flèche droite » ; la première déclaration sert de repli. */
 .btn::after {
-  content: "→"; font-size: 13px; transform: translateY(-1px);
+  content: "→"; content: "→" / ""; font-size: 13px; transform: translateY(-1px);
   transition: transform var(--dur-base) var(--ease-out);
 }
 @media (hover: hover) and (pointer: fine) {
@@ -218,6 +223,31 @@ main[tabindex="-1"]:focus { outline: none; }
   box-shadow: var(--focus-ring);
   border-color: var(--parent);
 }
+.burger:focus-visible,
+.lockup:focus-visible,
+.skip-link:focus-visible,
+.breadcrumb__link:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-xs);
+  text-decoration: none;
+}
+.burger:focus-visible { border-radius: var(--radius-md); }
+/* Fonds sombres (menu mobile, pied de page) : anneau cyan. */
+.mobile-menu a:focus-visible,
+.site-footer a:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring-on-dark);
+  text-decoration: none;
+}
+@media (forced-colors: active) {
+  .burger:focus-visible,
+  .lockup:focus-visible,
+  .skip-link:focus-visible,
+  .breadcrumb__link:focus-visible,
+  .mobile-menu a:focus-visible,
+  .site-footer a:focus-visible { outline: 2px solid ButtonText; outline-offset: 2px; }
+}
 
 .linkout {
   display: inline-flex; align-items: center; gap: var(--space-2);
@@ -228,7 +258,7 @@ main[tabindex="-1"]:focus { outline: none; }
   transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
 }
 /* La flèche glisse en transform : animer gap relancerait la mise en page. */
-.linkout::after { content: "→"; font-family: var(--font-label); transition: transform var(--dur-base) var(--ease-out); }
+.linkout::after { content: "→"; content: "→" / ""; font-family: var(--font-label); transition: transform var(--dur-base) var(--ease-out); }
 .linkout:hover { text-decoration: none; }
 @media (hover: hover) and (pointer: fine) {
   .linkout:hover::after { transform: translateX(4px); }
@@ -658,7 +688,7 @@ main[tabindex="-1"]:focus { outline: none; }
   margin-top: var(--space-2-5);
   transition: color var(--dur-fast) var(--ease-out);
 }
-.site-footer__mission-link::after { content: "→"; transition: transform var(--dur-base) var(--ease-out); }
+.site-footer__mission-link::after { content: "→"; content: "→" / ""; transition: transform var(--dur-base) var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
   .site-footer__mission-link:hover { color: var(--child); }
   .site-footer__mission-link:hover::after { transform: translateX(3px); }
