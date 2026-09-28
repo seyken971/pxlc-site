@@ -35,7 +35,7 @@
     "@astrojs/sitemap": "^3.7.4",
     "@resvg/resvg-js": "^2.6.2",
     "astro": "^7.3.2",
-    "satori": "^0.33.4"
+    "satori": "^0.33.5"
   },
   "overrides": {
     "fflate": "^0.8.2"
