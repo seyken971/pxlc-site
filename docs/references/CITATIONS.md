@@ -174,6 +174,13 @@ effets délétères), pas sur les statistiques d'équipement.
     coordination, paralysie cérébrale, neurovisuels)
   - PDF en ligne : handicap.gouv.fr/sites/handicap/files/2025-12/Guide-Guidance-parentale-2025.pdf
 
+### HAS 2020 — repérage des enfants à risque de TND (carte « HAS · 2020 » de la plaquette)
+→ hors corpus local (pas de PDF dans docs/references/) : HAS, recommandation de bonne
+  pratique « Troubles du neurodéveloppement - Repérage et orientation des enfants à
+  risque », validée le 26/02/2020, publiée le 17/03/2020
+  - has-sante.fr/jcms/p_3161334/fr/troubles-du-neurodeveloppement-reperage-et-orientation-des-enfants-a-risque
+  - citée aussi par `guide_guidance_parentale_2025`, note 7 (« HAS 2020 (haut risque de TND) »)
+
 ### Ressources pratiques à recommander aux familles / acteurs
 → `guide_parentalite_numerique` — répertoire institutionnel (162 lignes, lisible en entier)
   - 3018, Cybermalveillance, CLEMI, CNIL, Arcom, FamiNum, PédaGoJeux, Pix…

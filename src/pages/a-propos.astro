@@ -22,12 +22,12 @@ const casquettes = [
   {
     num: '01',
     titre: 'Organisateur esport',
-    desc: 'Plus de six ans sur la scène esport guadeloupéenne — tournois, partenariats grands comptes, Destreland Gaming Cup. Je connais la communauté de joueurs de l\'intérieur.',
+    desc: 'Plus de 6\u00A0ans sur la scène esport guadeloupéenne — tournois, partenariats grands comptes, Destreland Gaming Cup. Je connais la communauté de joueurs de l\'intérieur.',
   },
   {
     num: '02',
     titre: 'Médiateur formé',
-    desc: 'Formateur principal en médiation numérique chez Simplon Outre-Mer (2021–2022).',
+    desc: 'Formateur principal en médiation numérique chez Simplon Outre-Mer (2021–2022). Je travaille dans le cadre HCSP\u00A02019-2020 · HAS\u00A02020.',
   },
   {
     num: '03',
@@ -43,7 +43,7 @@ const timeline = [
   { year: '2015–2018', title: 'Entreprise individuelle', desc: 'Stratégie digitale Région Guadeloupe Route du Rhum 2018, formation d\'élus en anglais.' },
   { year: '2019–2021', title: 'Esports Guadeloupe — chef de projet', desc: 'Scène esport guadeloupéenne — Destreland Gaming Cup, Game Over Challenge. 1 mois de CA en 4 jours pour un partenaire commercial.' },
   { year: '2021–2022', title: 'Simplon Outre-Mer — formateur principal', desc: 'Formation de futurs responsables d\'espaces de médiation numérique.' },
-  { year: '2026', title: 'PXLC — médiateur numérique familial', desc: 'Programme Jouons Ensemble au SESSAD Lékoklaya — 8 familles, 12–17 ans, TSA/TDAH/TND, co-encadrement avec psychologue et psychomotricienne.' },
+  { year: '2026', title: 'PXLC — médiateur numérique', desc: 'Programme «\u00A0Jouons Ensemble\u00A0!\u00A0» au SESSAD Lékoklaya — 8 familles, 12–17 ans, TND et troubles du comportement ou du lien social, co-encadrement avec psychologue et psychomotricienne.', link: { href: '/projets/#projet-jouons-ensemble', label: 'Voir le projet' } },
 ]
 
 const seo = {
@@ -131,7 +131,7 @@ const schemaGraph = pageGraph({
               aria-hidden="true"></span>
             <div class="timeline__body">
               <strong class="timeline__title">{step.title}</strong>
-              <p class="timeline__desc">{step.desc}</p>
+              <p class="timeline__desc">{step.desc}{step.link && <> <a href={step.link.href}>{step.link.label}</a></>}</p>
             </div>
           </li>
         ))}
