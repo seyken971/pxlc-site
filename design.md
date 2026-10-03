@@ -621,7 +621,7 @@ Surface SEO d'une page dans le head : title, canonical, metas, OG et Twitter, JS
 
 #### `SiteHeader`
 
-En-tête du site : lockup, navigation principale, bascule de thème, CTA « Prendre RDV » (Vyte) et burger qui ouvre SiteMobileMenu.
+En-tête du site : lockup, navigation principale, bascule de thème, CTA « Réserver un échange de 20 min » (Vyte) et burger qui ouvre SiteMobileMenu.
 
 Aucune prop.
 
