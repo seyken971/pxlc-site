@@ -135,7 +135,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
               <p class="contact-nap__line">{address.street}</p>
               <p class="contact-nap__line">{address.postalCode} {address.locality}, {address.region}</p>
               <p class="contact-nap__line contact-nap__line--links">
-                <a class="contact-nap__link" href={`tel:${IDENTITY.telephone}`}>{IDENTITY.telephoneDisplayIntl}</a><br />
+                <a class="contact-nap__link" href={`tel:${IDENTITY.telephone}`}>{IDENTITY.telephoneDisplayIntl}</a>
                 <a class="contact-nap__link" href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>
               </p>
             </address>
@@ -409,9 +409,15 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     color: var(--ink-muted);
     margin: 0;
   }
-  .contact-nap__line--links { margin-top: var(--space-2-5); }
+  /* Liens empilés en colonne, chacun haut d'au moins 24 px : cible tactile
+     WCAG 2.5.8 (target-size), que deux lignes de texte serrées n'atteignaient pas. */
+  .contact-nap__line--links {
+    display: flex; flex-direction: column; align-items: flex-start;
+    gap: var(--space-1);
+    margin-top: var(--space-2-5);
+  }
   /* Souligné : lien au milieu de l'adresse, la couleur seule ne suffit pas (RGAA 10.6). */
-  .contact-nap__link { color: var(--parent); text-decoration: underline; text-underline-offset: 3px; }
+  .contact-nap__link { display: inline-flex; align-items: center; min-height: var(--space-4); color: var(--parent); text-decoration: underline; text-underline-offset: 3px; }
   .contact-nap__link:hover { text-decoration-thickness: 2px; }
 
   .contact-maplinks { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }

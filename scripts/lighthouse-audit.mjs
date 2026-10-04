@@ -71,6 +71,17 @@ const main = async () => {
   const all = []
 
   try {
+    // Audit de chauffe, jeté : le premier passage après le lancement de
+    // Chrome paie le démarrage à froid (TBT de 0 à 1 000 ms sur la même
+    // version de l'accueil d'un run CI à l'autre) et pénalisait toujours la
+    // première route, l'accueil.
+    process.stderr.write('warm-up ... ')
+    try {
+      await auditRoute(port, routes[0], chrome.port)
+      process.stderr.write('ok\n')
+    } catch (err) {
+      process.stderr.write(`fail (${err.message})\n`)
+    }
     for (const route of routes) {
       process.stderr.write(`auditing ${route} ... `)
       try {
