@@ -1,14 +1,28 @@
 ---
 /**
  * Lien texte de sortie de section, stylé .linkout, libellé en slot.
- * @usage Fin de bloc de contenu (étude de cas SESSAD).
- * @a11y Lien natif ; le libellé du slot doit nommer la destination seul.
+ * @usage Fin de bloc de contenu (étude de cas SESSAD, section « En pratique »).
+ * @a11y Lien natif ; le libellé du slot doit nommer la destination seul. En
+ * external, le nom accessible reprend le libellé suivi de « (nouvel onglet) ».
  */
 interface Props {
   /** Destination du lien. */
   href: string
+  /** Ouvre la destination dans un nouvel onglet (lien de rendez-vous). */
+  external?: boolean
 }
-const { href } = Astro.props
+const { href, external = false } = Astro.props
+// Le slot rendu est du HTML : balises retirées et entités décodées (sinon
+// « 20&nbsp;min » serait rééchappé en « &amp;nbsp; » dans l'attribut).
+const ENTITIES: Record<string, string> = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', '#39': '\'' }
+const label = external
+  ? (await Astro.slots.render('default'))
+      .replace(/<[^>]*>/g, '')
+      .replace(/&(nbsp|amp|lt|gt|quot|#39);/g, (_, e: string) => ENTITIES[e] ?? '')
+      .trim()
+  : ''
 ---
 
-<a class="linkout" href={href}><slot /></a>
+{external
+  ? <a class="linkout" href={href} target="_blank" rel="noopener noreferrer" aria-label={`${label} (nouvel onglet)`}><slot /></a>
+  : <a class="linkout" href={href}><slot /></a>}

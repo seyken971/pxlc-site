@@ -44,7 +44,7 @@ const schemaGraph = pageGraph({
     title="Médiation numérique en Guadeloupe"
     titleDot={true}
     lead={'J’aide les structures en Guadeloupe à accompagner les familles autour des écrans. Concrètement : résolution des conflits autour du temps d’écran, bonnes pratiques du numérique.'}
-    ctaPrimary={{ label: 'Prendre rendez-vous', href: IDENTITY.bookingUrl, external: true }}
+    ctaPrimary={{ label: 'Réserver un échange de 20\u00A0min', href: IDENTITY.bookingUrl, external: true }}
     ctaSecondary={{ label: 'Voir les projets', href: '/projets/' }}
     ctaSecondaryAlt={{ label: 'Lire la plaquette en ligne', href: '/plaquette/' }}
     photo={andyEvent}
@@ -86,7 +86,7 @@ const schemaGraph = pageGraph({
         ))}
       </dl>
       <div class="pratique-more">
-        <PxlcLinkout href="/contact/">Décrire votre projet pour recevoir un devis</PxlcLinkout>
+        <PxlcLinkout href={IDENTITY.bookingUrl} external>Réserver un échange de 20&nbsp;min</PxlcLinkout>
       </div>
     </div>
   </section>

@@ -307,7 +307,7 @@
           "@type": "Question",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Le projet est porté par la structure — au SESSAD Lékoklaya, par le psychologue. J’interviens comme médiateur numérique aux côtés de l’équipe pluridisciplinaire : psychologue, psychomotricienne, intervenant culturel. Chacun garde son cadre professionnel, le jeu vidéo est le support commun."
+            "text": "Le projet est porté par la structure — au SESSAD Lékoklaya, par le psychologue. J’interviens comme médiateur numérique aux côtés du psychologue et de la psychomotricienne, avec un intervenant culturel. Chacun garde son cadre professionnel, le jeu vidéo est le support commun."
           },
           "inLanguage": "fr-FR",
           "name": "Qui fait quoi dans l’équipe ?"
@@ -327,7 +327,7 @@
           "@type": "Question",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Sur devis, calibré au périmètre (nombre d’ateliers, nombre de familles, durée). Le devis inclut la rémunération du médiateur intervenant, le prêt des consoles et des jeux peut être inclus ou pris en charge par la structure."
+            "text": "Il est calibré au périmètre (nombre d’ateliers, nombre de familles, durée) et couvre mon intervention ; le prêt des consoles et des jeux peut y être inclus ou pris en charge par la structure."
           },
           "inLanguage": "fr-FR",
           "name": "Sur quoi porte le devis ?"

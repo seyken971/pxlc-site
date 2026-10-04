@@ -1,7 +1,7 @@
 ---
 /**
  * En-tête du site : lockup, navigation principale, bascule de thème,
- * CTA « Prendre RDV » (Vyte) et burger qui ouvre SiteMobileMenu.
+ * CTA « Réserver un échange de 20 min » (Vyte) et burger qui ouvre SiteMobileMenu.
  * @usage Toutes les pages, via BaseLayout.
  * @a11y Nav nommée « Navigation principale », page courante en
  * aria-current="page" ; CTA externe annoncé « nouvel onglet » ; burger en
@@ -37,8 +37,8 @@ const pathname = Astro.url.pathname
         target="_blank"
         rel="noopener noreferrer"
         class="btn btn--primary site-header__cta"
-        aria-label="Prendre RDV (rendez-vous, nouvel onglet)"
-      >Prendre RDV</a>
+        aria-label="Réserver un échange de 20&nbsp;min (nouvel onglet)"
+      >Réserver un échange de 20&nbsp;min</a>
 
       <button
         type="button"

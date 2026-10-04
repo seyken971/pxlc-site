@@ -11,7 +11,7 @@ import { IDENTITY } from '../config/identity'
 // Date de dernière mise à jour du contenu légal — à mettre à jour à la main
 // (pas la date du build).
 const lastUpdated = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })
-  .format(new Date('2026-09-06T12:00:00'))
+  .format(new Date('2026-10-03T12:00:00'))
 
 const seo = {
   title: 'Mentions légales',
@@ -34,7 +34,7 @@ const schemaGraph = pageGraph({
     title="Mentions légales"
     titleDot
   >
-    <p slot="lead">Conformément à la loi pour la confiance dans l'économie numérique du 21 juin 2004, voici les informations relatives à l'éditeur, à l'hébergeur et au traitement des données du site <strong>pxlc.fr</strong>.</p>
+    <p slot="lead">Conformément à la loi pour la confiance dans l’économie numérique du 21 juin 2004, voici les informations relatives à l’éditeur, à l’hébergeur et au traitement des données du site <strong>pxlc.fr</strong>.</p>
   </HeroSection>
 
   <!-- ── Content ───────────────────────────────────────────── -->
@@ -103,26 +103,31 @@ const schemaGraph = pageGraph({
 
         <h2>Propriété intellectuelle</h2>
         <p>
-          L'ensemble des contenus de ce site (textes, marques, logos, photographies, illustrations, design)
-          est la propriété exclusive d'Andy Zébus, sauf mention contraire&nbsp;: toute reproduction ou diffusion,
+          L’ensemble des contenus de ce site (textes, marques, logos, photographies, illustrations, design)
+          est la propriété exclusive d’Andy Zébus, sauf mention contraire&nbsp;: toute reproduction ou diffusion,
           intégrale ou partielle, est interdite sans autorisation écrite préalable. Les recommandations
           institutionnelles citées (HCSP, HAS) demeurent la propriété de leurs auteurs respectifs.
         </p>
 
         <h2 id="rgpd">Données personnelles et cookies</h2>
         <p>
-          Le site pxlc.fr ne dépose aucun cookie de traçage publicitaire ni d'analytics tiers. Seul un
+          Le site pxlc.fr ne dépose aucun cookie de traçage publicitaire ni d’analytics tiers. Seul un
           élément de stockage local (<code>localStorage</code>, clé <code>pxlc-theme</code>) mémorise votre
           préférence de thème&nbsp;; il ne quitte jamais votre navigateur. Le formulaire de contact envoie
           votre message via la boîte mail <a href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>&nbsp;;
-          aucune donnée n'est stockée sur un serveur tiers à cette occasion.
+          aucune donnée n’est stockée sur un serveur tiers à cette occasion. Comme hébergeur,
+          GitHub enregistre l’adresse IP des visiteurs du site à des fins de sécurité.
         </p>
         <p>
           Lorsque vous me contactez par email ou via <a href={IDENTITY.bookingUrl} target="_blank" rel="noopener noreferrer">{IDENTITY.bookingUrlDisplay}</a>,
-          je conserve vos coordonnées au plus pendant 3 ans à compter du dernier échange. La prise de
+          je conserve vos coordonnées au plus pendant 3 ans à compter du dernier échange, pour répondre
+          à votre demande et assurer le suivi de nos échanges (mesures précontractuelles, article 6.1.b
+          du RGPD). La prise de
           rendez-vous passe par Vyte (Vyte.in SAS, Paris), qui héberge les réservations en France. Conformément au
-          règlement européen 2016/679 (RGPD), vous disposez des droits d'accès, de rectification, d'effacement,
-          de portabilité et d'opposition sur vos données&nbsp;: écrivez à <a href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>.
+          règlement européen 2016/679 (RGPD), vous disposez des droits d’accès, de rectification, d’effacement,
+          de limitation, de portabilité et d’opposition sur vos données&nbsp;: écrivez à <a href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>.
+          Si vous estimez que vos droits ne sont pas respectés, vous pouvez adresser une réclamation à la
+          <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener noreferrer">CNIL</a>.
         </p>
 
         <p class="kicker legal-updated">

@@ -533,9 +533,10 @@ Lien texte de sortie de section, stylé .linkout, libellé en slot.
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
 | `href` * | `string` | — | Destination du lien. |
+| `external` | `boolean` | `false` | Ouvre la destination dans un nouvel onglet (lien de rendez-vous). |
 
-- **Usage** : Fin de bloc de contenu (étude de cas SESSAD).
-- **Accessibilité** : Lien natif ; le libellé du slot doit nommer la destination seul.
+- **Usage** : Fin de bloc de contenu (étude de cas SESSAD, section « En pratique »).
+- **Accessibilité** : Lien natif ; le libellé du slot doit nommer la destination seul. En external, le nom accessible reprend le libellé suivi de « (nouvel onglet) ».
 
 #### `PxlcLockup`
 
@@ -620,7 +621,7 @@ Surface SEO d'une page dans le head : title, canonical, metas, OG et Twitter, JS
 
 #### `SiteHeader`
 
-En-tête du site : lockup, navigation principale, bascule de thème, CTA « Prendre RDV » (Vyte) et burger qui ouvre SiteMobileMenu.
+En-tête du site : lockup, navigation principale, bascule de thème, CTA « Réserver un échange de 20 min » (Vyte) et burger qui ouvre SiteMobileMenu.
 
 Aucune prop.
 
