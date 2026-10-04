@@ -34,15 +34,17 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
 ---
 
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
-  <!-- Tête de page : gabarit commun ; la réassurance tient la place des CTA
-       (l'action de la page, c'est le formulaire juste en dessous). -->
+  <!-- Tête de page : gabarit commun. Funnel RDV-first (docs/seo-plan.md) :
+       la réservation est l'action primaire, le formulaire juste en dessous
+       sert ceux qui préfèrent écrire ; la réassurance suit le CTA. -->
   <HeroSection
     breadcrumb
     eyebrow="Contact"
     title="On en parle"
     titleDot
     titleMark={'\u00A0?'}
-    lead={'Décrivez votre structure, le public accompagné et le projet envisagé — je reviens sous 2\u00A0jours ouvrés.'}
+    lead={'Le plus simple\u00A0: un échange de 20\u00A0min, en visio ou sur site, pour parler de votre structure et du public accompagné. Vous préférez écrire\u00A0? Le formulaire est juste en dessous.'}
+    ctaPrimary={{ label: 'Réserver un échange de 20\u00A0min', href: IDENTITY.bookingUrl, external: true }}
   >
     <ul class="contact-assure" role="list">
       <li>Premier échange de 20&nbsp;min, gratuit</li>
@@ -58,8 +60,8 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
 
         <!-- ── Colonne gauche — formulaire ───────────────────── -->
         <div>
-          <h2 class="contact-h2">Décrire votre projet</h2>
-          <p class="contact-note">Quatre champs, deux minutes.</p>
+          <h2 class="contact-h2">Ou décrire votre projet par écrit</h2>
+          <p class="contact-note">Quatre champs, deux minutes. Je reviens sous 2&nbsp;jours ouvrés.</p>
 
           <!-- Carte de statut — remplace le formulaire une fois soumis. Le
                mailto: construit au submit y reste accessible en repli. -->
@@ -247,7 +249,8 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   .contact-assure {
     display: flex; flex-wrap: wrap;
     gap: var(--space-2-5) var(--space-5);
-    margin: 0; padding: 0; list-style: none;
+    /* Sous le CTA du hero : même respiration qu'entre chapô et actions. */
+    margin: var(--space-4) 0 0; padding: 0; list-style: none;
     font-family: var(--font-label); font-size: var(--fs-small);
     color: var(--ink-muted);
   }
