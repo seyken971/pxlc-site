@@ -46,8 +46,11 @@ HCSP, est abandonné avec le blog (26 août 2026). Le site tient désormais en
   Guadeloupe » — le sujet devant, la catégorie et le territoire derrière. Seul,
   « médiation numérique » renvoie pour le grand public à l'inclusion numérique
   (conseillers numériques France Services, réseau ANCT), pas à l'accompagnement
-  des familles autour des écrans. Le h1 du hero reste « Médiation numérique en
-  Guadeloupe. ». À réévaluer avec les requêtes de la Search Console.
+  des familles autour des écrans. Le h1 du hero suit la même logique depuis le
+  4 octobre 2026 : « Accompagner les familles autour des écrans. », la
+  catégorie et le territoire passant en eyebrow (« Médiation numérique ·
+  Guadeloupe »). Décidé sans données Search Console : à réévaluer avec les
+  requêtes.
 - **IndexNow** : soumission depuis `npm run release` (`scripts/indexnow.mjs`),
   après la vérification de la prod, des seules pages dont le `lastmod` porte le
   commit de fusion — la spec demande de ne soumettre que les URL modifiées.
