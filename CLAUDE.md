@@ -62,7 +62,7 @@ Aussi dans design.md, mais bloquants — vérifier chaque texte généré ou mod
   le balisage, `\u00A0` dans les template literals, U+00A0 littéral toléré
   dans les chaînes simples — garde-fou `ds-lint` R11.
 - Cadre réglementaire : toujours citer « HCSP 2019-2020 · HAS 2020 » ensemble.
-- Termes naked (sans guillemets ni traduction) : HCSP, SESSAD, TCND, TND,
+- Termes naked (sans guillemets ni traduction) : HCSP, SESSAD, TND,
   hyperfocus.
 - Corpus de référence dans `docs/references/` (avis HCSP 12/12/2019, avis HCSP
   08/03/2021, rapport HCSP, rapport DITP 2022, dossier HCFEA 2020, rapport de
