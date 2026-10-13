@@ -4,8 +4,8 @@
  * invariants de scripts/schema-check.mjs (postbuild).
  *
  * Ordre du @graph :
- *   #website · #webpage · #identity · #andy · #service · [nœuds Question] ·
- *   [BreadcrumbList] · #photo-event · #logo · #photo-andy
+ *   #website · #webpage · #identity · #andy · #service · [BreadcrumbList] ·
+ *   #photo-event · #logo · #photo-andy
  */
 import { createLastmod } from '../../scripts/sitemap-lastmod.mjs'
 import { SITE, ZONE } from '../config/site'
@@ -17,7 +17,6 @@ import type {
   Person,
   PostalAddress,
   ProfessionalService,
-  Question,
   Service,
   WebPage,
   WebSite,
@@ -73,7 +72,7 @@ type MultiType<T, U, E = Entity<T>> = E extends unknown
  * Types de page réellement émis. Union fermée : une faute de frappe
  * ('AboutPge') casse le typecheck.
  */
-export type PageType = 'WebPage' | 'AboutPage' | 'ContactPage' | 'FAQPage'
+export type PageType = 'WebPage' | 'AboutPage' | 'ContactPage'
 
 // ── Nœuds globaux (identiques sur toutes les pages) ─────────────────────────
 
@@ -271,11 +270,6 @@ export interface WebPageOptions {
   aboutId?: string
   /** Fil d'Ariane de la page (breadcrumbItems) — ajoute le nœud + la réf. */
   crumbs?: Crumb[]
-  /**
-   * Nœuds Question (FAQ de /projets/) — référencés via mainEntity. `id` porte
-   * le fragment du @id : réordonner la FAQ ne réaffecte pas les @id.
-   */
-  questions?: { id: string, q: string, a: string }[]
 }
 
 const breadcrumbId = (pageUrl: string) => `${pageUrl}#breadcrumb`
@@ -294,14 +288,6 @@ const breadcrumbNode = (pageUrl: string, crumbs: Crumb[]): Node<BreadcrumbList> 
 /** Graphe complet d'une page. */
 export const pageGraph = (opts: WebPageOptions): GraphNode[] => {
   const pageUrl = `${URL_BASE}${opts.path}`
-  const questionNodes = (opts.questions ?? []).map((f): Node<Question> => ({
-    '@id': `${pageUrl}#faq-${f.id}`,
-    '@type': 'Question',
-    'acceptedAnswer': { '@type': 'Answer', 'text': f.a },
-    'inLanguage': LANG,
-    'name': f.q,
-  }))
-
   const webpage: MultiType<WebPage, PageType | PageType[]> = {
     '@id': `${pageUrl}#webpage`,
     '@type': opts.type ?? 'WebPage',
@@ -312,9 +298,6 @@ export const pageGraph = (opts: WebPageOptions): GraphNode[] => {
     'description': opts.description,
     'inLanguage': LANG,
     'isPartOf': { '@id': ID.website },
-    ...(questionNodes.length
-      ? { mainEntity: questionNodes.map(q => ({ '@id': q['@id'] })) }
-      : {}),
     'name': opts.name,
     'url': pageUrl,
   }
@@ -325,7 +308,6 @@ export const pageGraph = (opts: WebPageOptions): GraphNode[] => {
     identityNode,
     andyNode,
     serviceNode,
-    ...questionNodes,
     ...(opts.crumbs ? [breadcrumbNode(pageUrl, opts.crumbs)] : []),
     imageNode(ID.photoEvent, `${URL_BASE}/img/photos/andy-event.jpg`, 2000, 1331),
     logoNode,

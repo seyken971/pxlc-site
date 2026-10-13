@@ -63,7 +63,7 @@ HCSP, est abandonné avec le blog (26 août 2026). Le site tient désormais en
   `schema.ts` : `['Organization', 'ProfessionalService']` avec `areaServed`
   (Guadeloupe + 4 communes), `geo`, `hasMap`, RCS/SIREN/NAF en `PropertyValue`,
   `Service` avec `BusinessAudience`, `sameAs` scindé Organization / Person,
-  WebPage multi-typé, FAQ en nœuds `Question` à `@id` stables. Ses validations
+  WebPage multi-typé. Ses validations
   de build sont déjà couvertes (h1 unique, title et description uniques, alt :
   seo-lint ; longueurs : ds-lint R7, plus strict ; slash final et liens internes :
   check-links). Le brancher casserait le hash CSP calculé sur la chaîne JSON-LD
