@@ -112,7 +112,6 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
               <button type="submit" class="btn btn--primary contact-submit">
                 Envoyer
               </button>
-              <span class="contact-submit-note">Réponse sous 2&nbsp;jours ouvrés.</span>
             </div>
             <p class="form-privacy">Vos coordonnées servent uniquement à vous répondre et sont conservées 3&nbsp;ans au plus. <a href="/mentions-legales/#rgpd">En savoir plus</a></p>
           </form>
@@ -171,12 +170,12 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
         <li class="contact-step">
           <span class="contact-step__num" aria-hidden="true">01</span>
           <h3>Vous prenez contact</h3>
-          <p>Vous réservez un créneau en ligne, ou vous m’écrivez&nbsp;: je reviens alors vers vous sous 2&nbsp;jours ouvrés, avec deux ou trois questions de cadrage.</p>
+          <p>Vous réservez un créneau en ligne, ou vous m’écrivez&nbsp;: je reviens alors vers vous avec deux ou trois questions de cadrage.</p>
         </li>
         <li class="contact-step">
           <span class="contact-step__num" aria-hidden="true">02</span>
           <h3>On échange 20&nbsp;min</h3>
-          <p>Visio ou sur site. Gratuit, sans engagement.</p>
+          <p>Visio ou sur site.</p>
           <p><a href={IDENTITY.bookingUrl} target="_blank" rel="noopener noreferrer" aria-label="Réserver un échange de 20&nbsp;min (nouvel onglet)">Réserver un échange de 20&nbsp;min</a></p>
         </li>
         <li class="contact-step">
@@ -334,7 +333,6 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     gap: var(--space-3);
     margin-top: var(--space-1);
   }
-  .contact-submit-note { font-family: var(--font-label); font-size: var(--fs-small); color: var(--ink-quiet); }
   /* Information RGPD au point de collecte, détail dans les mentions légales. */
   .form-privacy { font-size: var(--fs-small); color: var(--ink-quiet); }
 

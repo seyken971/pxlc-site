@@ -27,10 +27,10 @@ export interface PracticeFact {
 export const PRACTICE: PracticeFact[] = [
   { key: 'format', label: 'Format', value: 'Ateliers parent-enfant, conduits avec l’équipe de votre structure' },
   { key: 'seance', label: 'Une séance', value: 'Un temps de jeu partagé (30 à 45\u00A0min), puis un temps d’échange (45\u00A0min à 1\u00A0h)' },
-  { key: 'restitution', label: 'Restitution', value: 'Un bilan écrit, remis à l’équipe et discuté avec elle, réutilisable dans vos rapports d’activité' },
+  { key: 'restitution', label: 'Restitution', value: 'Un bilan écrit, remis à l’équipe et discuté avec elle, réutilisable dans vos rapports d’activité. Rien de publié qui identifie une famille' },
   { key: 'cadre', label: 'Cadre', value: 'HCSP\u00A02019-2020 · HAS\u00A02020' },
   { key: 'materiel', label: 'Matériel', value: 'Consoles et jeux prêtés, ou pris en charge par la structure' },
   { key: 'zone', label: 'Zone', value: ZONE.join(', ') },
   { key: 'tarif', label: 'Tarif', value: 'Sur devis, selon le nombre d’ateliers, de familles et la durée' },
-  { key: 'demarrage', label: 'Pour commencer', value: 'Un premier échange de 20\u00A0min, gratuit et sans engagement' },
+  { key: 'demarrage', label: 'Pour commencer', value: 'Un premier échange de 20\u00A0min, gratuit et sans engagement, puis une rencontre avec la personne qui portera le projet dans votre structure' },
 ]

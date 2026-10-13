@@ -56,10 +56,7 @@
         },
         {
           "@id": "https://pxlc.fr/projets/#webpage",
-          "@type": [
-            "WebPage",
-            "FAQPage"
-          ],
+          "@type": "WebPage",
           "about": {
             "@id": "https://pxlc.fr/#service"
           },
@@ -74,20 +71,6 @@
           "isPartOf": {
             "@id": "https://pxlc.fr/#website"
           },
-          "mainEntity": [
-            {
-              "@id": "https://pxlc.fr/projets/#faq-demarrage"
-            },
-            {
-              "@id": "https://pxlc.fr/projets/#faq-roles"
-            },
-            {
-              "@id": "https://pxlc.fr/projets/#faq-restitution"
-            },
-            {
-              "@id": "https://pxlc.fr/projets/#faq-devis"
-            }
-          ],
           "name": "Projets de médiation numérique pour les lieux qui accueillent des familles",
           "url": "https://pxlc.fr/projets/"
         },
@@ -291,46 +274,6 @@
           },
           "serviceType": "Médiation numérique",
           "url": "https://pxlc.fr/projets/"
-        },
-        {
-          "@id": "https://pxlc.fr/projets/#faq-demarrage",
-          "@type": "Question",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Par un premier échange de 20 min pour cadrer le périmètre, puis une rencontre avec l’équipe. Le point qui conditionne tout : qui, dans la structure, porte le projet au quotidien — au SESSAD Lékoklaya, c’est le psychologue. Le calendrier se cale ensuite sur le rythme du lieu, pas l’inverse."
-          },
-          "inLanguage": "fr-FR",
-          "name": "Comment démarre un projet ?"
-        },
-        {
-          "@id": "https://pxlc.fr/projets/#faq-roles",
-          "@type": "Question",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Le projet est porté par la structure — au SESSAD Lékoklaya, par le psychologue. J’interviens comme médiateur numérique aux côtés du psychologue et de la psychomotricienne, avec un intervenant culturel. Chacun garde son cadre professionnel, le jeu vidéo est le support commun."
-          },
-          "inLanguage": "fr-FR",
-          "name": "Qui fait quoi dans l’équipe ?"
-        },
-        {
-          "@id": "https://pxlc.fr/projets/#faq-restitution",
-          "@type": "Question",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Un document écrit, remis à l’équipe et discuté avec elle, dans une forme réutilisable pour vos rapports d’activité. Les éléments nominatifs restent à la structure : je ne publie rien qui identifie une famille."
-          },
-          "inLanguage": "fr-FR",
-          "name": "Que reçoit la structure à la fin ?"
-        },
-        {
-          "@id": "https://pxlc.fr/projets/#faq-devis",
-          "@type": "Question",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Il est calibré au périmètre (nombre d’ateliers, nombre de familles, durée) et couvre mon intervention ; le prêt des consoles et des jeux peut y être inclus ou pris en charge par la structure."
-          },
-          "inLanguage": "fr-FR",
-          "name": "Sur quoi porte le devis ?"
         },
         {
           "@id": "https://pxlc.fr/projets/#breadcrumb",

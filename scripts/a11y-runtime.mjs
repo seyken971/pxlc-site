@@ -5,12 +5,11 @@
  * a real browser:
  *  - color-contrast (needs CSS resolution)
  *  - target-size (needs computed layout)
- *  - dynamic states (mobile menu open, FAQ details expanded)
+ *  - dynamic states (mobile menu open)
  *
  * Spins up a tiny static server on an ephemeral port for dist/,
  * then a headless Chromium walks each prerendered route. The browser is
- * also scripted to open the mobile menu and one FAQ entry so axe can
- * inspect those expanded UIs.
+ * also scripted to open the mobile menu so axe can inspect it.
  *
  * Run after `npm run build`:
  *   node scripts/a11y-runtime.mjs
@@ -92,14 +91,6 @@ const main = async () => {
     all.push(await runAxe(mobilePage, '/ (mobile menu open)'))
     await mobile.close()
 
-    // FAQ expanded state on /projets
-    const faq = await browser.newContext({ viewport: { width: 1280, height: 800 } })
-    const faqPage = await faq.newPage()
-    await faqPage.goto(`http://127.0.0.1:${port}/projets`, { waitUntil: 'networkidle' })
-    await faqPage.locator('.faq__item summary').first().click()
-    await faqPage.waitForSelector('.faq__item[open]')
-    all.push(await runAxe(faqPage, '/projets (FAQ open)'))
-    await faq.close()
   } finally {
     await browser.close()
     server.close()
