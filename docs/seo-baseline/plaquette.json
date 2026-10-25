@@ -2,13 +2,7 @@
   "route": "/plaquette/",
   "title": "Plaquette de présentation · PXLC",
   "lang": "fr-FR",
-  "links": {
-    "canonical": [
-      {
-        "href": "https://pxlc.fr/plaquette/"
-      }
-    ]
-  },
+  "links": {},
   "metas": {
     "author": "Andy Zébus",
     "color-scheme": "light",
@@ -24,7 +18,7 @@
     "og:title": "Plaquette de présentation · PXLC",
     "og:type": "website",
     "og:url": "https://pxlc.fr/plaquette/",
-    "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    "robots": "noindex, follow",
     "theme-color": [
       "#082B36",
       "#F4F1EA"

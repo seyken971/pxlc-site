@@ -35,6 +35,9 @@ const seo = {
   title: 'Plaquette de présentation',
   description: 'La plaquette PXLC en 6 pages : mission, méthode en trois temps et projet « Jouons Ensemble ! » au SESSAD Lékoklaya.',
   ogDescription: SITE.description,
+  // Reprend le contenu des autres pages : hors index pour que Google retienne
+  // les pages de destination. Exclue du sitemap en miroir (astro.config.mjs).
+  robots: 'noindex, follow',
 }
 
 const schemaGraph = pageGraph({
