@@ -1,0 +1,17 @@
+{
+  "route": "/references/",
+  "title": "Redirecting to: /projets/",
+  "lang": null,
+  "links": {
+    "canonical": [
+      {
+        "href": "https://pxlc.fr/projets/"
+      }
+    ]
+  },
+  "metas": {
+    "http-equiv:refresh": "0;url=/projets/",
+    "robots": "noindex"
+  },
+  "jsonLd": []
+}

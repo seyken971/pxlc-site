@@ -1,0 +1,17 @@
+{
+  "route": "/services/",
+  "title": "Redirecting to: /",
+  "lang": null,
+  "links": {
+    "canonical": [
+      {
+        "href": "https://pxlc.fr/"
+      }
+    ]
+  },
+  "metas": {
+    "http-equiv:refresh": "0;url=/",
+    "robots": "noindex"
+  },
+  "jsonLd": []
+}
