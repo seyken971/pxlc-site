@@ -55,9 +55,10 @@ export default defineConfig({
   },
   integrations: [
     // Sitemap officiel : `dist/sitemap-index.xml` + `dist/sitemap-0.xml`.
-    // Les pages 404/500 sont exclues par l'intégration ; aucune autre page
-    // n'est en noindex, donc pas de filtre.
+    // Les pages 404/500 sont exclues par l'intégration ; le filtre retire les
+    // pages en noindex (seo-lint refuse une page noindex dans le sitemap).
     sitemap({
+      filter: page => !page.endsWith('/plaquette/'),
       serialize: item => ({ ...item, lastmod: lastmodFor(item.url) }),
     }),
   ],
