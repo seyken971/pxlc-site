@@ -1,0 +1,17 @@
+{
+  "route": "/andy-zebus/",
+  "title": "Redirecting to: /a-propos/",
+  "lang": null,
+  "links": {
+    "canonical": [
+      {
+        "href": "https://pxlc.fr/a-propos/"
+      }
+    ]
+  },
+  "metas": {
+    "http-equiv:refresh": "0;url=/a-propos/",
+    "robots": "noindex"
+  },
+  "jsonLd": []
+}

@@ -23,6 +23,16 @@ const themeScriptHash = `sha256-${createHash('sha256').update(THEME_SCRIPT, 'utf
 export default defineConfig({
   site: 'https://pxlc.fr',
   trailingSlash: 'always',
+  // Anciennes URL encore connues de Google (Search Console, 23/10/2026) qui ont
+  // un équivalent : GitHub Pages n'a pas de redirection serveur, Astro émet une
+  // page meta refresh (noindex, canonical vers la cible), lue comme permanente.
+  // Les URL sans équivalent restent en 404.
+  redirects: {
+    '/andy-zebus/': '/a-propos/',
+    '/propos/': '/a-propos/',
+    '/references/': '/projets/',
+    '/services/': '/',
+  },
   build: { format: 'directory' },
   // Préchargement natif : chaque lien interne est chargé dès qu'il devient
   // visible, la page suivante s'affiche sans attente. Requêtes same-origin
