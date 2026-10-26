@@ -19,12 +19,14 @@ export const IDENTITY = {
   // Forme internationale affichée (page contact, plaquette).
   telephoneDisplayIntl: '+590 690 71 76 18',
   // Lien de prise de rendez-vous : conversion primaire unique du site (header,
-  // footer, menu mobile, pages, mentions légales, plaquette). Si l'outil change,
-  // c'est ici et seulement ici — puis `npm run plaquette` pour régénérer le PDF.
-  // Vyte (Vyte.in SAS, Paris), données hébergées en France. Forme avec www. :
-  // la forme nue redirige en 301 vers http://www. puis https.
-  bookingUrl: 'https://www.vyte.in/pxlc',
-  bookingUrlDisplay: 'vyte.in/pxlc',
+  // footer, menu mobile, pages, mentions légales, plaquette). Le site affiche le
+  // lien court pxlc.fr/rdv/, redirigé vers bookingTarget (astro.config.mjs) :
+  // si l'outil change, c'est bookingTarget et seulement lui — puis
+  // `npm run plaquette` pour régénérer le PDF. Cal.com (Cal.com, Inc., San
+  // Francisco), rendez-vous « Prise de contact » de 20 min.
+  bookingUrl: 'https://pxlc.fr/rdv/',
+  bookingUrlDisplay: 'pxlc.fr/rdv',
+  bookingTarget: 'https://cal.com/pxlc-gp/20min',
   address: {
     street: '8 Résidence la familiale, rue Man Manigard Alfred, Dugazon',
     postalCode: '97139',
