@@ -35,6 +35,9 @@ export default defineConfig({
     '/references/': '/projets/',
     '/services/': '/',
     '/structures/': '/projets/',
+    // Lien court de réservation (cartes, signatures, oral) : renvoie vers le
+    // rendez-vous de 20 min sur Cal.com.
+    '/rdv/': 'https://cal.com/pxlc-gp/20min',
   },
   build: { format: 'directory' },
   // Préchargement natif : chaque lien interne est chargé dès qu'il devient
