@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config'
 import sitemap from '@astrojs/sitemap'
 import { createLastmod } from './scripts/sitemap-lastmod.mjs'
 import { THEME_SCRIPT } from './src/lib/theme-script.ts'
+import { IDENTITY } from './src/config/identity.ts'
 
 // GitHub Pages sert chaque page en `/chemin/index.html` : l'URL avec slash
 // final répond 200, la version sans slash 301-redirige vers elle. On aligne
@@ -35,6 +36,9 @@ export default defineConfig({
     '/references/': '/projets/',
     '/services/': '/',
     '/structures/': '/projets/',
+    // Lien court de réservation, seul lien affiché par le site et la plaquette :
+    // renvoie vers l'outil de rendez-vous (src/config/identity.ts).
+    '/rdv/': IDENTITY.bookingTarget,
   },
   build: { format: 'directory' },
   // Préchargement natif : chaque lien interne est chargé dès qu'il devient

@@ -11,7 +11,7 @@
 import { appendFile } from 'node:fs/promises'
 import lighthouse from 'lighthouse'
 import * as chromeLauncher from 'chrome-launcher'
-import { startServer, discoverRoutes } from './static-server.mjs'
+import { startServer, discoverRoutes, isRedirectStub } from './static-server.mjs'
 
 const JSON_MODE = process.argv.includes('--json')
 
@@ -66,7 +66,10 @@ const auditRoute = async (port, route, port_chrome) => {
 
 const main = async () => {
   const { server, port } = await startServer()
-  const routes = await discoverRoutes()
+  const routes = []
+  for (const route of await discoverRoutes()) {
+    if (!(await isRedirectStub(route))) routes.push(route)
+  }
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless=new', '--no-sandbox'] })
   const all = []
 

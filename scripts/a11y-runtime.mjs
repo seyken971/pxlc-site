@@ -16,7 +16,7 @@
  */
 import { chromium } from 'playwright'
 import AxeBuilder from '@axe-core/playwright'
-import { startServer, discoverRoutes } from './static-server.mjs'
+import { startServer, discoverRoutes, isRedirectStub } from './static-server.mjs'
 
 // Le contenu à apparition (data-reveal*) reste à opacité 0 tant qu'il n'a
 // pas défilé à l'écran, et axe ignore le contraste d'un élément invisible ;
@@ -67,7 +67,12 @@ const reportPage = (label, violations) => {
 
 const main = async () => {
   const { server, port } = await startServer()
-  const routes = await discoverRoutes()
+  const routes = []
+  const redirects = []
+  for (const route of await discoverRoutes()) {
+    if (await isRedirectStub(route)) redirects.push(route)
+    else routes.push(route)
+  }
   const browser = await chromium.launch()
   const all = []
   let exitCode = 0
@@ -111,6 +116,7 @@ const main = async () => {
   console.log(`  Serious:  ${byImpact.serious || 0}`)
   console.log(`  Moderate: ${byImpact.moderate || 0}`)
   console.log(`  Minor:    ${byImpact.minor || 0}`)
+  if (redirects.length) console.log(`Pages de redirection ignorées : ${redirects.join(', ')}`)
 
   if ((byImpact.critical || 0) + (byImpact.serious || 0) > 0) exitCode = 1
   process.exit(exitCode)

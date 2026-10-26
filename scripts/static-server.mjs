@@ -6,6 +6,8 @@
  *  - MIME           : table content-type pour servir dist
  *  - startServer    : serveur HTTP statique éphémère sur un port libre
  *  - discoverRoutes : liste les routes prerendered (un index.html par route)
+ *  - isRedirectStub : vrai pour une page de redirection (meta refresh) —
+ *                     à écarter des audits, qui sinon audite la cible
  *
  * Les routes auditées sont découvertes dans dist : une nouvelle page est
  * couverte sans liste à tenir.
@@ -91,3 +93,13 @@ export const discoverRoutes = async (publicDir = PUBLIC_DIR) => {
     })
     .sort()
 }
+
+/**
+ * Page de redirection émise par `redirects` (meta refresh) : le navigateur
+ * suivrait le renvoi et un audit mesurerait la cible — une autre page du
+ * site, ou un service tiers (/rdv/ → Cal.com). Même règle que
+ * scripts/a11y-audit.mjs.
+ * @returns {Promise<boolean>}
+ */
+export const isRedirectStub = async (route, publicDir = PUBLIC_DIR) =>
+  /http-equiv="refresh"/i.test(await readFile(join(publicDir, route, 'index.html'), 'utf8'))
