@@ -32,5 +32,5 @@ export const PRACTICE: PracticeFact[] = [
   { key: 'materiel', label: 'Matériel', value: 'Consoles et jeux prêtés, ou pris en charge par la structure' },
   { key: 'zone', label: 'Zone', value: ZONE.join(', ') },
   { key: 'tarif', label: 'Tarif', value: 'Sur devis, selon le nombre d’ateliers, de familles et la durée' },
-  { key: 'demarrage', label: 'Pour commencer', value: 'Un premier échange de 20\u00A0min, gratuit et sans engagement, puis une rencontre avec la personne qui portera le projet dans votre structure' },
+  { key: 'demarrage', label: 'Pour commencer', value: 'Un premier échange de 20\u00A0min, gratuit et sans engagement, puis une proposition écrite\u00A0: périmètre, calendrier et budget' },
 ]
