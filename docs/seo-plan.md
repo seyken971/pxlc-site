@@ -58,8 +58,10 @@ HCSP, est abandonné avec le blog (26 août 2026). Le site tient désormais en
   0 clic). Accueil → « Ateliers écrans parents-enfants en Guadeloupe » ;
   `/a-propos/` garde « médiateur numérique en Guadeloupe » (h2 « médiation
   familiale » → « médiation numérique en famille ») ; `/projets/` → « Jeu vidéo
-  en atelier parent-enfant, en Guadeloupe ». Volumes de recherche non vérifiés
-  (pas d'outil de mots-clés) : mesurer sur l'export de novembre 2026.
+  en atelier parents-enfants, en Guadeloupe » (pluriel harmonisé : « atelier
+  parents-enfants » partout, « binôme parent-enfant » au singulier). Volumes de
+  recherche non vérifiés (pas d'outil de mots-clés) : mesurer sur l'export de
+  novembre 2026.
 - **IndexNow** : soumission depuis `npm run release` (`scripts/indexnow.mjs`),
   après la vérification de la prod, des seules pages dont le `lastmod` porte le
   commit de fusion — la spec demande de ne soumettre que les URL modifiées.
