@@ -361,9 +361,11 @@ const schemaGraph = pageGraph({
     justify-content: center;
     gap: var(--space-3);
     padding: var(--space-4) var(--container-pad) 0;
+    /* Posée sur le fond gris du bureau : boutons en version sombre. */
+    color-scheme: dark;
   }
-  .pq-toolbar .btn { color: var(--pxlc-ivory); border-color: var(--pxlc-text-quiet-dark); }
-  .pq-toolbar .btn:hover { color: var(--pxlc-ivory); border-color: var(--pxlc-ivory); }
+  .pq-toolbar .btn { color: var(--ink); border-color: var(--ink-quiet); }
+  .pq-toolbar .btn:hover { color: var(--ink); border-color: var(--ink); }
 
   /* ── Utilitaires de feuille ─────────────────────────────── */
   .pq-mb-8 { margin-bottom: 8mm; }
@@ -421,7 +423,7 @@ const schemaGraph = pageGraph({
     font-family: var(--font-display);
     font-weight: 800;
     font-size: 17pt;
-    color: var(--pxlc-ivory);
+    color: var(--ink);
     letter-spacing: -0.035em;
     margin-bottom: 26mm;
   }
@@ -440,7 +442,7 @@ const schemaGraph = pageGraph({
     font-weight: 600;
     line-height: 1.02;
     letter-spacing: -0.035em;
-    color: var(--pxlc-ivory);
+    color: var(--ink);
     margin-bottom: 9mm;
     max-width: 168mm;
   }
@@ -448,26 +450,26 @@ const schemaGraph = pageGraph({
     font-family: var(--font-body);
     font-size: 13pt;
     line-height: 1.5;
-    color: var(--pxlc-text-on-dark-soft);
+    color: var(--ink-muted);
     max-width: 150mm;
     margin-bottom: auto;
   }
-  .pq-cover__lead strong { color: var(--pxlc-ivory); font-weight: 600; }
+  .pq-cover__lead strong { color: var(--ink); font-weight: 600; }
   .pq-cover__meta {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6mm;
     margin-top: 20mm;
     padding-top: 8mm;
-    border-top: 1px solid var(--pxlc-border-dark-2);
+    border-top: 1px solid var(--line);
     font-family: var(--font-label);
     font-size: 8pt;
-    color: var(--pxlc-text-on-dark-soft);
+    color: var(--ink-muted);
     letter-spacing: 0.16em;
     text-transform: uppercase;
   }
   .pq-cover__meta strong {
-    color: var(--pxlc-ivory);
+    color: var(--ink);
     display: block;
     font-weight: 600;
     margin-top: 2mm;
@@ -476,26 +478,22 @@ const schemaGraph = pageGraph({
 
   /* ── Cartes ────────────────────────────────────────────── */
   .pq-card {
-    background: var(--pxlc-white);
+    background: var(--surface-raised);
     border: 1px solid var(--line);
     border-radius: var(--radius-lg);
     padding: 6mm;
   }
   .pq-card p { margin: 3mm 0 0 0; font-size: 10pt; line-height: 1.5; }
   .pq-card .eyebrow { margin-bottom: 0; }
-  .pq-card--ivory { background: var(--pxlc-ivory); border-color: var(--pxlc-border-soft); }
+  .pq-card--ivory { background: var(--surface); border-color: var(--line); }
   .pq-card--dark {
-    background: var(--pxlc-bg-dark);
-    border-color: var(--pxlc-bg-dark-soft);
-    color: var(--pxlc-ivory);
+    color-scheme: dark;
+    background: var(--surface);
+    border-color: var(--surface-raised);
+    color: var(--ink);
   }
-  .pq-card--dark h3, .pq-card--dark h4 { color: var(--pxlc-ivory); }
-  .pq-card--dark p { color: var(--pxlc-text-on-dark-soft); }
+  .pq-card--dark p { color: var(--ink-muted); }
   .pq-card--dark .eyebrow { color: var(--cyan); }
-  /* Sans cette règle, strong hérite de --ink : encre sombre sur fond sombre,
-     le CTA de la promesse disparaissait à l'impression (garde-fou dans
-     scripts/export-plaquette.mjs). */
-  .pq-card--dark strong { color: var(--pxlc-ivory); }
   .pq-card__contact {
     font-family: var(--font-label);
     font-size: 9.5pt;
@@ -506,7 +504,7 @@ const schemaGraph = pageGraph({
 
   /* ── Citation ──────────────────────────────────────────── */
   .pq-quote {
-    border-left: 3px solid var(--pxlc-coral);
+    border-left: 3px solid var(--child);
     padding: 3mm 6mm;
     font-family: var(--font-display);
     font-size: 12.5pt;
@@ -516,7 +514,7 @@ const schemaGraph = pageGraph({
     letter-spacing: -0.015em;
     margin: 5mm 0;
   }
-  .pq-quote__mark { color: var(--pxlc-coral); }
+  .pq-quote__mark { color: var(--child); }
   .pq-quote__src {
     display: block;
     margin-top: 3mm;
@@ -551,7 +549,7 @@ const schemaGraph = pageGraph({
     font-family: var(--font-display);
     font-size: 30pt;
     font-weight: 600;
-    color: var(--pxlc-coral);
+    color: var(--child);
     line-height: 1;
     letter-spacing: -0.04em;
   }
@@ -587,8 +585,8 @@ const schemaGraph = pageGraph({
   .pq-frameworks__eyebrow { margin: 5mm 0 0 0; }
   .pq-frameworks { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; margin-top: 2mm; }
   .pq-framework {
-    background: var(--pxlc-ivory);
-    border: 1px solid var(--pxlc-border-soft);
+    background: var(--surface);
+    border: 1px solid var(--line);
     border-radius: var(--radius-md);
     padding: 4.5mm;
   }
@@ -606,7 +604,7 @@ const schemaGraph = pageGraph({
   }
   .pq-framework__pill::before {
     content: ""; width: 7px; height: 7px;
-    background: var(--pxlc-coral); border-radius: 1px;
+    background: var(--child); border-radius: 1px;
   }
   .pq-framework h4 { font-size: 10.5pt; margin-bottom: 1.5mm; }
   .pq-framework p { font-size: 9pt; margin: 0; line-height: 1.4; }
@@ -629,7 +627,7 @@ const schemaGraph = pageGraph({
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     padding: 4mm 4.5mm;
-    background: var(--pxlc-white);
+    background: var(--surface-raised);
   }
   .pq-etape__temps {
     display: block;
@@ -696,7 +694,7 @@ const schemaGraph = pageGraph({
     border: 1px solid var(--line);
     border-radius: var(--radius-md);
     padding: 3.5mm 4mm;
-    background: var(--pxlc-ivory);
+    background: var(--surface);
   }
   .pq-consent__box {
     width: 5mm; height: 5mm;
