@@ -1,6 +1,6 @@
 {
   "route": "/",
-  "title": "Écrans en famille : médiation numérique en Guadeloupe · PXLC",
+  "title": "Ateliers écrans parents-enfants en Guadeloupe · PXLC",
   "lang": "fr-FR",
   "links": {
     "canonical": [
@@ -12,7 +12,7 @@
   "metas": {
     "author": "Andy Zébus",
     "color-scheme": "light dark",
-    "description": "Médiation numérique en Guadeloupe : Andy Zébus aide les structures à accompagner les familles autour des écrans.",
+    "description": "Ateliers parents-enfants autour des écrans : Andy Zébus aide les structures en Guadeloupe à accompagner les familles.",
     "og:description": "Andy Zébus, créateur de PXLC, aide les structures en Guadeloupe à accompagner les familles autour des écrans.",
     "og:image": "https://pxlc.fr/og/site.png?v=1200x675",
     "og:image:alt": "Logo PXLC — Médiation numérique · Guadeloupe",
@@ -21,7 +21,7 @@
     "og:image:width": "1200",
     "og:locale": "fr_FR",
     "og:site_name": "PXLC",
-    "og:title": "Écrans en famille : médiation numérique en Guadeloupe · PXLC",
+    "og:title": "Ateliers écrans parents-enfants en Guadeloupe · PXLC",
     "og:type": "website",
     "og:url": "https://pxlc.fr/",
     "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
@@ -63,12 +63,12 @@
           "copyrightHolder": {
             "@id": "https://pxlc.fr/#andy"
           },
-          "description": "Médiation numérique en Guadeloupe : Andy Zébus aide les structures à accompagner les familles autour des écrans.",
+          "description": "Ateliers parents-enfants autour des écrans : Andy Zébus aide les structures en Guadeloupe à accompagner les familles.",
           "inLanguage": "fr-FR",
           "isPartOf": {
             "@id": "https://pxlc.fr/#website"
           },
-          "name": "Écrans en famille : médiation numérique en Guadeloupe",
+          "name": "Ateliers écrans parents-enfants en Guadeloupe",
           "url": "https://pxlc.fr/"
         },
         {
