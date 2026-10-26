@@ -1,6 +1,6 @@
 {
   "route": "/projets/",
-  "title": "Jeu vidéo en atelier parent-enfant, en Guadeloupe · PXLC",
+  "title": "Jeu vidéo en atelier parents-enfants, en Guadeloupe · PXLC",
   "lang": "fr-FR",
   "links": {
     "canonical": [
@@ -12,7 +12,7 @@
   "metas": {
     "author": "Andy Zébus",
     "color-scheme": "light dark",
-    "description": "Le jeu vidéo en atelier parent-enfant au SESSAD Lékoklaya (Guadeloupe, 2026) : déroulé, thèmes et indicateurs suivis.",
+    "description": "Le jeu vidéo en atelier parents-enfants au SESSAD Lékoklaya (Guadeloupe, 2026) : déroulé, thèmes et indicateurs suivis.",
     "og:description": "Andy Zébus, créateur de PXLC, conduit des projets de médiation numérique auprès des familles en Guadeloupe.",
     "og:image": "https://pxlc.fr/og/site.png?v=1200x675",
     "og:image:alt": "Logo PXLC — Médiation numérique · Guadeloupe",
@@ -21,7 +21,7 @@
     "og:image:width": "1200",
     "og:locale": "fr_FR",
     "og:site_name": "PXLC",
-    "og:title": "Jeu vidéo en atelier parent-enfant, en Guadeloupe · PXLC",
+    "og:title": "Jeu vidéo en atelier parents-enfants, en Guadeloupe · PXLC",
     "og:type": "website",
     "og:url": "https://pxlc.fr/projets/",
     "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
@@ -66,7 +66,7 @@
           "copyrightHolder": {
             "@id": "https://pxlc.fr/#andy"
           },
-          "description": "Le jeu vidéo en atelier parent-enfant au SESSAD Lékoklaya (Guadeloupe, 2026) : déroulé, thèmes et indicateurs suivis.",
+          "description": "Le jeu vidéo en atelier parents-enfants au SESSAD Lékoklaya (Guadeloupe, 2026) : déroulé, thèmes et indicateurs suivis.",
           "inLanguage": "fr-FR",
           "isPartOf": {
             "@id": "https://pxlc.fr/#website"

@@ -34,7 +34,7 @@ export const PROJECTS: Project[] = [
     audience: '8 enfants de 12 à 17 ans, en binôme avec un parent',
     team: 'Psychologue, psychomotricienne, intervenant culturel, médiateur numérique',
     framework: 'HCSP 2019-2020 · HAS 2020',
-    summary: 'Un cycle d’ateliers parent-enfant conduit avec l’équipe pluridisciplinaire du SESSAD, du diagnostic familial au bilan écrit.',
+    summary: 'Un cycle d’ateliers parents-enfants conduit avec l’équipe pluridisciplinaire du SESSAD, du diagnostic familial au bilan écrit.',
     origin: 'Le point de départ : le jeu vidéo revenait systématiquement dans les entretiens familiaux comme source de conflit. Dans la continuité du Café-Parents « Enfants Écrans » de décembre 2023, le projet transforme ces tensions en matériau de travail pour l’équipe.',
   },
 ]
