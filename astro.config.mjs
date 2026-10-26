@@ -26,12 +26,15 @@ export default defineConfig({
   // Anciennes URL encore connues de Google (Search Console, 23/10/2026) qui ont
   // un équivalent : GitHub Pages n'a pas de redirection serveur, Astro émet une
   // page meta refresh (noindex, canonical vers la cible), lue comme permanente.
-  // Les URL sans équivalent restent en 404.
+  // Les URL sans équivalent restent en 404. Garder chaque renvoi au moins un
+  // an : Google ne transfère l'indexation qu'après plusieurs passages, et
+  // /structures/, retiré un mois après la refonte, était encore indexée en 404.
   redirects: {
     '/andy-zebus/': '/a-propos/',
     '/propos/': '/a-propos/',
     '/references/': '/projets/',
     '/services/': '/',
+    '/structures/': '/projets/',
   },
   build: { format: 'directory' },
   // Préchargement natif : chaque lien interne est chargé dès qu'il devient
