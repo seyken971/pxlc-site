@@ -53,6 +53,12 @@
 - **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)
 - **Petite marque** (`PxlcMark` 20 px) : coiffe les cartes d'étape ; le motif Duo a été retiré du design system
 
+### Tokens, thème et mouvement
+
+- **Chaîne d'alias** : composant → token sémantique (`--surface`, `--ink`, `--parent`, `--line`…) → primitive `--pxlc-*`. Les primitives ne se lisent que dans `tokens.css` — `ds-lint` R14 (`primitive-directe`)
+- **Thème** : une couleur qui change avec le thème est un `light-dark(clair, sombre)` dans `tokens.css`, jamais une surcharge `[data-theme="dark"] .composant`. Surface toujours sombre (pied de page, menu mobile, badge audience, couverture de la plaquette) : `color-scheme: dark` + les tokens habituels
+- **Mouvement** : durées `--dur-*` et courbes `--ease-out` / `--ease-in-out` uniquement ; on anime transform, opacity, les couleurs et l'ombre, jamais la mise en page ni `all` ; toute animation a sa variante `prefers-reduced-motion: reduce` — `ds-lint` R15 (`motion-brute`)
+
 ### OG Images
 
 - Générateur : endpoints `src/pages/og/*.png.ts` (satori + resvg via `src/lib/og-templates.ts`) — disponibles aussi en dev

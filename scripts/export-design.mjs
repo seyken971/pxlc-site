@@ -39,6 +39,49 @@ function parseRoot(css) {
   return m ? parseVars(m[1]) : {};
 }
 
+/**
+ * Remplace chaque light-dark(clair, sombre) d'une valeur par l'un de ses
+ * deux arguments (0 = clair, 1 = sombre). Parenthèses imbriquées gérées
+ * (var(), rgba()).
+ */
+function pickLightDark(value, side) {
+  let out = "";
+  let i = 0;
+  for (;;) {
+    const at = value.indexOf("light-dark(", i);
+    if (at < 0) return out + value.slice(i);
+    out += value.slice(i, at);
+    let depth = 0;
+    let comma = -1;
+    let j = at + "light-dark(".length;
+    for (; j < value.length; j++) {
+      const ch = value[j];
+      if (ch === "(") depth++;
+      else if (ch === ")") {
+        if (depth === 0) break;
+        depth--;
+      } else if (ch === "," && depth === 0) comma = j;
+    }
+    const args = [value.slice(at + 11, comma), value.slice(comma + 1, j)];
+    out += args[side].trim();
+    i = j + 1;
+  }
+}
+
+/**
+ * Sépare les light-dark() de :root en deux jeux : valeurs claires (root)
+ * et valeurs sombres (dark, seulement là où elles diffèrent).
+ */
+function splitLightDark(vars) {
+  const light = {};
+  const dark = {};
+  for (const [k, v] of Object.entries(vars)) {
+    light[k] = pickLightDark(v, 0);
+    if (v.includes("light-dark(")) dark[k] = pickLightDark(v, 1);
+  }
+  return { light, dark };
+}
+
 /** Extrait les vars de tous les [data-theme="dark"] { … } (peut être multiple). */
 function parseDark(css) {
   const vars = {};
@@ -239,8 +282,8 @@ const main = async () => {
     readComponentDocs(),
   ]);
 
-  const root = parseRoot(tokensCss);
-  const dark = parseDark(tokensCss);
+  const { light: root, dark: darkLd } = splitLightDark(parseRoot(tokensCss));
+  const dark = { ...darkLd, ...parseDark(tokensCss) };
   const sections = parseSections(stylesCss);
 
   const md = [];
@@ -270,7 +313,7 @@ const main = async () => {
   // ── Tokens sémantiques ────────────────────────────────────────────────────
   md.push("\n## Tokens sémantiques\n");
   md.push(
-    "Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.\n",
+    "Ces tokens résolvent vers la palette. Ceux qui changent avec le thème sont des `light-dark(clair, sombre)`, résolus selon le `color-scheme` de l'élément : le thème le pose sur `:root`, une surface toujours sombre pose `color-scheme: dark`.\n",
   );
 
   // Noms du design system « PXLC 2026 » (surface, ink, parent, child…),
@@ -280,8 +323,11 @@ const main = async () => {
       "Surfaces",
       (k) => ["--surface", "--surface-raised", "--surface-soft"].includes(k),
     ],
-    ["Texte", (k) => ["--ink", "--ink-muted", "--ink-quiet", "--link"].includes(k)],
-    ["Bordures", (k) => k === "--line" || k.startsWith("--rule")],
+    [
+      "Texte",
+      (k) => ["--ink", "--ink-muted", "--ink-quiet", "--ink-strong", "--link"].includes(k),
+    ],
+    ["Bordures", (k) => k.startsWith("--line") || k.startsWith("--rule")],
     [
       "Parent (grand carré du logo)",
       (k) => k.startsWith("--parent") || k === "--on-parent",
@@ -537,6 +583,15 @@ const main = async () => {
       "- **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-body-sm`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale",
       "- **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)",
       "- **Petite marque** (`PxlcMark` 20 px) : coiffe les cartes d'étape ; le motif Duo a été retiré du design system",
+    ].join("\n"),
+  );
+
+  md.push("\n### Tokens, thème et mouvement\n");
+  md.push(
+    [
+      "- **Chaîne d'alias** : composant → token sémantique (`--surface`, `--ink`, `--parent`, `--line`…) → primitive `--pxlc-*`. Les primitives ne se lisent que dans `tokens.css` — `ds-lint` R14 (`primitive-directe`)",
+      "- **Thème** : une couleur qui change avec le thème est un `light-dark(clair, sombre)` dans `tokens.css`, jamais une surcharge `[data-theme=\"dark\"] .composant`. Surface toujours sombre (pied de page, menu mobile, badge audience, couverture de la plaquette) : `color-scheme: dark` + les tokens habituels",
+      "- **Mouvement** : durées `--dur-*` et courbes `--ease-out` / `--ease-in-out` uniquement ; on anime transform, opacity, les couleurs et l'ombre, jamais la mise en page ni `all` ; toute animation a sa variante `prefers-reduced-motion: reduce` — `ds-lint` R15 (`motion-brute`)",
     ].join("\n"),
   );
 

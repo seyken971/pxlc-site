@@ -41,6 +41,9 @@ colors:
     line:
       light: "var(--pxlc-border-soft)"
       dark: "var(--pxlc-border-dark-2)"
+    line-subtle:
+      light: "var(--pxlc-border-soft)"
+      dark: "var(--pxlc-border-dark)"
     ink:
       light: "var(--pxlc-text-ink)"
       dark: "var(--pxlc-ivory)"
@@ -50,6 +53,9 @@ colors:
     ink-quiet:
       light: "var(--pxlc-text-secondary)"
       dark: "var(--pxlc-text-quiet-dark)"
+    ink-strong:
+      light: "var(--pxlc-text-ink)"
+      dark: "var(--pxlc-white)"
     parent:
       light: "var(--pxlc-teal-deep)"
       dark: "var(--pxlc-cyan)"
@@ -93,7 +99,6 @@ colors:
       light: "0 2px 14px -6px rgba(8,43,54,.14)"
       dark: "0 2px 14px -6px rgba(0,0,0,.45)"
     focus-ring: "0 0 0 2px var(--surface), 0 0 0 4px var(--parent)"
-    focus-ring-on-dark: "0 0 0 2px var(--pxlc-bg-dark), 0 0 0 4px var(--pxlc-cyan)"
 typography:
   font-display: "\"Plus Jakarta Sans\", \"Plus Jakarta Sans Fallback\", system-ui, -apple-system, \"Segoe UI\", sans-serif"
   font-body: "\"Lora\", \"Lora Fallback\", Georgia, \"Times New Roman\", serif"
@@ -194,7 +199,7 @@ layout:
 
 ## Tokens sémantiques
 
-Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.
+Ces tokens résolvent vers la palette. Ceux qui changent avec le thème sont des `light-dark(clair, sombre)`, résolus selon le `color-scheme` de l'élément : le thème le pose sur `:root`, une surface toujours sombre pose `color-scheme: dark`.
 
 ### Surfaces
 
@@ -211,6 +216,7 @@ Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.
 | `--ink` | `var(--pxlc-text-ink)` | `var(--pxlc-ivory)` |
 | `--ink-muted` | `var(--pxlc-text-on-light)` | `var(--pxlc-text-on-dark-soft)` |
 | `--ink-quiet` | `var(--pxlc-text-secondary)` | `var(--pxlc-text-quiet-dark)` |
+| `--ink-strong` | `var(--pxlc-text-ink)` | `var(--pxlc-white)` |
 | `--link` | `var(--parent)` | — |
 
 ### Bordures
@@ -218,6 +224,7 @@ Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.
 | Token | Light | Dark |
 | --- | --- | --- |
 | `--line` | `var(--pxlc-border-soft)` | `var(--pxlc-border-dark-2)` |
+| `--line-subtle` | `var(--pxlc-border-soft)` | `var(--pxlc-border-dark)` |
 | `--rule-accent` | `rgba(1, 160, 157, 0.25)` | — |
 
 ### Parent (grand carré du logo)
@@ -258,7 +265,6 @@ Ces tokens résolvent vers la palette et basculent automatiquement en dark mode.
 | `--shadow-card` | `0 8px 24px -12px rgba(8,43,54,.18)` | `0 8px 24px -12px rgba(0,0,0,.45)` |
 | `--shadow-header` | `0 2px 14px -6px rgba(8,43,54,.14)` | `0 2px 14px -6px rgba(0,0,0,.45)` |
 | `--focus-ring` | `0 0 0 2px var(--surface), 0 0 0 4px var(--parent)` | — |
-| `--focus-ring-on-dark` | `0 0 0 2px var(--pxlc-bg-dark), 0 0 0 4px var(--pxlc-cyan)` | — |
 
 ## Typographie
 
@@ -790,6 +796,12 @@ Aucune prop.
 - **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-body-sm`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale
 - **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)
 - **Petite marque** (`PxlcMark` 20 px) : coiffe les cartes d'étape ; le motif Duo a été retiré du design system
+
+### Tokens, thème et mouvement
+
+- **Chaîne d'alias** : composant → token sémantique (`--surface`, `--ink`, `--parent`, `--line`…) → primitive `--pxlc-*`. Les primitives ne se lisent que dans `tokens.css` — `ds-lint` R14 (`primitive-directe`)
+- **Thème** : une couleur qui change avec le thème est un `light-dark(clair, sombre)` dans `tokens.css`, jamais une surcharge `[data-theme="dark"] .composant`. Surface toujours sombre (pied de page, menu mobile, badge audience, couverture de la plaquette) : `color-scheme: dark` + les tokens habituels
+- **Mouvement** : durées `--dur-*` et courbes `--ease-out` / `--ease-in-out` uniquement ; on anime transform, opacity, les couleurs et l'ombre, jamais la mise en page ni `all` ; toute animation a sa variante `prefers-reduced-motion: reduce` — `ds-lint` R15 (`motion-brute`)
 
 ### OG Images
 
