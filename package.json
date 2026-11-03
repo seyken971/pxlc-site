@@ -34,14 +34,14 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "@resvg/resvg-js": "^2.6.2",
-    "astro": "^7.4.0",
+    "astro": "^7.4.2",
     "satori": "^0.62.0"
   },
   "overrides": {
     "fflate": "^0.8.2"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
+    "@astrojs/check": "^0.9.12",
     "@axe-core/playwright": "^4.14.0",
     "@eslint/js": "^10.0.1",
     "axe-core": "^4.13.0",
