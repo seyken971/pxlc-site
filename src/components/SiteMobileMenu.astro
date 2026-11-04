@@ -181,11 +181,11 @@ const pathname = Astro.url.pathname
     font-size: var(--fs-small);
     font-weight: 600;
     letter-spacing: 0.04em;
-    color: var(--pxlc-text-on-dark-soft);
+    color: var(--ink-muted);
     padding-block: var(--space-2-5);
-    transition: color var(--dur-fast);
+    transition: color var(--dur-fast) var(--ease-out);
   }
-  .mobile-menu__plaquette:hover { color: var(--pxlc-ivory); text-decoration: none; }
+  .mobile-menu__plaquette:hover { color: var(--ink); text-decoration: none; }
   /* PDF et version web côte à côte (RGAA 13.3 : version accessible du document). */
   .mobile-menu__plaquettes { display: flex; justify-content: center; flex-wrap: wrap; column-gap: var(--space-4); }
 </style>

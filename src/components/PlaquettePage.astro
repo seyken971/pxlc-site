@@ -55,15 +55,17 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
     height: 297mm;
     padding: 17mm 18mm 20mm 18mm;
     position: relative;
-    background: var(--pxlc-white);
+    background: var(--surface-raised);
     overflow: hidden;
     page-break-after: always;
     break-after: page;
   }
   .pq-page:last-child { page-break-after: auto; break-after: auto; }
   .pq-page--cover {
-    background: var(--pxlc-bg-dark);
-    color: var(--pxlc-ivory);
+    /* Couverture sombre : les tokens s'y résolvent en sombre. */
+    color-scheme: dark;
+    background: var(--surface);
+    color: var(--ink);
     padding: 0;
   }
 
@@ -110,7 +112,7 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
     text-transform: uppercase;
     padding-top: 4mm;
     border-top: 1px solid var(--line);
-    background: var(--pxlc-white);
+    background: var(--surface-raised);
   }
 
   /* Écran : la feuille garde au moins la hauteur A4 mais s'allonge si le

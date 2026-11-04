@@ -40,10 +40,6 @@
 
 /* ── Reset & globals ─────────────────────────────────────── */
 * { box-sizing: border-box; }
-/* Contrôles natifs (barres de défilement, champs) alignés sur le thème choisi
-   au bouton, pas seulement sur celui du système (meta color-scheme). */
-:root[data-theme="light"] { color-scheme: light; }
-:root[data-theme="dark"] { color-scheme: dark; }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }
@@ -233,11 +229,12 @@ main[tabindex="-1"]:focus { outline: none; }
   text-decoration: none;
 }
 .burger:focus-visible { border-radius: var(--radius-md); }
-/* Fonds sombres (menu mobile, pied de page) : anneau cyan. */
+/* Fonds sombres (menu mobile, pied de page) : color-scheme: dark y fait
+   de --focus-ring un anneau cyan sur fond sombre. */
 .mobile-menu a:focus-visible,
 .site-footer a:focus-visible {
   outline: none;
-  box-shadow: var(--focus-ring-on-dark);
+  box-shadow: var(--focus-ring);
   text-decoration: none;
 }
 @media (forced-colors: active) {
@@ -303,7 +300,7 @@ main[tabindex="-1"]:focus { outline: none; }
   background: var(--bg-glass);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--line-subtle);
   transition:
     background-color var(--dur-base) var(--ease-out),
     border-color var(--dur-base) var(--ease-out),
@@ -312,7 +309,6 @@ main[tabindex="-1"]:focus { outline: none; }
 @supports not (backdrop-filter: blur(1px)) {
   .site-header { background: var(--surface); }
 }
-[data-theme="dark"] .site-header { border-bottom-color: var(--pxlc-border-dark); }
 /* Scrolled state : hauteur fixe (animer le padding relancerait la mise en
    page), le filet laisse place à une ombre douce en fondu — signale « vous
    avez quitté le haut de page ». */
@@ -397,7 +393,9 @@ main[tabindex="-1"]:focus { outline: none; }
 /* ── Mobile menu (dark, slides from right) ───────────────── */
 .mobile-menu {
   position: fixed; inset: 0;
-  background: var(--pxlc-bg-dark); color: var(--pxlc-ivory);
+  /* Surface toujours sombre : les tokens s'y résolvent en sombre. */
+  color-scheme: dark;
+  background: var(--surface); color: var(--ink);
   z-index: var(--z-menu); display: flex; flex-direction: column;
   overflow: hidden;
   /* Fermeture plus rapide que l'ouverture : 200 ms à la sortie, 320 ms à
@@ -428,25 +426,23 @@ main[tabindex="-1"]:focus { outline: none; }
 /* Header row */
 .mobile-menu__head {
   display: flex; justify-content: space-between; align-items: center;
-  padding: 14px 24px; border-bottom: 1px solid var(--pxlc-border-dark);
+  padding: 14px 24px; border-bottom: 1px solid var(--line-subtle);
   position: relative; z-index: 1; flex-shrink: 0;
 }
-/* Force lockup to read on the dark ground regardless of user's theme */
-.mobile-menu__head .lockup__name { color: var(--pxlc-ivory); }
 /* Close button */
 .mobile-menu__close {
   width: 44px; height: 44px; flex-shrink: 0;
-  border: 1px solid var(--pxlc-border-dark-2); border-radius: var(--radius-md);
+  border: 1px solid var(--line); border-radius: var(--radius-md);
   background: transparent; cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  color: var(--pxlc-text-on-dark-soft);
+  color: var(--ink-muted);
 }
 .mobile-menu__close { transition: background-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out); }
 .mobile-menu__close:active { transform: scale(0.97); }
 @media (hover: hover) and (pointer: fine) {
   .mobile-menu__close:hover { background: var(--hover-on-dark); }
 }
-.mobile-menu__close:focus-visible { outline: none; box-shadow: var(--focus-ring-on-dark); }
+.mobile-menu__close:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 /* Nav links — vertically centred, staggered entrance */
 .mobile-menu__nav {
   flex: 1; padding: 12px 24px 24px;
@@ -457,10 +453,10 @@ main[tabindex="-1"]:focus { outline: none; }
   font-family: var(--font-display);
   font-size: clamp(22px, 6vw, 32px); font-weight: 600;
   line-height: 1.15; letter-spacing: -0.02em;
-  color: var(--pxlc-ivory); text-decoration: none;
+  color: var(--ink); text-decoration: none;
   padding: 14px 0;
   display: flex; align-items: center; justify-content: space-between;
-  border-bottom: 1px solid var(--pxlc-border-dark);
+  border-bottom: 1px solid var(--line-subtle);
   /* Staggered slide-in via --i — opacity removed: axe blends the element
      colour against the background weighted by its opacity, so mid-fade
      links fail WCAG contrast (2.05:1). Transform-only is sufficient:
@@ -472,17 +468,17 @@ main[tabindex="-1"]:focus { outline: none; }
 .mobile-menu.is-open .mobile-menu__link {
   transform: translateX(0);
   transition: transform var(--dur-slow) var(--ease-out), color var(--dur-fast) var(--ease-out);
-  transition-delay: calc(50ms + var(--i, 0) * var(--dur-stagger)), 0ms;
+  transition-delay: calc((var(--i, 0) + 1) * var(--dur-stagger)), 0ms;
 }
-.mobile-menu__link.is-active { color: var(--pxlc-cyan); }
+.mobile-menu__link.is-active { color: var(--parent); }
 .mobile-menu__arrow {
   font-family: var(--font-label); font-size: 18px;
-  color: var(--pxlc-border-dark-2); transition: color var(--dur-fast) var(--ease-out);
+  color: var(--line); transition: color var(--dur-fast) var(--ease-out);
 }
 .mobile-menu__link.is-active .mobile-menu__arrow { color: var(--child); }
 /* Bottom bar — theme toggle + full-width CTA */
 .mobile-menu__bottom {
-  padding: 20px 24px; border-top: 1px solid var(--pxlc-border-dark);
+  padding: 20px 24px; border-top: 1px solid var(--line-subtle);
   display: flex; gap: var(--space-2-5); align-items: center;
   position: relative; z-index: 1; flex-shrink: 0;
   /* Same rationale as .mobile-menu__link — transform-only, no opacity */
@@ -493,8 +489,8 @@ main[tabindex="-1"]:focus { outline: none; }
 .mobile-menu.is-open .mobile-menu__bottom {
   transform: translateY(0);
   transition: transform var(--dur-slow) var(--ease-out);
-  /* Après le dernier lien de la cascade. */
-  transition-delay: 260ms;
+  /* Après le dernier lien de la cascade (260 ms). */
+  transition-delay: calc(var(--dur-base) + var(--dur-stagger));
 }
 /* Mouvement réduit : ni glissement ni cascade, le panneau fond d'un bloc. */
 @media (prefers-reduced-motion: reduce) {
@@ -646,7 +642,7 @@ main[tabindex="-1"]:focus { outline: none; }
   background: var(--surface-soft); color: var(--ink);
   border: 1px solid var(--line); white-space: nowrap;
 }
-.badge--audience { background: var(--pxlc-bg-dark); color: var(--pxlc-cyan); border-color: transparent; }
+.badge--audience { color-scheme: dark; background: var(--surface); color: var(--parent); border-color: transparent; }
 .badge--soft { background: var(--parent-soft); color: var(--parent); border-color: transparent; }
 .badge--child { background: var(--child-soft); color: var(--ink); border-color: transparent; }
 
@@ -678,12 +674,13 @@ main[tabindex="-1"]:focus { outline: none; }
 }
 
 /* ── Footer ──────────────────────────────────────────────── */
-.site-footer { background: var(--pxlc-bg-dark); color: var(--pxlc-ivory); padding: clamp(48px, 8vw, 56px) 0 24px; }
+/* Surface toujours sombre : les tokens s'y résolvent en sombre. */
+.site-footer { color-scheme: dark; background: var(--surface); color: var(--ink); padding: clamp(48px, 8vw, 56px) 0 24px; }
 /* Mission sous le lockup, au format tagline : discrète, sans étage dédié. */
-.site-footer__mission { font-size: var(--fs-small); color: var(--pxlc-text-on-dark-soft); line-height: 1.6; max-width: 320px; margin-top: var(--space-3); }
+.site-footer__mission { font-size: var(--fs-small); color: var(--ink-muted); line-height: 1.6; max-width: 320px; margin-top: var(--space-3); }
 .site-footer__mission-link {
   font-family: var(--font-label); font-size: var(--fs-small); font-weight: 600;
-  letter-spacing: 0.04em; color: var(--pxlc-cyan);
+  letter-spacing: 0.04em; color: var(--parent);
   display: inline-flex; align-items: center; gap: var(--space-1-5);
   margin-top: var(--space-2-5);
   transition: color var(--dur-fast) var(--ease-out);
@@ -693,10 +690,6 @@ main[tabindex="-1"]:focus { outline: none; }
   .site-footer__mission-link:hover { color: var(--child); }
   .site-footer__mission-link:hover::after { transform: translateX(3px); }
 }
-/* The footer is always dark, but .lockup__name is themed for the page
-   surface (--ink). In light mode that paints #082B36 on #082B36 →
-   invisible "PXLC.". Force ivory here. */
-.site-footer .lockup__name { color: var(--pxlc-ivory); }
 .site-footer__inner {
   display: grid; grid-template-columns: 1fr; gap: var(--space-5); margin-bottom: var(--space-6);
 }
@@ -704,22 +697,22 @@ main[tabindex="-1"]:focus { outline: none; }
 @media (min-width: 1024px) { .site-footer__inner { grid-template-columns: 2.4fr 1fr 1fr; } }
 .site-footer__col-title {
   font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: 0.22em;
-  text-transform: uppercase; color: var(--pxlc-cyan); margin: 0 0 16px; font-weight: 600;
+  text-transform: uppercase; color: var(--parent); margin: 0 0 16px; font-weight: 600;
 }
 .site-footer__col-list { list-style: none; padding: 0; margin: 0; display: grid; gap: var(--space-2); }
-.site-footer__col-link { color: var(--pxlc-ivory); font-size: var(--fs-small); transition: color var(--dur-fast) var(--ease-out); }
+.site-footer__col-link { color: var(--ink); font-size: var(--fs-small); transition: color var(--dur-fast) var(--ease-out); }
 @media (hover: hover) and (pointer: fine) {
-  .site-footer__col-link:hover { color: var(--pxlc-cyan); }
+  .site-footer__col-link:hover { color: var(--parent); }
 }
 .site-footer__col-list--icons { gap: var(--space-2-5); }
 .site-footer__col-link--icon { display: flex; align-items: center; gap: var(--space-2); }
-.site-footer__contact-icon { color: var(--pxlc-text-on-dark-soft); flex-shrink: 0; width: 14px; height: 14px; }
+.site-footer__contact-icon { color: var(--ink-muted); flex-shrink: 0; width: 14px; height: 14px; }
 .site-footer__social { display: flex; gap: var(--space-2); margin-top: var(--space-4); list-style: none; padding: 0; }
 .site-footer__social-btn {
   width: 44px; height: 44px; border-radius: var(--radius-md);
-  background: var(--pxlc-bg-dark-soft); border: 1px solid var(--pxlc-border-dark);
+  background: var(--surface-raised); border: 1px solid var(--line-subtle);
   display: inline-flex; align-items: center; justify-content: center;
-  color: var(--pxlc-white);
+  color: var(--ink-strong);
   transition:
     background-color var(--dur-fast) var(--ease-out),
     border-color var(--dur-fast) var(--ease-out),
@@ -730,24 +723,24 @@ main[tabindex="-1"]:focus { outline: none; }
 /* Glyphes en blanc (permis LinkedIn/X) au repos ; au hover, le coral porte sur
    le fond + la bordure, jamais sur le glyphe de marque. */
 @media (hover: hover) and (pointer: fine) {
-  .site-footer__social-btn:hover { background: var(--pxlc-bg-dark-deep); border-color: var(--child); }
+  .site-footer__social-btn:hover { background: var(--surface-soft); border-color: var(--child); }
 }
 .site-footer__social-btn svg { width: 21px; height: 21px; }
 .site-footer__legal {
-  border-top: 1px solid var(--pxlc-border-dark); padding-top: var(--space-3);
+  border-top: 1px solid var(--line-subtle); padding-top: var(--space-3);
   display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3);
 }
 .site-footer__legal p, .site-footer__legal a {
   font-family: var(--font-label); font-size: var(--fs-label);
-  /* on-dark-soft (#A9C8D0) hits ~7.7:1 contrast on the dark footer;
-     --pxlc-text-secondary (#5A6B70) is only 2.67:1 — too dim. */
-  color: var(--pxlc-text-on-dark-soft);
+  /* --ink-muted en sombre (#A9C8D0) hits ~7.7:1 contrast on the dark
+     footer; --ink-quiet (#8A9DA3) would be dimmer. */
+  color: var(--ink-muted);
   letter-spacing: 0.12em; text-transform: uppercase;
 }
 /* Zone de tap ≥ 44 px sans grossir le texte légal de 11 px. */
 .site-footer__legal a { display: inline-flex; align-items: center; min-height: 44px; }
 @media (hover: hover) and (pointer: fine) {
-  .site-footer__legal a:hover { color: var(--pxlc-cyan); }
+  .site-footer__legal a:hover { color: var(--parent); }
 }
 .site-footer__legal-links { display: flex; flex-wrap: wrap; column-gap: var(--space-3); list-style: none; padding: 0; margin: 0; }
 
@@ -806,13 +799,8 @@ main[tabindex="-1"]:focus { outline: none; }
   padding: 2px 6px;
   border-radius: var(--radius-xs);
   background: var(--surface-soft);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-subtle);
   color: var(--ink);
-}
-[data-theme="dark"] .prose code {
-  background: var(--pxlc-bg-dark-deep);
-  border-color: var(--pxlc-border-dark);
-  color: var(--pxlc-ivory);
 }
 .prose p a { text-decoration: underline; text-underline-offset: 3px; }
 /* Les URL en toutes lettres peuvent casser pour ne pas déborder sur mobile. */

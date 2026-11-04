@@ -27,8 +27,6 @@
  *                       src/config/site.ts
  *   R8 rgba-brut      — rgba()/rgb() dans <style> → utiliser un token
  *   R9 ease-brut      — cubic-bezier() brut → utiliser var(--ease-out) ou var(--ease-in-out)
- *                       (les durées ne sont pas lintées : les delays de
- *                       chorégraphie hors échelle sont légitimes)
  *   R10 nommage       — composants src/components en PascalCase, deux
  *                       mots minimum
  *   R11 nbsp-manquante— espace ASCII avant ? ! : ; » / après « / nombre +
@@ -39,6 +37,17 @@
  *                       tête de frontmatter, JSDoc sur chaque prop, tag
  *                       @a11y pour Pxlc* et Site* (source de la section
  *                       « Composants » de design.md)
+ *   R14 primitive-directe — var(--pxlc-*) hors tokens.css : un composant lit
+ *                       un token sémantique (--surface, --ink, --parent…),
+ *                       qui lit la primitive. Une surface toujours sombre pose
+ *                       color-scheme: dark au lieu de câbler la palette.
+ *   R15 motion-brute  — transition/animation : durée ou délai littéral
+ *                       (→ var(--dur-*), 0s toléré), courbe mot-clé
+ *                       (ease, ease-in…  → var(--ease-*) ; linear toléré)
+ *                       ou absente (ease implicite),
+ *                       propriété animée hors liste (transform, opacity,
+ *                       couleurs, ombre, visibility) — jamais all, jamais
+ *                       la mise en page
  *
  * Plaquette : c'est une page du site (src/pages/plaquette.astro), couverte
  * comme tout .astro. Le PDF committé n'étant jamais rebuild par la CI, c'est
@@ -58,7 +67,19 @@ const SCAN_EXTS = ['.astro']
 // littéraux y sont légitimes, c'est partout ailleurs qu'ils sont interdits.
 // R3/R4 restent scopés aux composants et pages.
 const CSS_FILES = ['src/styles/styles.css']
-const CSS_RULES = new Set(['hex-brut', 'gradient', 'rgba-brut', 'ease-brut'])
+const CSS_RULES = new Set(['hex-brut', 'gradient', 'rgba-brut', 'ease-brut', 'primitive-directe', 'motion-brute'])
+
+// ── Motion (R15) ───────────────────────────────────────────────────────────────
+// Propriétés qu'une transition peut animer : composées par le GPU (transform,
+// opacity) ou repeintes sans recalcul de mise en page (couleurs, ombre).
+// visibility accompagne un fondu (0s, saut d'état). Tout le reste (width,
+// padding, top, background raccourci, all…) relance la mise en page ou
+// masque ce qui est animé.
+const MOTION_PROPS = new Set([
+  'transform', 'translate', 'scale', 'rotate', 'opacity', 'visibility',
+  'color', 'background-color', 'border-color', 'outline-color',
+  'text-decoration-color', 'fill', 'stroke', 'box-shadow',
+])
 
 // ── Vocabulaire interdit ───────────────────────────────────────────────────────
 // Classé du plus long au plus court pour éviter les faux-positifs en cas de
@@ -201,6 +222,47 @@ function lintStyle(raw, file, only = null) {
     'ease-brut',
     () => 'cubic-bezier() → utiliser var(--ease-out) ou var(--ease-in-out)',
   )
+
+  // R14 — Primitive lue directement par un composant
+  flag(
+    /var\(\s*--pxlc-[a-z0-9-]+/g,
+    'primitive-directe',
+    m => `${m[0]}) → lire un token sémantique (--surface, --ink, --parent, --line…), jamais la palette`,
+  )
+
+  // R15 — Motion : durées, courbes et propriétés animées
+  if (!only || only.has('motion-brute')) {
+    const DECL = /\b(transition(?:-property|-duration|-delay)?|animation(?:-duration|-delay)?)\s*:\s*([^;{}]+)/g
+    for (const m of raw.matchAll(DECL)) {
+      if (inComment(m.index, ranges)) continue
+      const [, prop, value] = m
+      const push = detail => vs.push({ file, rule: 'motion-brute', line: lineAt(raw, m.index), detail })
+      // Durées littérales, hors var() et hors 0 (saut d'état instantané).
+      for (const d of value.matchAll(/(?<![\w-])(\d*\.?\d+)(ms|s)\b/g))
+        if (Number(d[1]) !== 0) push(`${prop}: ${d[0]} → durée brute, utiliser var(--dur-*)`)
+      for (const e of value.matchAll(/(?<![\w-])(ease(?:-in-out|-in|-out)?)(?![\w-])/g))
+        push(`${prop}: ${e[1]} → courbe mot-clé, utiliser var(--ease-out) ou var(--ease-in-out)`)
+      if (prop === 'transition' || prop === 'transition-property') {
+        // Découpe au niveau 0 des parenthèses : calc(a, b) ne coupe pas.
+        const items = []; let depth = 0, cur = ''
+        for (const ch of value) {
+          if (ch === '(') depth++
+          if (ch === ')') depth--
+          if (ch === ',' && depth === 0) { items.push(cur); cur = '' } else cur += ch
+        }
+        items.push(cur)
+        for (const it of items) {
+          const name = it.trim().split(/\s+/)[0]
+          if (!name || name === 'none' || name.startsWith('var(')) continue
+          // Durée sans courbe = « ease » implicite du navigateur.
+          if (/\d|--dur-/.test(it) && !/--ease-|\blinear\b|\bsteps\(|(?<![\w-])ease/.test(it) && !/^\S+\s+0m?s\b/.test(it.trim()))
+            push(`transition de « ${name} » sans courbe → ease implicite, ajouter var(--ease-out) ou var(--ease-in-out)`)
+          if (!MOTION_PROPS.has(name))
+            push(`transition de « ${name} » → animer transform/opacity ou une couleur, jamais ${name === 'all' ? 'all' : 'la mise en page ou un raccourci'}`)
+        }
+      }
+    }
+  }
 
   return vs
 }

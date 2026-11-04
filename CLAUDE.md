@@ -41,10 +41,16 @@ Le contexte de positionnement et de stratégie vit dans `CLAUDE.local.md`
   `interface Props` — `scripts/component-docs.mjs` en tire la section
   « Composants » de `design.md` ; `ds-lint` R13 (`doc-composant`) bloque tout
   manque (`@a11y` exigé pour `Pxlc*` et `Site*`).
-- Toujours utiliser les custom properties (`--pxlc-*`, tokens sémantiques) —
-  jamais de couleurs ou d'espacements en dur dans les composants.
-- Dark mode via `[data-theme="dark"]` — toute nouvelle couleur sémantique doit
-  avoir sa variante dark dans `tokens.css`.
+- Toujours utiliser les tokens sémantiques (`--surface`, `--ink`, `--parent`,
+  `--line`…) — jamais de couleurs ou d'espacements en dur dans les composants,
+  jamais de primitive `--pxlc-*` hors `tokens.css` (`ds-lint` R14).
+- Dark mode : `data-theme` pose `color-scheme` sur `:root` ; toute couleur
+  sémantique qui change avec le thème est un `light-dark(clair, sombre)` dans
+  `tokens.css`. Surface toujours sombre (footer, menu mobile) :
+  `color-scheme: dark` + les tokens habituels, pas de surcharge
+  `[data-theme="dark"] .composant` pour une couleur.
+- Mouvement : `--dur-*` et `--ease-*` uniquement, transform / opacity /
+  couleurs seulement, variante `prefers-reduced-motion` (`ds-lint` R15).
 - Les sections de `styles.css` sont délimitées par des commentaires
   `── Titre ──` — respecter ce format, le parser d'export-design en dépend.
 

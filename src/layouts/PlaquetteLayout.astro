@@ -45,7 +45,7 @@ type Props = Omit<HeadProps, 'colorScheme'>
     font-size: 10.5pt;
     line-height: 1.55;
     color: var(--ink-muted);
-    background: var(--pxlc-text-secondary);
+    background: var(--ink-quiet);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     transition: none;
@@ -86,7 +86,7 @@ type Props = Omit<HeadProps, 'colorScheme'>
     .pq-pages { align-items: stretch; gap: var(--space-3); padding: 0; }
   }
   @media print {
-    .pq-body { background: var(--pxlc-white); }
+    .pq-body { background: var(--surface-raised); }
     .pq-pages { display: block; padding: 0; }
     .pq-screen-only { display: none !important; }
   }
