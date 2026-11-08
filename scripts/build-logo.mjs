@@ -12,9 +12,9 @@
  * Fichiers de public/ (committés, servis tels quels) :
  *   logo.svg          avatar carré 512 (logo du JSON-LD : Google affiche
  *                     les logos d'organisation en carré ou en rond)
- *   favicon.svg       avatar : « pxlc » blanc sur carré bleu nuit arrondi
- *   favicon.ico       16, 32 et 48 px
- *   icon-16x16.png
+ *   favicon.svg       avatar resserré pour l'onglet (LOGO_FAVICON) : le
+ *   favicon.ico       nom remplit le carré pour rester lisible à 16 px
+ *   icon-16x16.png    (ico : 16, 32 et 48 px)
  *   icon-32x32.png
  *   apple-touch-icon.png  180 px, carré plein (iOS arrondit lui-même)
  *   icon-192x192.png  « maskable » : fond bleu nuit plein, nom dans la
@@ -26,7 +26,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'
 import { Resvg } from '@resvg/resvg-js'
 import {
-  LOGO_AVATAR, LOGO_CLEARSPACE, LOGO_NAME, LOGOTYPE,
+  LOGO_AVATAR, LOGO_CLEARSPACE, LOGO_FAVICON, LOGO_NAME, LOGOTYPE,
 } from '../src/lib/logo-geometry.ts'
 
 const ROOT = process.cwd()
@@ -77,11 +77,12 @@ const nameSvg = (fill) => {
 
 /**
  * Avatar carré : « pxlc » blanc sur bleu nuit. `rx` = rayon du carré
- * (0 pour un carré plein, que le système d'exploitation découpe).
+ * (0 pour un carré plein, que le système d'exploitation découpe) ;
+ * `margin` = marge latérale du nom (défaut : placement du design system).
  */
-const avatarSvg = ({ rx = LOGO_AVATAR.rx, px } = {}) => {
-  const S = LOGO_AVATAR.size, a = LOGO_AVATAR.name
-  const k = a.scale
+const avatarSvg = ({ rx = LOGO_AVATAR.rx, margin, px } = {}) => {
+  const S = LOGO_AVATAR.size
+  const k = margin === undefined ? LOGO_AVATAR.name.scale : (S - 2 * margin) / LOGO_NAME.width
   const x = (S - LOGO_NAME.width * k) / 2, y = (S - LOGO_NAME.height * k) / 2
   return head(S, S, `0 0 ${S} ${S}`, 'pxlc', px)
     + `<rect width="${S}" height="${S}" rx="${rx}" fill="${NIGHT}"/>`
@@ -119,9 +120,10 @@ const out = async (dir, name, data) => {
 // ── Fichiers du site (public/) ───────────────────────────────────────────
 const avatar = avatarSvg()
 await out(PUBLIC, 'logo.svg', avatar)
-await out(PUBLIC, 'favicon.svg', avatar)
+const favicon = avatarSvg({ rx: LOGO_FAVICON.rx, margin: LOGO_FAVICON.margin })
+await out(PUBLIC, 'favicon.svg', favicon)
 
-const px16 = png(avatar, 16), px32 = png(avatar, 32), px48 = png(avatar, 48)
+const px16 = png(favicon, 16), px32 = png(favicon, 32), px48 = png(favicon, 48)
 await out(PUBLIC, 'icon-16x16.png', px16)
 await out(PUBLIC, 'icon-32x32.png', px32)
 await out(PUBLIC, 'favicon.ico', ico([{ size: 16, data: px16 }, { size: 32, data: px32 }, { size: 48, data: px48 }]))
