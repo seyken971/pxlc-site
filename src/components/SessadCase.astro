@@ -1,12 +1,11 @@
 ---
 /**
- * Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») : photo, texte,
- * faits du projet, devise et lien vers la page projets. Seul bloc de
- * preuve de l'accueil : les faits viennent de src/config/projects.ts.
+ * Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») en accroche : photo,
+ * texte, devise et lien vers la page projets, qui seule détaille public,
+ * porteur et équipe (un fait = un endroit). Seul bloc de preuve de l'accueil.
  * @usage Accueil. Faits de copy : voir les garde-fous de CLAUDE.md
  * (intervenant culturel au singulier, « le psychologue »).
- * @a11y Section reliée à son h2 ; photo décrite ; faits en liste de
- * définitions ; devise en figure/blockquote, guillemets décoratifs en
+ * @a11y Section reliée à son h2 ; photo décrite ; devise en figure/blockquote, guillemets décoratifs en
  * aria-hidden.
  */
 import { Image } from 'astro:assets'
@@ -39,12 +38,6 @@ const lekoklaya = PROJECTS.find(p => p.slug === 'jouons-ensemble')!
         <p class="lead mt-4">
           «&nbsp;Jouons Ensemble&nbsp;!&nbsp;» réunit des enfants suivis au SESSAD (TND, troubles du comportement ou du lien social) et leurs parents autour d’ateliers thématiques. L’objectif&nbsp;: faire du jeu vidéo un outil d’alliance entre parents et enfants, pas un terrain de conflit.
         </p>
-        <dl class="facts facts--rows mt-5">
-          <div><dt>Public</dt><dd>{lekoklaya.audience}</dd></div>
-          <div><dt>Porteur</dt><dd>{lekoklaya.owner}</dd></div>
-          <div><dt>Équipe</dt><dd>{lekoklaya.team}</dd></div>
-          <div><dt>Origine</dt><dd>Café-Parents «&nbsp;Enfants Écrans&nbsp;» du SESSAD, 14&nbsp;décembre 2023</dd></div>
-        </dl>
         <figure class="sessad-motto">
           <blockquote>
             <span class="sessad-motto__mark" aria-hidden="true">«&nbsp;</span>Jouer ensemble, c’est mieux comprendre, mieux se parler, et mieux grandir.<span class="sessad-motto__mark" aria-hidden="true">&nbsp;»</span>

@@ -181,8 +181,8 @@ main[tabindex="-1"]:focus { outline: none; }
 .btn--no-arrow::after { content: none; }
 .btn--lg { padding: 16px 28px; font-size: var(--fs-body); }
 /* Un bouton pleine largeur peut renvoyer un libellé long à la ligne plutôt
-   que forcer un débordement horizontal (ex. « Envoyer un message WhatsApp »
-   sur mobile étroit). Les boutons en ligne gardent le white-space: nowrap
+   que forcer un débordement horizontal (ex. un libellé de
+   plusieurs mots sur mobile étroit). Les boutons en ligne gardent le white-space: nowrap
    hérité de .btn. */
 .btn--block { width: 100%; justify-content: center; white-space: normal; }
 
@@ -260,39 +260,6 @@ main[tabindex="-1"]:focus { outline: none; }
 @media (hover: hover) and (pointer: fine) {
   .linkout:hover::after { transform: translateX(4px); }
 }
-
-/* ── Form fields ─────────────────────────────────────────── */
-.form-label {
-  display: block;
-  font-family: var(--font-label);
-  font-size: var(--fs-label);
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--parent);
-  margin-bottom: var(--space-2);
-}
-/* Marqueur visuel de champ requis — aria-hidden côté markup, l'info
-   accessible passe par l'attribut required de l'input. */
-.form-label__req { color: var(--child); margin-left: 2px; }
-.form-input, .form-textarea {
-  width: 100%; padding: var(--space-2-5) var(--space-3); border-radius: var(--radius-md);
-  /* Bordure en --ink-quiet : un champ doit se distinguer de son fond à 3:1
-     au moins (RGAA 3.3) — --line n'atteint que 1,5:1. */
-  border: 1px solid var(--ink-quiet); background: var(--surface-raised); color: var(--ink);
-  /* 16 px minimum : en dessous, iOS zoome la page au focus du champ. */
-  font-family: var(--font-body); font-size: var(--fs-body);
-  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur-fast) var(--ease-out);
-}
-@media (hover: hover) and (pointer: fine) {
-  .form-input:hover, .form-textarea:hover { border-color: var(--parent-mid); }
-}
-.form-input:focus-visible, .form-textarea:focus-visible {
-  outline: none;
-  border-color: var(--parent);
-  box-shadow: var(--focus-ring);
-}
-.form-textarea { resize: vertical; min-height: 120px; }
 
 /* ── Header ──────────────────────────────────────────────── */
 .site-header {
@@ -531,15 +498,6 @@ main[tabindex="-1"]:focus { outline: none; }
   .hero__actions .btn--primary { width: 100%; justify-content: center; }
   .hero__actions .btn:not(.btn--primary) { width: fit-content; align-self: center; }
 }
-.hero__hint { font-family: var(--font-label); font-size: var(--fs-label); color: var(--ink-quiet); letter-spacing: 0.1em; margin-left: var(--space-2); }
-/* Version web de la plaquette, à côté du bouton PDF (RGAA 13.3) : lien texte
-   discret, pas un troisième bouton. Zone de toucher de 44 px. */
-.hero__alt {
-  display: inline-flex; align-items: center; min-height: 44px;
-  font-family: var(--font-label); font-size: var(--fs-small); font-weight: 600;
-  color: var(--parent); text-decoration: underline; text-underline-offset: 3px;
-}
-@media (max-width: 767px) { .hero__actions .hero__alt { align-self: center; } }
 
 /* Photo : un seul traitement sur tout le site, le cadre décalé (écho du
    pixel, derrière la photo) et la petite marque en coin. La largeur est
@@ -581,27 +539,6 @@ main[tabindex="-1"]:focus { outline: none; }
   border-radius: var(--radius-lg); overflow: hidden;
 }
 .hero__media-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* Pas d'ombre au repos (design system) : la bordure suffit à détacher la
-   pastille de la photo. */
-.hero__pill {
-  background: var(--surface-raised); border: 1px solid var(--line); border-radius: var(--radius-lg);
-  padding: var(--space-3); width: 100%;
-  margin-top: var(--space-3);
-}
-@media (min-width: 768px) {
-  .hero__pill {
-    position: absolute; bottom: -28px; left: -28px;
-    width: 240px; margin-top: 0;
-  }
-}
-.hero__pill-eyebrow {
-  font-family: var(--font-label); font-size: var(--fs-label); letter-spacing: var(--ls-label);
-  text-transform: uppercase; color: var(--parent); margin-bottom: var(--space-2); font-weight: 600;
-}
-.hero__pill-text {
-  font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body);
-  line-height: 1.3; color: var(--ink);
-}
 
 /* ── Cards ───────────────────────────────────────────────── */
 .card {

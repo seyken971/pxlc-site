@@ -18,9 +18,6 @@ import PxlcMark from './PxlcMark.astro'
 import SiteBreadcrumb from './SiteBreadcrumb.astro'
 
 interface Cta { label: string, href: string, external?: boolean }
-/** Lien texte discret à côté du CTA secondaire (ex. version web de la plaquette PDF). */
-interface AltLink { label: string, href: string, ariaLabel?: string }
-interface Pill { eyebrow: string, text: string }
 
 interface Props {
   /** Affiche le fil d'Ariane au-dessus de l'eyebrow (pages intérieures). */
@@ -41,16 +38,10 @@ interface Props {
   ctaPrimary?: Cta | null
   /** CTA secondaire, en bouton ghost. */
   ctaSecondary?: Cta | null
-  /** Lien texte discret à côté du CTA secondaire. */
-  ctaSecondaryAlt?: AltLink | null
-  /** Mention courte sous les CTA. */
-  hint?: string | null
   /** Photo importée depuis src/assets (astro:assets génère les variantes webp). */
   photo?: ImageMetadata | null
   /** Texte alternatif de la photo. */
   photoAlt?: string
-  /** Pastille posée sur la photo : surtitre et texte. */
-  pill?: Pill | null
 }
 const {
   breadcrumb = false,
@@ -62,14 +53,11 @@ const {
   lead = '',
   ctaPrimary = null,
   ctaSecondary = null,
-  ctaSecondaryAlt = null,
-  hint = null,
   photo = null,
   photoAlt = '',
-  pill = null,
 } = Astro.props
 
-const hasCtas = Boolean(ctaPrimary || ctaSecondary || ctaSecondaryAlt || hint)
+const hasCtas = Boolean(ctaPrimary || ctaSecondary)
 const hasLeadSlot = Astro.slots.has('lead')
 ---
 
@@ -112,12 +100,6 @@ const hasLeadSlot = Astro.slots.has('lead')
                 aria-label={`${ctaSecondary.label} (nouvel onglet)`}
               >{ctaSecondary.label}</a>
             )}
-
-            {ctaSecondaryAlt && (
-              <a href={ctaSecondaryAlt.href} class="hero__alt" aria-label={ctaSecondaryAlt.ariaLabel}>{ctaSecondaryAlt.label}</a>
-            )}
-
-            {hint && <span class="hero__hint">{hint}</span>}
           </div>
         )}
         <slot />
@@ -142,12 +124,6 @@ const hasLeadSlot = Astro.slots.has('lead')
               fetchpriority="high"
             />
           </div>
-          {pill && (
-            <div class="hero__pill">
-              <div class="hero__pill-eyebrow">{pill.eyebrow}</div>
-              <div class="hero__pill-text">{pill.text}</div>
-            </div>
-          )}
         </div>
       )}
     </div>

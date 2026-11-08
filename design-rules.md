@@ -38,7 +38,7 @@
 
 ### Nommage des composants
 
-- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcLogotype`, `PxlcMark`, `PxlcMarkSeparator`
+- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcLinkout`, `PxlcLockup`, `PxlcLogotype`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
 - **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
 - Deux mots minimum par nom (évite les collisions avec de futurs éléments HTML natifs)

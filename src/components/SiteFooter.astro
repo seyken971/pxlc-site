@@ -1,12 +1,11 @@
 ---
 /**
- * Pied de page : lockup, mission, liens de contact, plan du site, mentions
+ * Pied de page : lockup, mission, un seul lien de rendez-vous, plan du site, mentions
  * légales et accessibilité.
  * @usage Toutes les pages, via BaseLayout.
  * @a11y Liens-icônes nommés par aria-label, icônes en aria-hidden ; liens
  * externes et PDF annoncés dans leur libellé accessible.
  */
-import Calendar from '../icons/calendar.svg'
 import Linkedin from '../icons/linkedin.svg'
 import Mail from '../icons/mail.svg'
 import MessageSquare from '../icons/message-square.svg'
@@ -44,13 +43,6 @@ const year = new Date().getFullYear()
               <Mail aria-hidden="true" />
             </a>
           </li>
-          <li>
-            <a
-              class="site-footer__social-btn" href={IDENTITY.bookingUrl} target="_blank" rel="noopener noreferrer"
-              aria-label="Réserver un échange de 20 minutes">
-              <Calendar aria-hidden="true" />
-            </a>
-          </li>
         </ul>
       </div>
 
@@ -80,7 +72,7 @@ const year = new Date().getFullYear()
           <li>
             <a class="site-footer__col-link site-footer__col-link--icon" href="/contact/">
               <MessageSquare aria-hidden="true" class="site-footer__contact-icon" />
-              Décrire votre projet en 2&nbsp;min
+              Écrire ou appeler
             </a>
           </li>
         </ul>

@@ -1,9 +1,6 @@
 ---
-import MapPin from '../icons/map-pin.svg'
-import Navigation from '../icons/navigation.svg'
 import BaseLayout from '../layouts/BaseLayout.astro'
 import HeroSection from '../components/HeroSection.astro'
-import PxlcInput from '../components/PxlcInput.astro'
 import CommuneMap from '../components/CommuneMap.astro'
 import { IDENTITY } from '../config/identity'
 import { ZONE } from '../config/site'
@@ -12,8 +9,8 @@ import { breadcrumbItems } from '../lib/breadcrumb'
 
 const seo = {
   title: 'Contacter Andy Zébus — devis ou premier échange',
-  description: 'Devis ou premier échange de 20 min — gratuit, sans engagement. Pour les structures qui accompagnent des familles.',
-  ogDescription: 'Réponse sous 2 jours ouvrés — formulaire, e-mail ou visio. Premier échange de 20 min gratuit pour cadrer votre projet.',
+  description: 'Devis ou premier échange de 20\u00A0min — gratuit, sans engagement. Pour les structures qui accompagnent des familles.',
+  ogDescription: 'Réponse sous 2\u00A0jours ouvrés. Premier échange de 20\u00A0min gratuit, en visio ou sur site, pour cadrer le projet.',
 }
 
 const schemaGraph = pageGraph({
@@ -24,26 +21,29 @@ const schemaGraph = pageGraph({
   crumbs: breadcrumbItems('/contact/'),
 })
 
-// Types de structure proposés au formulaire — la valeur choisie est reprise
-// dans le sujet et le corps du mailto:.
-// Mêmes familles que le « Pour qui » de l'accueil.
-const STRUCTURE_TYPES = ['Médiathèque ou bibliothèque', 'Centre social ou EVS', 'École ou CLAS', 'Collectivité ou CCAS', 'Médico-social', 'Association', 'Autre']
+// Demande de devis par e-mail : GitHub Pages ne traite pas de POST, et un
+// formulaire qui ouvre la messagerie laissait croire à un envoi. Le lien
+// mailto: est donc assumé comme tel — un modèle prérempli, construit au
+// build, qui pose les questions de cadrage (gabarit relevé au benchmark).
+const QUOTE_FIELDS = ['Structure', 'Type de structure', 'Public et nombre de familles', 'Période souhaitée', 'Téléphone']
+const quoteBody = [...QUOTE_FIELDS.map(f => `${f}\u00A0: `), '', 'Votre projet\u00A0:', ''].join('\r\n')
+const quoteHref = `mailto:${IDENTITY.email}?subject=${encodeURIComponent('Demande de devis — ')}&body=${encodeURIComponent(quoteBody)}`
 
-const { address } = IDENTITY
-const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} ${address.locality}`)
+const { address, openingHours } = IDENTITY
+const hours = `du lundi au vendredi, ${parseInt(openingHours.opens)}\u00A0h – ${parseInt(openingHours.closes)}\u00A0h`
 ---
 
 <BaseLayout {...seo} schemaGraph={schemaGraph}>
   <!-- Tête de page : gabarit commun. Funnel RDV-first (docs/seo-plan.md) :
-       la réservation est l'action primaire, le formulaire juste en dessous
-       sert ceux qui préfèrent écrire ; la réassurance suit le CTA. -->
+       la réservation est l'action primaire, l'e-mail de devis juste en
+       dessous sert ceux qui préfèrent écrire ; la réassurance suit le CTA. -->
   <HeroSection
     breadcrumb
     eyebrow="Contact"
     title="On en parle"
     titleDot
     titleMark={'\u00A0?'}
-    lead={'Le plus simple\u00A0: un échange de 20\u00A0min, en visio ou sur site, pour parler de votre structure et du public accompagné. Vous préférez écrire\u00A0? Le formulaire est juste en dessous.'}
+    lead={'Le plus simple\u00A0: un échange de 20\u00A0min, en visio ou sur site, pour parler de votre structure et du public accompagné. Vous préférez écrire\u00A0? Un modèle de demande vous attend juste en dessous.'}
     ctaPrimary={{ label: 'Réserver un échange de 20\u00A0min', href: IDENTITY.bookingUrl, external: true }}
   >
     <ul class="contact-assure" role="list">
@@ -53,68 +53,42 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     </ul>
   </HeroSection>
 
-  <section class="section">
+  <section class="section" aria-labelledby="ecrire-title">
     <div class="container">
-
       <div class="contact-grid">
 
-        <!-- ── Colonne gauche — formulaire ───────────────────── -->
+        <!-- ── Colonne gauche — écrire ou appeler ────────────── -->
         <div>
-          <h2 class="contact-h2">Ou décrire votre projet par écrit</h2>
-          <p class="contact-note">Quatre champs, deux minutes. Je reviens sous 2&nbsp;jours ouvrés.</p>
+          <h2 id="ecrire-title" class="contact-h2">Vous préférez écrire&nbsp;?</h2>
+          <p class="contact-note">Je réponds sous 2&nbsp;jours ouvrés.</p>
 
-          <!-- Carte de statut — remplace le formulaire une fois soumis. Le
-               mailto: construit au submit y reste accessible en repli. -->
-          <div
-            id="contact-sent"
-            tabindex="-1"
-            role="status"
-            aria-live="polite"
-            class="contact-sent"
-            hidden
-          >
-            <div class="contact-sent__eyebrow">Message préparé</div>
-            <p class="contact-sent__text">
-              Votre logiciel de messagerie devrait s’ouvrir avec le message pré-rempli. Si rien ne s’ouvre, écrivez-moi directement&nbsp;:
-            </p>
-            <div class="contact-sent__fallback">
-              <a id="contact-sent-link" href={`mailto:${IDENTITY.email}`} class="contact-sent__link">{IDENTITY.email}</a>
-              <button id="contact-copy" type="button" class="contact-sent__copy">
-                Copier l’adresse
-              </button>
+          <p class="contact-text">
+            Votre messagerie s’ouvre avec une demande de devis à compléter&nbsp;: votre structure, le public accompagné, la période envisagée. Quelques lignes suffisent.
+          </p>
+          <a class="btn btn--secondary contact-quote" href={quoteHref}>Écrire une demande de devis</a>
+
+          <dl class="contact-direct">
+            <div>
+              <dt>Pas de messagerie sur ce poste&nbsp;?</dt>
+              <dd class="contact-direct__mail">
+                <a href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>
+                <button id="contact-copy" type="button" class="contact-copy">Copier l’adresse</button>
+              </dd>
             </div>
-          </div>
-
-          <form id="contact-form" class="contact-form">
-            <p class="form-legend">
-              <span class="form-legend__req" aria-hidden="true">*</span> Champs requis
-            </p>
-            <div class="form-row">
-              <PxlcInput id="c-nom" label="Prénom et nom" placeholder="Prénom Nom" required autocomplete="name" />
-              <PxlcInput id="c-email" label="Adresse e-mail" type="email" placeholder="contact@structure.fr" required autocomplete="email" />
+            <div>
+              <dt>Par téléphone</dt>
+              <dd><a href={`tel:${IDENTITY.telephone}`}>{IDENTITY.telephoneDisplay}</a>, {hours}</dd>
             </div>
+          </dl>
 
-            <fieldset class="contact-chips">
-              <legend class="form-label">Type de structure</legend>
-              <div class="contact-chips__list">
-                {STRUCTURE_TYPES.map((type, i) => (
-                  <Fragment>
-                    <input type="radio" name="c-type" id={`c-type-${i}`} value={type} />
-                    <label for={`c-type-${i}`}>{type}</label>
-                  </Fragment>
-                ))}
-              </div>
-            </fieldset>
-
-            <PxlcInput id="c-msg" label="Message" rows={5} placeholder="Le public accompagné, le projet envisagé, l’échéance si vous en avez une…" required />
-
-            <div class="contact-submit-row">
-              <button type="submit" class="btn btn--primary contact-submit">
-                Envoyer
-              </button>
-            </div>
-            <p class="form-privacy">Vos coordonnées servent uniquement à vous répondre et sont conservées 3&nbsp;ans au plus. <a href="/mentions-legales/#rgpd">En savoir plus</a></p>
-          </form>
+          <p class="contact-plaquette">
+            <a
+              href="/files/plaquette-pxlc.pdf" target="_blank" rel="noopener noreferrer"
+              data-astro-prefetch="false"
+              aria-label="Télécharger la plaquette à transmettre à votre direction (PDF, 6 pages, nouvel onglet)"
+            >Télécharger la plaquette à transmettre à votre direction</a> (PDF, 6&nbsp;pages)
+            ou <a href="/plaquette/">la lire en ligne</a>.
+          </p>
         </div>
 
         <!-- ── Colonne droite — territoire + coordonnées ─────── -->
@@ -133,27 +107,8 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
               <p class="contact-nap__name">{IDENTITY.brandName}</p>
               <p class="contact-nap__line">{address.street}</p>
               <p class="contact-nap__line">{address.postalCode} {address.locality}, {address.region}</p>
-              <p class="contact-nap__line contact-nap__line--links">
-                <a class="contact-nap__link" href={`tel:${IDENTITY.telephone}`}>{IDENTITY.telephoneDisplayIntl}</a>
-                <a class="contact-nap__link" href={`mailto:${IDENTITY.email}`}>{IDENTITY.email}</a>
-              </p>
+              <p class="contact-nap__line">{IDENTITY.telephoneDisplayIntl}</p>
             </address>
-            <div class="contact-maplinks">
-              <a
-                class="contact-maplinks__pill"
-                href={IDENTITY.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Itinéraire sur Google Maps (nouvel onglet)"
-              ><MapPin aria-hidden="true" class="contact-maplinks__icon" />Google Maps</a>
-              <a
-                class="contact-maplinks__pill"
-                href={`https://www.waze.com/ul?q=${wazeQuery}&navigate=yes`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Itinéraire sur Waze (nouvel onglet)"
-              ><Navigation aria-hidden="true" class="contact-maplinks__icon" />Waze</a>
-            </div>
           </div>
         </div>
 
@@ -175,8 +130,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
         <li class="contact-step">
           <span class="contact-step__num" aria-hidden="true">02</span>
           <h3>On échange 20&nbsp;min</h3>
-          <p>Visio ou sur site.</p>
-          <p><a href={IDENTITY.bookingUrl} target="_blank" rel="noopener noreferrer" aria-label="Réserver un échange de 20&nbsp;min (nouvel onglet)">Réserver un échange de 20&nbsp;min</a></p>
+          <p>Visio ou sur site, pour parler de votre structure et du public accompagné.</p>
         </li>
         <li class="contact-step">
           <span class="contact-step__num" aria-hidden="true">03</span>
@@ -189,46 +143,12 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
 <script>
   import { IDENTITY } from '../config/identity'
 
-  // GitHub Pages ne traite pas de POST — on construit un mailto: avec les
-  // champs du formulaire et on ouvre le client mail de l'utilisateur.
-  const form = document.getElementById('contact-form') as HTMLFormElement | null
-  const sentCard = document.getElementById('contact-sent')
-  const sentLink = document.getElementById('contact-sent-link') as HTMLAnchorElement | null
+  // Repli pour les postes sans logiciel de messagerie (ordinateur partagé,
+  // webmail) : copier l'adresse. Silencieux si l'API n'est pas disponible —
+  // l'adresse reste affichée en clair à côté.
   const copyBtn = document.getElementById('contact-copy')
   let copyTimer: ReturnType<typeof setTimeout> | undefined
 
-  const fieldValue = (id: string) =>
-    (document.getElementById(id) as HTMLInputElement | HTMLTextAreaElement | null)?.value.trim() ?? ''
-
-  form?.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const name = fieldValue('c-nom')
-    const email = fieldValue('c-email')
-    const type = (form.querySelector('input[name="c-type"]:checked') as HTMLInputElement | null)?.value ?? ''
-    const message = fieldValue('c-msg')
-
-    const lines = [
-      `Nom\u00A0: ${name}`,
-      `Email\u00A0: ${email}`,
-      type ? `Type de structure\u00A0: ${type}` : null,
-      '',
-      'Message\u00A0:',
-      message || '(vide)',
-    ].filter((l): l is string => l !== null)
-
-    const subject = `Contact PXLC — ${name}${type ? ` (${type})` : ''}`
-    const href = `mailto:${IDENTITY.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
-    if (sentLink) sentLink.href = href
-    window.location.href = href
-    form.hidden = true
-    if (sentCard) {
-      sentCard.hidden = false
-      sentCard.focus()
-    }
-  })
-
-  // Repli : copier l'adresse dans le presse-papiers. Silencieux si l'API n'est
-  // pas disponible — le lien mailto reste la voie de secours visible.
   copyBtn?.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(IDENTITY.email)
@@ -237,7 +157,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
       copyTimer = setTimeout(() => { copyBtn.textContent = 'Copier l’adresse' }, 2000)
     }
     catch {
-      // Presse-papiers indisponible — l'utilisateur garde le lien mailto.
+      // Presse-papiers indisponible — l'adresse reste lisible et sélectionnable.
     }
   })
 </script>
@@ -275,7 +195,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     margin: 0 0 var(--space-4);
   }
 
-  /* ── Grille formulaire / territoire ──────────────────────────── */
+  /* ── Grille écrire / territoire ──────────────────────────────── */
   .contact-grid {
     display: grid;
     grid-template-columns: 1.35fr 1fr;
@@ -286,85 +206,33 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     .contact-grid { grid-template-columns: 1fr; gap: var(--space-5); }
   }
 
-  /* ── Formulaire ──────────────────────────────────────────────── */
-  .contact-form { display: grid; gap: var(--space-3); }
-  /* display: grid l'emporterait sur le display: none du navigateur pour [hidden]. */
-  .contact-form[hidden] { display: none; }
-  .form-row { display: grid; gap: var(--space-3); grid-template-columns: 1fr; }
-  @media (min-width: 640px) { .form-row { grid-template-columns: 1fr 1fr; } }
-
-  .form-legend {
-    font-family: var(--font-label); font-size: var(--fs-small);
-    color: var(--ink-quiet); margin: 0;
-  }
-  .form-legend__req { color: var(--child); font-weight: 700; }
-
-  /* Chips « type de structure » : radios masqués mais focusables (jamais
-     display: none), le label porte l'affordance. */
-  .contact-chips { position: relative; border: 0; padding: 0; margin: 0; min-width: 0; }
-  .contact-chips legend { padding: 0; }
-  .contact-chips__list { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-  .contact-chips input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
-  .contact-chips label {
-    display: flex; align-items: center;
-    min-height: 38px; padding: 9px 15px;
-    border: 1px solid var(--ink-quiet); border-radius: var(--radius-pill);
-    font-family: var(--font-label); font-size: var(--fs-small); font-weight: 500;
+  /* ── Écrire ou appeler ───────────────────────────────────────── */
+  .contact-text {
+    font-size: var(--fs-body); line-height: var(--lh-body);
     color: var(--ink-muted);
-    white-space: nowrap;
-    cursor: pointer;
-    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out);
+    margin: 0 0 var(--space-4); max-width: 52ch;
   }
-  @media (hover: hover) and (pointer: fine) {
-    .contact-chips label:hover { border-color: var(--parent-mid); }
-  }
-  .contact-chips input:checked + label {
-    border-color: var(--parent);
-    color: var(--parent);
-    background: var(--parent-soft);
-  }
-  .contact-chips input:focus-visible + label { box-shadow: var(--focus-ring); }
-  @media (forced-colors: active) {
-    .contact-chips input:focus-visible + label { outline: 2px solid ButtonText; outline-offset: 2px; }
+  @media (max-width: 600px) {
+    .contact-quote { width: 100%; justify-content: center; white-space: normal; }
   }
 
-  .contact-submit-row {
-    display: flex; flex-wrap: wrap; align-items: center;
-    gap: var(--space-3);
-    margin-top: var(--space-1);
+  .contact-direct {
+    display: grid; gap: var(--space-3);
+    margin: var(--space-5) 0 0; padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
   }
-  /* Information RGPD au point de collecte, détail dans les mentions légales. */
-  .form-privacy { font-size: var(--fs-small); color: var(--ink-quiet); }
+  .contact-direct dt {
+    font-family: var(--font-label); font-size: var(--fs-small);
+    color: var(--ink-quiet);
+    margin-bottom: var(--space-1);
+  }
+  .contact-direct dd { margin: 0; font-size: var(--fs-body-sm); color: var(--ink-muted); }
+  /* Souligné : lien dans du texte courant, la couleur seule ne suffit pas (RGAA 10.6). */
+  .contact-direct a { color: var(--parent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .contact-direct a:hover { text-decoration-thickness: 2px; }
+  .contact-direct__mail { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2-5); }
 
-  /* ── Carte de statut (remplace le formulaire) ────────────────── */
-  .contact-sent {
-    background: var(--surface-soft);
-    border: 1px solid var(--line);
-    border-radius: var(--radius-lg);
-    padding: var(--space-4);
-  }
-  .contact-sent:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-  /* forced-colors (Windows HCM) supprime box-shadow — on restitue un outline système. */
-  @media (forced-colors: active) {
-    .contact-sent:focus-visible { outline: 2px solid ButtonText; outline-offset: 2px; }
-  }
-  .contact-sent__eyebrow {
-    font-family: var(--font-label);
-    font-size: var(--fs-label); font-weight: 600;
-    letter-spacing: var(--ls-label); text-transform: uppercase;
-    color: var(--parent);
-    margin-bottom: var(--space-2-5);
-  }
-  .contact-sent__text { font-size: var(--fs-body-sm); color: var(--ink-muted); margin: 0; }
-  .contact-sent__fallback {
-    display: flex; flex-wrap: wrap; align-items: center;
-    gap: var(--space-2-5); margin-top: var(--space-3);
-  }
-  .contact-sent__link {
-    font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body-sm);
-    color: var(--parent);
-  }
-  .contact-sent__copy {
+  .contact-copy {
     font-family: var(--font-label); font-size: var(--fs-small); font-weight: 600;
     letter-spacing: 0.04em; color: var(--ink-muted);
     background: var(--surface-raised);
@@ -372,11 +240,21 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     padding: 0 var(--space-3); min-height: 44px; cursor: pointer;
     transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out), transform var(--dur-fast) var(--ease-out);
   }
-  .contact-sent__copy:active { transform: scale(0.97); }
+  .contact-copy:active { transform: scale(0.97); }
   @media (hover: hover) and (pointer: fine) {
-    .contact-sent__copy:hover { color: var(--parent); border-color: var(--parent); }
+    .contact-copy:hover { color: var(--parent); border-color: var(--parent); }
   }
-  .contact-sent__copy:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  .contact-copy:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+  @media (prefers-reduced-motion: reduce) {
+    .contact-copy { transition: none; }
+    .contact-copy:active { transform: none; }
+  }
+
+  .contact-plaquette {
+    margin: var(--space-4) 0 0;
+    font-size: var(--fs-small); color: var(--ink-quiet);
+  }
+  .contact-plaquette a { color: var(--parent); text-decoration: underline; text-underline-offset: 3px; }
 
   /* ── Bloc territoire (carte + coordonnées) ───────────────────── */
   .contact-terr {
@@ -393,7 +271,7 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
   .contact-terr__head .contact-note { margin-bottom: var(--space-3); }
   .contact-terr__side { padding: var(--space-4); border-top: 1px solid var(--line); }
 
-  /* ── NAP (adresse visible + itinéraires) ─────────────────────── */
+  /* ── NAP (adresse visible) ───────────────────────────────────── */
   .contact-nap { font-style: normal; }
   .contact-nap__name {
     font-family: var(--font-display);
@@ -407,34 +285,6 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     color: var(--ink-muted);
     margin: 0;
   }
-  /* Liens empilés en colonne, chacun haut d'au moins 24 px : cible tactile
-     WCAG 2.5.8 (target-size), que deux lignes de texte serrées n'atteignaient pas. */
-  .contact-nap__line--links {
-    display: flex; flex-direction: column; align-items: flex-start;
-    gap: var(--space-1);
-    margin-top: var(--space-2-5);
-  }
-  /* Souligné : lien au milieu de l'adresse, la couleur seule ne suffit pas (RGAA 10.6). */
-  .contact-nap__link { display: inline-flex; align-items: center; min-height: var(--space-4); color: var(--parent); text-decoration: underline; text-underline-offset: 3px; }
-  .contact-nap__link:hover { text-decoration-thickness: 2px; }
-
-  .contact-maplinks { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-4); }
-  .contact-maplinks__pill {
-    display: inline-flex; align-items: center; gap: var(--space-2);
-    flex: 0 0 auto;
-    min-height: 40px; padding: 9px 15px;
-    border: 1px solid var(--line); border-radius: var(--radius-pill);
-    font-family: var(--font-label); font-size: var(--fs-small); font-weight: 600;
-    color: var(--ink-muted);
-    white-space: nowrap;
-    text-decoration: none;
-    transition: color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out);
-  }
-  @media (hover: hover) and (pointer: fine) {
-    .contact-maplinks__pill:hover { border-color: var(--parent); color: var(--parent); }
-  }
-  .contact-maplinks__pill:focus-visible { outline: none; box-shadow: var(--focus-ring); }
-  .contact-maplinks :global(.contact-maplinks__icon) { width: 15px; height: 15px; flex: 0 0 auto; }
 
   /* ── Ce qui se passe ensuite ─────────────────────────────────── */
   .contact-steps { padding-top: 0; }
@@ -465,16 +315,10 @@ const wazeQuery = encodeURIComponent(`${address.street}, ${address.postalCode} $
     color: var(--ink-quiet);
     margin: 0; max-width: 30ch;
   }
-  .contact-step p + p { margin-top: var(--space-2); }
   @media (max-width: 760px) {
     .contact-steps__grid { grid-template-columns: 1fr; }
     .contact-step { padding: var(--space-4) 0; border-right: 0; border-bottom: 1px solid var(--line); }
     .contact-step + .contact-step { padding-left: 0; }
     .contact-step:last-child { border-bottom: 0; }
-  }
-
-  /* ── Mobile ──────────────────────────────────────────────────── */
-  @media (max-width: 600px) {
-    .contact-submit { width: 100%; justify-content: center; min-height: 56px; }
   }
 </style>
