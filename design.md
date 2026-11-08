@@ -75,6 +75,18 @@ colors:
       dark: "var(--pxlc-coral-soft-dark)"
     on-child: "var(--pxlc-text-ink)"
     link: "var(--parent)"
+    logo-ink:
+      light: "var(--pxlc-text-ink)"
+      dark: "var(--pxlc-white)"
+    logo-parents:
+      light: "var(--pxlc-teal-deep)"
+      dark: "var(--pxlc-cyan)"
+    logo-enfants:
+      light: "var(--pxlc-coral-deep)"
+      dark: "var(--pxlc-coral)"
+    logo-ecrans:
+      light: "var(--pxlc-text-secondary)"
+      dark: "var(--pxlc-text-on-dark-soft)"
     bg-glass:
       light: "rgba(244, 241, 234, 0.92)"
       dark: "rgba(8, 43, 54, 0.92)"
@@ -227,7 +239,7 @@ Ces tokens résolvent vers la palette. Ceux qui changent avec le thème sont des
 | `--line-subtle` | `var(--pxlc-border-soft)` | `var(--pxlc-border-dark)` |
 | `--rule-accent` | `rgba(1, 160, 157, 0.25)` | — |
 
-### Parent (grand carré du logo)
+### Parent (le teal des parents)
 
 | Token | Light | Dark |
 | --- | --- | --- |
@@ -236,7 +248,7 @@ Ces tokens résolvent vers la palette. Ceux qui changent avec le thème sont des
 | `--parent-soft` | `var(--pxlc-teal-soft)` | `var(--pxlc-teal-soft-dark)` |
 | `--on-parent` | `var(--pxlc-white)` | `var(--pxlc-bg-dark)` |
 
-### Child (petit carré, accent unique)
+### Child (le corail des enfants, accent unique)
 
 | Token | Light | Dark |
 | --- | --- | --- |
@@ -244,6 +256,15 @@ Ces tokens résolvent vers la palette. Ceux qui changent avec le thème sont des
 | `--child-deep` | `var(--pxlc-coral-deep)` | `var(--pxlc-coral-deep-dark)` |
 | `--child-soft` | `var(--pxlc-coral-soft)` | `var(--pxlc-coral-soft-dark)` |
 | `--on-child` | `var(--pxlc-text-ink)` | — |
+
+### Logotype (une couleur par mot)
+
+| Token | Light | Dark |
+| --- | --- | --- |
+| `--logo-ink` | `var(--pxlc-text-ink)` | `var(--pxlc-white)` |
+| `--logo-parents` | `var(--pxlc-teal-deep)` | `var(--pxlc-cyan)` |
+| `--logo-enfants` | `var(--pxlc-coral-deep)` | `var(--pxlc-coral)` |
+| `--logo-ecrans` | `var(--pxlc-text-secondary)` | `var(--pxlc-text-on-dark-soft)` |
 
 ### Extensions du site
 
@@ -411,8 +432,7 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.site-header__right`
 - `.site-header__cta`
 - `.lockup`
-- `.lockup__mark`
-- `.lockup__name`
+- `.lockup__logo`
 - `.site-nav`
 - `.site-nav__link`
 - `.theme-toggle`
@@ -442,7 +462,6 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.hero__media`
 - `.hero__watermark`
 - `.hero__media-img`
-- `.hero__media-corner`
 - `.hero__pill`
 - `.hero__pill-eyebrow`
 - `.hero__pill-text`
@@ -546,32 +565,42 @@ Lien texte de sortie de section, stylé .linkout, libellé en slot.
 
 #### `PxlcLockup`
 
-Logo et nom « PXLC » côte à côte, en lien vers l'accueil. Le petit carré corail du logo tient lieu de point : pas de point typographique.
+Le logotype PXLC complet en lien vers l'accueil. Sur une surface toujours sombre (pied de page, menu mobile), color-scheme: dark donne la version fond sombre : aucune prop à passer.
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
-| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Gabarit : logo 36, 40 ou 56 px ; nom 22 ou 34 px. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `'sm'` | Gabarit : hauteur du logotype 44, 56 ou 72 px. |
 | `href` | `string` | `'/'` | Destination du lien. |
-| `onDark` | `boolean` | `false` | Surface toujours sombre (footer, menu mobile) : parent en cyan. |
 | `class` | `string` | — | Classes ajoutées au lien (placement dans le parent). |
 
 - **Usage** : En-tête, pied de page, menu mobile, page 404.
-- **Accessibilité** : Un seul lien nommé « PXLC — accueil » ; le logo interne est decorative pour ne pas annoncer la marque deux fois.
+- **Accessibilité** : Un seul lien nommé « PXLC — accueil » ; le logotype interne est decorative pour ne pas annoncer la marque deux fois.
 
-#### `PxlcMark`
+#### `PxlcLogotype`
 
-Le logo PXLC (design system « PXLC 2026 ») : sur une grille 3×3, un grand carré (le parent, 2×2 cellules) et un petit carré (l'enfant, la cellule en bas à droite), face à face en diagonale. Le parent suit le thème (--parent : teal en clair, cyan en sombre) ; l'enfant est toujours --child (corail). Ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane incliné à −8° l'est).
+Le logotype PXLC complet (novembre 2026) : « pxlc » | « parents » « enfants » « et les écrans », vectorisé. La hiérarchie porte le message : « parents » (teal) et « enfants » (corail) en gras, « et les écrans » en léger et en gris — l'humain passe avant le numérique. Les couleurs suivent le thème par les tokens --logo-* ; une surface color-scheme: dark donne la version fond sombre. Ne jamais retaper le logo dans une police, égaliser les trois mots, intervertir les couleurs de « parents » et « enfants », déformer, ombrer ni pivoter.
 
 | Prop | Type | Défaut | Rôle |
 | --- | --- | --- | --- |
-| `size` | `number` | `36` | Côté du carré, en px. |
+| `size` | `number` | `48` | Hauteur du logotype, en px ; la largeur suit (≈ 3,9 fois la hauteur). |
 | `decorative` | `boolean` | `false` | Masque le logo aux technologies d'assistance (aria-hidden). |
-| `onDark` | `boolean` | `false` | Force le parent en cyan sur une surface toujours sombre (footer, menu mobile). |
-| `mono` | `boolean` | `false` | Version une couleur, en encre. |
 | `class` | `string` | — | Classes ajoutées au SVG (placement dans le parent). |
 
-- **Usage** : Seul dans les en-têtes et le filigrane ; en 20 px, coiffe les cartes d'étape ; dans le lockup, toujours decorative (le lien porte le nom).
-- **Accessibilité** : role="img" et aria-label « Logo PXLC » par défaut ; decorative le passe en aria-hidden quand un texte voisin nomme déjà la marque.
+- **Usage** : Partout où il tient sur au moins 160 px de large (sinon PxlcMark). En lien vers l'accueil : PxlcLockup.
+- **Accessibilité** : role="img" et aria-label « pxlc — parents, enfants et les écrans » par défaut ; decorative le passe en aria-hidden quand un lien ou un texte voisin nomme déjà la marque.
+
+#### `PxlcMark`
+
+Le nom « pxlc » du logotype PXLC, seul : la version courte du logo (Bricolage Grotesque ExtraBold vectorisé). Couleur --logo-ink : bleu nuit en clair, blanc en sombre ou sur une surface color-scheme: dark. Ne jamais le recolorer (la couleur appartient à « parents » et « enfants »), le déformer, l'ombrer ni le pivoter (seul le filigrane incliné à −8° l'est).
+
+| Prop | Type | Défaut | Rôle |
+| --- | --- | --- | --- |
+| `size` | `number` | `36` | Hauteur du mot, en px ; la largeur suit (≈ 2,1 fois la hauteur). |
+| `decorative` | `boolean` | `false` | Masque le logo aux technologies d'assistance (aria-hidden). |
+| `class` | `string` | — | Classes ajoutées au SVG (placement dans le parent). |
+
+- **Usage** : Petits espaces où le logotype complet ferait moins de 160 px de large (cartes, séparateur, en-tête de la plaquette) et filigrane. Ailleurs, préférer PxlcLogotype.
+- **Accessibilité** : role="img" et aria-label « pxlc » par défaut ; decorative le passe en aria-hidden quand un texte voisin nomme déjà la marque.
 
 #### `PxlcMarkSeparator`
 
@@ -782,20 +811,20 @@ Aucune prop.
 
 ### Nommage des composants
 
-- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcMark`, `PxlcMarkSeparator`
+- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcLogotype`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
 - **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
 - Deux mots minimum par nom (évite les collisions avec de futurs éléments HTML natifs)
 
 ### Visuel
 
-- Coral max **5 %** des pixels par page ou image — exception : le logo lui-même (son petit carré en occupe environ 9 %), qu’on ne redimensionne jamais pour tenir la règle ; elle vaut pour tout le reste
+- Coral max **5 %** des pixels par page ou image — exception : le logotype lui-même (le mot « enfants »), qu’on ne redimensionne jamais pour tenir la règle ; elle vaut pour tout le reste
 - Un seul CTA primaire par section
 - Jamais de texte blanc sur fond coral — utiliser `--on-child`
 - Pas de gradients, pas d'emoji en iconographie
 - **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-body-sm`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale
-- **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)
-- **Petite marque** (`PxlcMark` 20 px) : coiffe les cartes d'étape ; le motif Duo a été retiré du design system
+- **Logo** (logotype de novembre 2026, sans symbole) : « pxlc » | « parents » « enfants » « et les écrans », Bricolage Grotesque vectorisé — tracés dans `src/lib/logo-geometry.ts`, couleurs `--logo-ink`, `--logo-parents`, `--logo-enfants`, `--logo-ecrans`. La hiérarchie porte le message : l'humain (gras, en couleur) passe avant le numérique (léger, en gris). Ne jamais retaper le logo dans une police, égaliser les trois mots, intervertir les couleurs de « parents » et « enfants », déformer, ombrer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre). Zone de protection : la hauteur du « x » de « pxlc »
+- **Versions du logo** : complet (`PxlcLogotype`, `PxlcLockup` en lien vers l'accueil) dès qu'il tient sur 160 px de large ; sinon le nom seul « pxlc » (`PxlcMark`, aussi en filigrane et en petite marque des cartes) ; avatar carré « pxlc » blanc sur bleu nuit pour le favicon, les icônes et le logo du JSON-LD (`npm run logo`). Les minuscules sont voulues : le nom légal reste PXLC dans le texte
 
 ### Tokens, thème et mouvement
 

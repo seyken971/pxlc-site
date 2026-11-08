@@ -1,47 +1,41 @@
 ---
 /**
- * Le logo PXLC (design system « PXLC 2026 ») : sur une grille 3×3, un
- * grand carré (le parent, 2×2 cellules) et un petit carré (l'enfant, la
- * cellule en bas à droite), face à face en diagonale. Le parent suit le
- * thème (--parent : teal en clair, cyan en sombre) ; l'enfant est
- * toujours --child (corail). Ne jamais inverser les rôles, recolorer
- * l'enfant, déformer ni pivoter (seul le filigrane incliné à −8° l'est).
- * @usage Seul dans les en-têtes et le filigrane ; en 20 px, coiffe les
- * cartes d'étape ; dans le lockup, toujours decorative (le lien porte le nom).
- * @a11y role="img" et aria-label « Logo PXLC » par défaut ; decorative
- * le passe en aria-hidden quand un texte voisin nomme déjà la marque.
+ * Le nom « pxlc » du logotype PXLC, seul : la version courte du logo
+ * (Bricolage Grotesque ExtraBold vectorisé). Couleur --logo-ink : bleu
+ * nuit en clair, blanc en sombre ou sur une surface color-scheme: dark.
+ * Ne jamais le recolorer (la couleur appartient à « parents » et
+ * « enfants »), le déformer, l'ombrer ni le pivoter (seul le filigrane
+ * incliné à −8° l'est).
+ * @usage Petits espaces où le logotype complet ferait moins de 160 px de
+ * large (cartes, séparateur, en-tête de la plaquette) et filigrane.
+ * Ailleurs, préférer PxlcLogotype.
+ * @a11y role="img" et aria-label « pxlc » par défaut ; decorative le
+ * passe en aria-hidden quand un texte voisin nomme déjà la marque.
  */
-// Géométrie : source unique src/lib/mark-geometry.ts, partagée avec la carte
-// OG (og-mark.ts) et le générateur des fichiers du logo (npm run logo).
-import { MARK_CHILD as C, MARK_PARENT as P, MARK_VIEWBOX } from '../lib/mark-geometry'
+// Tracé : source unique src/lib/logo-geometry.ts, partagée avec la carte
+// OG et le générateur des fichiers du logo (npm run logo).
+import { LOGO_NAME } from '../lib/logo-geometry'
 
 interface Props {
-  /** Côté du carré, en px. */
+  /** Hauteur du mot, en px ; la largeur suit (≈ 2,1 fois la hauteur). */
   size?: number
   /** Masque le logo aux technologies d'assistance (aria-hidden). */
   decorative?: boolean
-  /** Force le parent en cyan sur une surface toujours sombre (footer, menu mobile). */
-  onDark?: boolean
-  /** Version une couleur, en encre. */
-  mono?: boolean
   /** Classes ajoutées au SVG (placement dans le parent). */
   class?: string
 }
-const { size = 36, decorative = false, onDark = false, mono = false, class: className } = Astro.props
-
-const parentFill = mono ? 'var(--ink)' : onDark ? 'var(--cyan)' : 'var(--parent)'
-const childFill = mono ? 'var(--ink)' : 'var(--child)'
+const { size = 36, decorative = false, class: className } = Astro.props
+const width = Math.round(size * (LOGO_NAME.width / LOGO_NAME.height) * 10) / 10
 ---
 
 <svg
   class:list={['mark-svg', className]}
-  viewBox={`0 0 ${MARK_VIEWBOX} ${MARK_VIEWBOX}`}
-  width={size}
+  viewBox={`0 0 ${LOGO_NAME.width} ${LOGO_NAME.height}`}
+  width={width}
   height={size}
   role={decorative ? undefined : 'img'}
-  aria-label={decorative ? undefined : 'Logo PXLC'}
+  aria-label={decorative ? undefined : 'pxlc'}
   aria-hidden={decorative ? 'true' : undefined}
 >
-  <rect x={P.x} y={P.y} width={P.size} height={P.size} rx={P.rx} fill={parentFill} />
-  <rect x={C.x} y={C.y} width={C.size} height={C.size} rx={C.rx} fill={childFill} />
+  <path fill="var(--logo-ink)" d={LOGO_NAME.d} />
 </svg>

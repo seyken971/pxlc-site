@@ -5,8 +5,8 @@
  * l'endpoint `src/pages/og/site.png.ts` — donc rendue par Astro, disponible
  * en dev comme au build.
  *
- * Couleurs : `BRAND_HEX` (source canonique) ; géométrie de la marque 3×3 :
- * `og-mark.ts`. Polices : TTF vendorées dans `src/assets/og-fonts/`
+ * Couleurs : `BRAND_HEX` (source canonique) ; tracés du logotype :
+ * `logo-geometry.ts`. Polices : TTF vendorées dans `src/assets/og-fonts/`
  * (satori ne lit pas le woff2).
  */
 import { readFile } from 'node:fs/promises'
@@ -14,7 +14,7 @@ import { join } from 'node:path'
 import satori from 'satori'
 import { Resvg } from '@resvg/resvg-js'
 import { BRAND_HEX } from './brand-colors'
-import { MARK_RECTS } from './og-mark'
+import { LOGO_NAME, LOGOTYPE } from './logo-geometry'
 
 const F_SANS = 'Plus Jakarta Sans'
 const TAGLINE = 'Médiation numérique · Guadeloupe'
@@ -35,38 +35,45 @@ const h = (
   extra: Record<string, unknown> = {},
 ): OgNode => ({ type, props: { style, children, ...extra } })
 
-const markSvg = (size: number): OgNode => ({
+const path = (d: string, fill: string): OgNode => ({ type: 'path', props: { d, fill } })
+
+// Logotype complet, couleurs de la version fond clair. `height` en px.
+const logotypeSvg = (height: number): OgNode => ({
   type: 'svg',
   props: {
-    width: size,
-    height: size,
-    viewBox: '0 0 100 100',
-    children: MARK_RECTS.map(r => ({
-      type: 'rect',
-      props: { x: r.x, y: r.y, width: r.size, height: r.size, rx: r.rx, fill: r.fill },
-    })),
+    width: Math.round(height * LOGOTYPE.width / LOGOTYPE.height),
+    height,
+    viewBox: `0 0 ${LOGOTYPE.width} ${LOGOTYPE.height}`,
+    children: [
+      path(LOGOTYPE.name, BRAND_HEX.textInk),
+      { type: 'rect', props: { ...LOGOTYPE.bar, fill: BRAND_HEX.tealDeep } },
+      path(LOGOTYPE.parents, BRAND_HEX.tealDeep),
+      path(LOGOTYPE.enfants, BRAND_HEX.coralDeep),
+      path(LOGOTYPE.ecrans, BRAND_HEX.textSecondary),
+    ],
   },
 })
 
-// Mot « PXLC » sans point : le petit carré corail de la marque en tient lieu.
-const lockup = (fontSize: string) => h('span', {
-  fontFamily: F_SANS,
-  fontWeight: 700,
-  fontSize,
-  letterSpacing: '-0.035em',
-  color: palette.ink,
-  lineHeight: 1,
-}, 'PXLC')
+// Nom seul « pxlc », pour le filigrane. `height` en px.
+const nameSvg = (height: number): OgNode => ({
+  type: 'svg',
+  props: {
+    width: Math.round(height * LOGO_NAME.width / LOGO_NAME.height),
+    height,
+    viewBox: `0 0 ${LOGO_NAME.width} ${LOGO_NAME.height}`,
+    children: [path(LOGO_NAME.d, BRAND_HEX.textInk)],
+  },
+})
 
-// Filigrane : marque en bas à droite, 8 % d'opacité, inclinée -8° (seule rotation admise).
-const watermark = (size: number, offset: number) => h('div', {
+// Filigrane : le nom en bas à droite, 8 % d'opacité, incliné -8° (seule rotation admise).
+const watermark = (height: number, offset: number) => h('div', {
   position: 'absolute',
   right: `${offset}px`,
   bottom: `${offset}px`,
   display: 'flex',
   transform: 'rotate(-8deg)',
   opacity: 0.08,
-}, [markSvg(size)])
+}, [nameSvg(height)])
 
 // ── Carte de marque ─────────────────────────────────────────────
 export const siteCard = () => h('div', {
@@ -82,10 +89,9 @@ export const siteCard = () => h('div', {
   fontFamily: F_SANS,
   padding: '64px',
 }, [
-  watermark(520, -80),
+  watermark(300, -70),
   h('div', { display: 'flex', flexDirection: 'column', alignItems: 'center' }, [
-    markSvg(172),
-    h('div', { display: 'flex', marginTop: '24px' }, [lockup('88px')]),
+    logotypeSvg(190),
     h('span', {
       fontFamily: F_SANS,
       fontSize: '26px',
@@ -93,7 +99,7 @@ export const siteCard = () => h('div', {
       letterSpacing: '0.18em',
       textTransform: 'uppercase',
       color: palette.accent,
-      marginTop: '28px',
+      marginTop: '48px',
     }, TAGLINE),
   ]),
 ])

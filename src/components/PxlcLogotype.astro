@@ -1,0 +1,46 @@
+---
+/**
+ * Le logotype PXLC complet (novembre 2026) : « pxlc » | « parents »
+ * « enfants » « et les écrans », vectorisé. La hiérarchie porte le
+ * message : « parents » (teal) et « enfants » (corail) en gras, « et les
+ * écrans » en léger et en gris — l'humain passe avant le numérique. Les
+ * couleurs suivent le thème par les tokens --logo-* ; une surface
+ * color-scheme: dark donne la version fond sombre. Ne jamais retaper le
+ * logo dans une police, égaliser les trois mots, intervertir les couleurs
+ * de « parents » et « enfants », déformer, ombrer ni pivoter.
+ * @usage Partout où il tient sur au moins 160 px de large (sinon
+ * PxlcMark). En lien vers l'accueil : PxlcLockup.
+ * @a11y role="img" et aria-label « pxlc — parents, enfants et les
+ * écrans » par défaut ; decorative le passe en aria-hidden quand un lien
+ * ou un texte voisin nomme déjà la marque.
+ */
+// Tracés : source unique src/lib/logo-geometry.ts (npm run logo, carte OG).
+import { LOGOTYPE as L } from '../lib/logo-geometry'
+
+interface Props {
+  /** Hauteur du logotype, en px ; la largeur suit (≈ 3,9 fois la hauteur). */
+  size?: number
+  /** Masque le logo aux technologies d'assistance (aria-hidden). */
+  decorative?: boolean
+  /** Classes ajoutées au SVG (placement dans le parent). */
+  class?: string
+}
+const { size = 48, decorative = false, class: className } = Astro.props
+const width = Math.round(size * (L.width / L.height) * 10) / 10
+---
+
+<svg
+  class:list={['logotype-svg', className]}
+  viewBox={`0 0 ${L.width} ${L.height}`}
+  width={width}
+  height={size}
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : 'pxlc — parents, enfants et les écrans'}
+  aria-hidden={decorative ? 'true' : undefined}
+>
+  <path fill="var(--logo-ink)" d={L.name} />
+  <rect fill="var(--logo-parents)" x={L.bar.x} y={L.bar.y} width={L.bar.width} height={L.bar.height} rx={L.bar.rx} />
+  <path fill="var(--logo-parents)" d={L.parents} />
+  <path fill="var(--logo-enfants)" d={L.enfants} />
+  <path fill="var(--logo-ecrans)" d={L.ecrans} />
+</svg>

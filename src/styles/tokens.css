@@ -42,8 +42,8 @@
 
   /* ── Semantic tokens — design system PXLC 2026 ──────────── */
   /* Noms et valeurs du design system « PXLC 2026 » : surface ivoire,
-     parent = le grand carré du logo (teal / cyan), child = le petit
-     carré (corail, accent unique ≤ 5 % d'une page).
+     parent = le teal des parents (teal / cyan), child = le corail des
+     enfants (accent unique ≤ 5 % d'une page).
      Chaîne d'alias stricte : composant → token sémantique → primitive
      --pxlc-*. Les composants ne lisent jamais une primitive (ds-lint R14).
      Chaque couleur qui change avec le thème est un light-dark(clair,
@@ -76,6 +76,15 @@
   --child-soft:     light-dark(var(--pxlc-coral-soft), var(--pxlc-coral-soft-dark));
   --on-child:       var(--pxlc-text-ink);
   --link:           var(--parent);
+
+  /* Logotype (novembre 2026) : une couleur par mot. Sur une surface
+     toujours sombre, color-scheme: dark donne la version fond sombre
+     (blanc, turquoise, corail, gris bleuté) sans surcharge. En clair,
+     « enfants » prend le corail assombri pour rester lisible. */
+  --logo-ink:       light-dark(var(--pxlc-text-ink), var(--pxlc-white));
+  --logo-parents:   light-dark(var(--pxlc-teal-deep), var(--pxlc-cyan));
+  --logo-enfants:   light-dark(var(--pxlc-coral-deep), var(--pxlc-coral));
+  --logo-ecrans:    light-dark(var(--pxlc-text-secondary), var(--pxlc-text-on-dark-soft));
 
   /* ── Extensions propres au site (hors design system) ────── */
   /* Header / overlay surfaces. Tinted variants of --surface with alpha for

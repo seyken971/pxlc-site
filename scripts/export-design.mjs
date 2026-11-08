@@ -329,12 +329,16 @@ const main = async () => {
     ],
     ["Bordures", (k) => k.startsWith("--line") || k.startsWith("--rule")],
     [
-      "Parent (grand carré du logo)",
+      "Parent (le teal des parents)",
       (k) => k.startsWith("--parent") || k === "--on-parent",
     ],
     [
-      "Child (petit carré, accent unique)",
+      "Child (le corail des enfants, accent unique)",
       (k) => k.startsWith("--child") || k === "--on-child",
+    ],
+    [
+      "Logotype (une couleur par mot)",
+      (k) => k.startsWith("--logo-"),
     ],
     [
       "Extensions du site",
@@ -576,13 +580,13 @@ const main = async () => {
   md.push("\n### Visuel\n");
   md.push(
     [
-      "- Coral max **5 %** des pixels par page ou image — exception : le logo lui-même (son petit carré en occupe environ 9 %), qu’on ne redimensionne jamais pour tenir la règle ; elle vaut pour tout le reste",
+      "- Coral max **5 %** des pixels par page ou image — exception : le logotype lui-même (le mot « enfants »), qu’on ne redimensionne jamais pour tenir la règle ; elle vaut pour tout le reste",
       "- Un seul CTA primaire par section",
       "- Jamais de texte blanc sur fond coral — utiliser `--on-child`",
       "- Pas de gradients, pas d'emoji en iconographie",
       "- **Typographie** : tailles de texte via l'échelle `--fs-title-1|2|3`, `--fs-lead`, `--fs-body`, `--fs-body-sm`, `--fs-small`, `--fs-label`, `--fs-ui` (avec `--lh-*` / `--ls-*`) — un seul title-1 par page, jamais de taille de titre locale",
-      "- **Logo** (design system PXLC 2026) : grand carré parent (`--parent`) + petit carré enfant (`--child`) en diagonale sur une grille 3×3 — ne jamais inverser les rôles, recolorer l'enfant, déformer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre)",
-      "- **Petite marque** (`PxlcMark` 20 px) : coiffe les cartes d'étape ; le motif Duo a été retiré du design system",
+      "- **Logo** (logotype de novembre 2026, sans symbole) : « pxlc » | « parents » « enfants » « et les écrans », Bricolage Grotesque vectorisé — tracés dans `src/lib/logo-geometry.ts`, couleurs `--logo-ink`, `--logo-parents`, `--logo-enfants`, `--logo-ecrans`. La hiérarchie porte le message : l'humain (gras, en couleur) passe avant le numérique (léger, en gris). Ne jamais retaper le logo dans une police, égaliser les trois mots, intervertir les couleurs de « parents » et « enfants », déformer, ombrer ni pivoter (seul le filigrane, −8°, 8 % en clair / 18 % en sombre). Zone de protection : la hauteur du « x » de « pxlc »",
+      "- **Versions du logo** : complet (`PxlcLogotype`, `PxlcLockup` en lien vers l'accueil) dès qu'il tient sur 160 px de large ; sinon le nom seul « pxlc » (`PxlcMark`, aussi en filigrane et en petite marque des cartes) ; avatar carré « pxlc » blanc sur bleu nuit pour le favicon, les icônes et le logo du JSON-LD (`npm run logo`). Les minuscules sont voulues : le nom légal reste PXLC dans le texte",
     ].join("\n"),
   );
 
