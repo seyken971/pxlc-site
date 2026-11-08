@@ -1,16 +1,16 @@
 {
   "route": "/rdv/",
-  "title": "Redirecting to: https://cal.com/pxlc-gp/20min",
+  "title": "Redirecting to: https://cal.com/pxlc-gp/rdv",
   "lang": null,
   "links": {
     "canonical": [
       {
-        "href": "https://cal.com/pxlc-gp/20min"
+        "href": "https://cal.com/pxlc-gp/rdv"
       }
     ]
   },
   "metas": {
-    "http-equiv:refresh": "0;url=https://cal.com/pxlc-gp/20min",
+    "http-equiv:refresh": "0;url=https://cal.com/pxlc-gp/rdv",
     "robots": "noindex"
   },
   "jsonLd": []
