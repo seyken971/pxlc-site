@@ -23,10 +23,10 @@ export const IDENTITY = {
   // lien court pxlc.fr/rdv/, redirigé vers bookingTarget (astro.config.mjs) :
   // si l'outil change, c'est bookingTarget et seulement lui — puis
   // `npm run plaquette` pour régénérer le PDF. Cal.com (Cal.com, Inc., San
-  // Francisco), rendez-vous « Prise de contact » de 20 min.
+  // Francisco), rendez-vous « Premier échange » de 20 min.
   bookingUrl: 'https://pxlc.fr/rdv/',
   bookingUrlDisplay: 'pxlc.fr/rdv',
-  bookingTarget: 'https://cal.com/pxlc-gp/20min',
+  bookingTarget: 'https://cal.com/pxlc-gp/rdv',
   address: {
     street: '8 Résidence la familiale, rue Man Manigard Alfred, Dugazon',
     postalCode: '97139',
