@@ -51,12 +51,24 @@ export const LOGO_NAME = {
 export const LOGO_CLEARSPACE = 48.5
 
 /**
- * Avatar carré (favicon, icônes d'application, logo du JSON-LD) : le nom
- * « pxlc » en blanc sur un carré bleu nuit, dans un viewBox de 512.
- * Placement repris du favicon du design system.
+ * Avatar carré (icônes d'application, logo du JSON-LD) : le nom « pxlc »
+ * en blanc sur un carré bleu nuit, dans un viewBox de 512. Placement
+ * repris du favicon du design system : le nom occupe 62 % de la largeur.
  */
 export const LOGO_AVATAR = {
   size: 512,
   rx: 92,
   name: { x: 97.3, y: 181.1, scale: 1.8317 },
+} as const
+
+/**
+ * Variante de l'avatar pour l'onglet (favicon 16 à 48 px) : à 62 % de la
+ * largeur, « pxlc » tient en 10 px à 16 px et devient illisible. Ici le nom
+ * occupe 90 % de la largeur (marge de 24 sur 512), coins moins arrondis ;
+ * comparé à 12, 40 et 97 de marge (11/2026) : 24 est la plus petite qui
+ * laisse le carré visible autour du mot.
+ */
+export const LOGO_FAVICON = {
+  rx: 48,
+  margin: 24,
 } as const
