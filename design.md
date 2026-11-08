@@ -418,13 +418,6 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.site-footer`
 - `.linkout`
 
-### Form fields
-
-- `.form-label`
-- `.form-label__req`
-- `.form-input`
-- `.form-textarea`
-
 ### Header
 
 - `.site-header`
@@ -457,14 +450,9 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 - `.hero__title`
 - `.hero__lead`
 - `.hero__actions`
-- `.hero__hint`
-- `.hero__alt`
 - `.hero__media`
 - `.hero__watermark`
 - `.hero__media-img`
-- `.hero__pill`
-- `.hero__pill-eyebrow`
-- `.hero__pill-text`
 
 ### Cards
 
@@ -533,23 +521,6 @@ Classes issues de `styles.css`. Les variantes scoped des composants sont listée
 Généré depuis `src/components/` : description et tags `@usage` / `@a11y` du bloc JSDoc de tête, props depuis `interface Props`, variantes et états depuis le `<style>` du composant.
 
 ### Primitives de marque (`Pxlc*`)
-
-#### `PxlcInput`
-
-Champ de formulaire avec son libellé : input, ou textarea dès que rows est fourni.
-
-| Prop | Type | Défaut | Rôle |
-| --- | --- | --- | --- |
-| `id` * | `string` | — | Identifiant du champ, relié au libellé. |
-| `label` * | `string` | — | Libellé visible. |
-| `type` | `HTMLAttributes<'input'>['type']` | — | Type d'input (text par défaut) ; ignoré en textarea. |
-| `placeholder` | `string` | — | Exemple de saisie, jamais un substitut du libellé. |
-| `rows` | `number` | — | Nombre de lignes : rend une textarea. |
-| `required` | `boolean` | — | Champ obligatoire (required natif, astérisque visuel). |
-| `autocomplete` | `string` | — | Jeton autocomplete (name, email…) ; ignoré en textarea. |
-
-- **Usage** : Formulaire de la page contact.
-- **Accessibilité** : Libellé visible relié par for/id ; champ requis marqué par l'attribut natif required, l'astérisque visuel restant en aria-hidden.
 
 #### `PxlcLinkout`
 
@@ -627,7 +598,7 @@ Fil d'Ariane dérivé de l'URL et de la navigation.
 
 #### `SiteFooter`
 
-Pied de page : lockup, mission, liens de contact, plan du site, mentions légales et accessibilité.
+Pied de page : lockup, mission, un seul lien de rendez-vous, plan du site, mentions légales et accessibilité.
 
 Aucune prop.
 
@@ -717,11 +688,8 @@ Hero de page, gabarit unique de toutes les pages : fil d'Ariane (facultatif), ey
 | `lead` | `string` | `''` | Chapô sous le titre (texte simple ; slot « lead » pour du balisage). |
 | `ctaPrimary` | `Cta \| null` | `null` | Le CTA primaire de la section (un seul). |
 | `ctaSecondary` | `Cta \| null` | `null` | CTA secondaire, en bouton ghost. |
-| `ctaSecondaryAlt` | `AltLink \| null` | `null` | Lien texte discret à côté du CTA secondaire. |
-| `hint` | `string \| null` | `null` | Mention courte sous les CTA. |
 | `photo` | `ImageMetadata \| null` | `null` | Photo importée depuis src/assets (astro:assets génère les variantes webp). |
 | `photoAlt` | `string` | `''` | Texte alternatif de la photo. |
-| `pill` | `Pill \| null` | `null` | Pastille posée sur la photo : surtitre et texte. |
 
 - **Usage** : Une fois par page, en tête ; porte l'unique h1. Le slot par défaut remplace ou complète les CTA (ex. réassurance du contact) ; le slot « lead » remplace le chapô texte quand il faut du balisage.
 - **Accessibilité** : Section reliée à son h1 ; CTA externes suffixés « (nouvel onglet) » dans leur aria-label ; marque finale du titre et cadre en aria-hidden ; photo décrite par photoAlt.
@@ -759,12 +727,12 @@ Feuille A4 de la plaquette : en-tête de navigation, contenu en slot, pied avec 
 
 #### `SessadCase`
 
-Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») : photo, texte, faits du projet, devise et lien vers la page projets. Seul bloc de preuve de l'accueil : les faits viennent de src/config/projects.ts.
+Étude de cas SESSAD Lékoklaya (« Jouons Ensemble ! ») en accroche : photo, texte, devise et lien vers la page projets, qui seule détaille public, porteur et équipe (un fait = un endroit). Seul bloc de preuve de l'accueil.
 
 Aucune prop.
 
 - **Usage** : Accueil. Faits de copy : voir les garde-fous de CLAUDE.md (intervenant culturel au singulier, « le psychologue »).
-- **Accessibilité** : Section reliée à son h2 ; photo décrite ; faits en liste de définitions ; devise en figure/blockquote, guillemets décoratifs en aria-hidden.
+- **Accessibilité** : Section reliée à son h2 ; photo décrite ; devise en figure/blockquote, guillemets décoratifs en aria-hidden.
 
 #### `ThemeToggle`
 
@@ -811,7 +779,7 @@ Aucune prop.
 
 ### Nommage des composants
 
-- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcInput`, `PxlcLinkout`, `PxlcLockup`, `PxlcLogotype`, `PxlcMark`, `PxlcMarkSeparator`
+- **`Pxlc*`** — primitives de marque réutilisables partout : `PxlcLinkout`, `PxlcLockup`, `PxlcLogotype`, `PxlcMark`, `PxlcMarkSeparator`
 - **`Site*`** — chrome du site (présent sur toutes les pages) : `SiteBreadcrumb`, `SiteFooter`, `SiteHead`, `SiteHeader`, `SiteMobileMenu`
 - **Sans préfixe** — sections de page, blocs de contenu et utilitaires autonomes : `CitationBlock`, `CommuneMap`, `HeroSection`, `MethodGrid`, `PlaquettePage`, `SessadCase`, `ThemeToggle`
 - Deux mots minimum par nom (évite les collisions avec de futurs éléments HTML natifs)
