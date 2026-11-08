@@ -88,7 +88,7 @@ Le diff doit être vide hors deltas volontaires, déclarés dans la PR. Après u
 | `/a-propos`         | Présentation d'Andy Zébus                            |
 | `/projets`          | Projets menés avec les structures (ex-`/structures`, redirigée) |
 | `/plaquette`        | Plaquette de présentation (6 feuilles A4, source du PDF) |
-| `/contact`          | Formulaire + WhatsApp                                |
+| `/contact`          | RDV 20 min, demande de devis par e-mail, téléphone   |
 | `/mentions-legales` | Mentions légales                                     |
 | `/accessibilite`    | Déclaration d'accessibilité (modèle RGAA)            |
 | `/404`              | Page introuvable                                     |
