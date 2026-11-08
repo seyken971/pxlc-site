@@ -31,8 +31,7 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
   {!cover && (
     <header class="pq-page__head">
       <div class="pq-page__logo">
-        <PxlcMark size={22} decorative />
-        <span>PXLC</span>
+        <PxlcMark size={20} />
       </div>
       <div class="pq-page__nav">{label}</div>
     </header>
@@ -80,12 +79,6 @@ const { num, total, label, cover = false, version, website, screenLabel } = Astr
   .pq-page__logo {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-family: var(--font-display);
-    font-weight: 600;
-    font-size: 14pt;
-    color: var(--ink);
-    letter-spacing: -0.025em;
     line-height: 1;
   }
   .pq-page__logo :global(svg) { display: block; flex: none; }

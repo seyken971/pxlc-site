@@ -1,35 +1,33 @@
 #!/usr/bin/env node
 /**
  * Génère tous les fichiers du logo PXLC depuis une source unique :
- * la géométrie de src/lib/mark-geometry.ts et les couleurs de
- * src/lib/brand-colors.ts.
+ * les tracés de src/lib/logo-geometry.ts (logotype de novembre 2026,
+ * copié du design system) et les couleurs de src/lib/brand-colors.ts.
  *
  *   npm run logo                  → réécrit les fichiers de public/
  *   npm run logo -- --pack <dir>  → écrit en plus le kit de marque (SVG
- *                                   et PNG à diffuser : logo seul et avec
- *                                   le nom, clair, sombre, une couleur)
+ *                                   et PNG à diffuser : logotype clair,
+ *                                   sombre, une couleur, nom seul, avatar)
  *
  * Fichiers de public/ (committés, servis tels quels) :
- *   logo.svg          logo couleur avec sa zone de protection (JSON-LD)
- *   favicon.svg       onglet ; parent en cyan si le navigateur est en sombre
+ *   logo.svg          avatar carré 512 (logo du JSON-LD : Google affiche
+ *                     les logos d'organisation en carré ou en rond)
+ *   favicon.svg       avatar : « pxlc » blanc sur carré bleu nuit arrondi
  *   favicon.ico       16, 32 et 48 px
- *   icon-16x16.png    dessinés au pixel (coordonnées entières, bords nets)
+ *   icon-16x16.png
  *   icon-32x32.png
- *   apple-touch-icon.png  180 px, fond ivoire opaque (iOS remplit le
- *                         transparent en noir)
- *   icon-192x192.png  « maskable » : fond ivoire plein, logo dans la zone
- *   icon-512x512.png  sûre (cercle de 80 %) pour ne pas être rogné
+ *   apple-touch-icon.png  180 px, carré plein (iOS arrondit lui-même)
+ *   icon-192x192.png  « maskable » : fond bleu nuit plein, nom dans la
+ *   icon-512x512.png  zone sûre (cercle de 80 %) pour ne pas être rogné
  *
- * Rendu PNG par resvg (déterministe, sans navigateur) ; texte du nom
- * vectorisé par satori avec la police vendorée de la carte OG.
+ * Rendu PNG par resvg (déterministe, sans navigateur).
  */
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { join, relative } from 'node:path'
-import satori from 'satori'
 import { Resvg } from '@resvg/resvg-js'
 import {
-  MARK_CHILD, MARK_CLEARSPACE, MARK_PARENT, MARK_PIXEL_GRID, MARK_VIEWBOX,
-} from '../src/lib/mark-geometry.ts'
+  LOGO_AVATAR, LOGO_CLEARSPACE, LOGO_NAME, LOGOTYPE,
+} from '../src/lib/logo-geometry.ts'
 
 const ROOT = process.cwd()
 const PUBLIC = join(ROOT, 'public')
@@ -41,48 +39,57 @@ const hex = (key) => {
   if (!m) throw new Error(`brand-colors.ts : couleur ${key} introuvable`)
   return m[1]
 }
-const COLOR = {
-  parent: hex('tealDeep'),
-  parentOnDark: hex('cyan'),
-  child: hex('coral'),
-  ink: hex('textInk'),
-  ivory: hex('ivory'),
-  bgDark: hex('bgDark'),
-  white: '#FFFFFF',
+const WHITE = hex('white')
+const INK = hex('textInk')
+/** Couleurs du logotype par mot : version fond clair, fond sombre, une couleur. */
+const THEMES = {
+  clair: { name: INK, parents: hex('tealDeep'), enfants: hex('coralDeep'), ecrans: hex('textSecondary') },
+  sombre: { name: WHITE, parents: hex('cyan'), enfants: hex('coral'), ecrans: hex('textOnDarkSoft') },
+  'mono-encre': { name: INK, parents: INK, enfants: INK, ecrans: INK },
+  'mono-blanc': { name: WHITE, parents: WHITE, enfants: WHITE, ecrans: WHITE },
 }
+const NIGHT = hex('bgDark')
 
 const n = v => Number(v.toFixed(3)).toString()
-const rect = (r, fill) =>
-  `<rect x="${n(r.x)}" y="${n(r.y)}" width="${n(r.size)}" height="${n(r.size)}" rx="${n(r.rx)}" fill="${fill}"/>`
+const head = (w, h, vb, label, px) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="${px ? n(px) : n(w)}" height="${px ? n(px * h / w) : n(h)}" role="img" aria-label="${label}"><title>${label}</title>`
 
-/** Logo seul. `pad` = marge ajoutée autour du viewBox 0–100 (zone de protection). */
-const markSvg = ({ parent, child, pad = 0, px = 512, title = true, extra = '' }) => {
-  const min = n(-pad), side = n(MARK_VIEWBOX + 2 * pad)
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="${min} ${min} ${side} ${side}" role="img" aria-label="PXLC">\n`
-    + (title ? '  <title>PXLC</title>\n' : '')
-    + extra
-    + `  ${rect(MARK_PARENT, parent)}\n  ${rect(MARK_CHILD, child)}\n</svg>\n`
+/** Logotype complet avec sa zone de protection. */
+const logotypeSvg = (c) => {
+  const p = LOGO_CLEARSPACE
+  const w = LOGOTYPE.width + 2 * p, h = LOGOTYPE.height + 2 * p
+  const b = LOGOTYPE.bar
+  return head(w, h, `${n(-p)} ${n(-p)} ${n(w)} ${n(h)}`, 'pxlc — parents, enfants et les écrans')
+    + `<path fill="${c.name}" d="${LOGOTYPE.name}"/>`
+    + `<rect fill="${c.parents}" x="${b.x}" y="${b.y}" width="${b.width}" height="${b.height}" rx="${b.rx}"/>`
+    + `<path fill="${c.parents}" d="${LOGOTYPE.parents}"/>`
+    + `<path fill="${c.enfants}" d="${LOGOTYPE.enfants}"/>`
+    + `<path fill="${c.ecrans}" d="${LOGOTYPE.ecrans}"/></svg>\n`
 }
 
-/** Logo posé sur un fond plein carré (icônes d'application). `scale` = part du côté occupée par le dessin (2 → 98). */
-const iconSvg = (px, scale, bg) => {
-  const drawn = MARK_VIEWBOX - 2 * MARK_PARENT.x // 96
-  const side = drawn / scale
-  const off = (side - MARK_VIEWBOX) / 2
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="${n(-off)} ${n(-off)} ${n(side)} ${n(side)}">`
-    + `<rect x="${n(-off)}" y="${n(-off)}" width="${n(side)}" height="${n(side)}" fill="${bg}"/>`
-    + rect(MARK_PARENT, COLOR.parent) + rect(MARK_CHILD, COLOR.child) + '</svg>'
+/** Nom seul « pxlc », avec la même zone de protection. */
+const nameSvg = (fill) => {
+  const p = LOGO_CLEARSPACE
+  const w = LOGO_NAME.width + 2 * p, h = LOGO_NAME.height + 2 * p
+  return head(w, h, `${n(-p)} ${n(-p)} ${n(w)} ${n(h)}`, 'pxlc')
+    + `<path fill="${fill}" d="${LOGO_NAME.d}"/></svg>\n`
 }
 
-/** Favicon dessiné au pixel : viewBox = grille de pixels, coordonnées entières. */
-const pixelSvg = (px) => {
-  const g = MARK_PIXEL_GRID[px]
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${px}" height="${px}" viewBox="0 0 ${px} ${px}">`
-    + rect(g.parent, COLOR.parent) + rect(g.child, COLOR.child) + '</svg>'
+/**
+ * Avatar carré : « pxlc » blanc sur bleu nuit. `rx` = rayon du carré
+ * (0 pour un carré plein, que le système d'exploitation découpe).
+ */
+const avatarSvg = ({ rx = LOGO_AVATAR.rx, px } = {}) => {
+  const S = LOGO_AVATAR.size, a = LOGO_AVATAR.name
+  const k = a.scale
+  const x = (S - LOGO_NAME.width * k) / 2, y = (S - LOGO_NAME.height * k) / 2
+  return head(S, S, `0 0 ${S} ${S}`, 'pxlc', px)
+    + `<rect width="${S}" height="${S}" rx="${rx}" fill="${NIGHT}"/>`
+    + `<g transform="translate(${n(x)} ${n(y)}) scale(${n(k)})"><path fill="${WHITE}" d="${LOGO_NAME.d}"/></g></svg>\n`
 }
 
 const png = (svg, width) => new Resvg(svg, {
-  fitTo: width ? { mode: 'width', value: width } : { mode: 'original' },
+  fitTo: { mode: 'width', value: width },
   background: 'rgba(0,0,0,0)',
 }).render().asPng()
 
@@ -110,25 +117,22 @@ const out = async (dir, name, data) => {
 }
 
 // ── Fichiers du site (public/) ───────────────────────────────────────────
-await out(PUBLIC, 'logo.svg', markSvg({ parent: COLOR.parent, child: COLOR.child, pad: MARK_CLEARSPACE }))
+const avatar = avatarSvg()
+await out(PUBLIC, 'logo.svg', avatar)
+await out(PUBLIC, 'favicon.svg', avatar)
 
-// Le parent suit le thème du navigateur dans l'onglet ; l'enfant reste corail.
-await out(PUBLIC, 'favicon.svg', markSvg({
-  parent: COLOR.parent,
-  child: COLOR.child,
-  extra: `  <style>@media (prefers-color-scheme: dark) { rect:first-of-type { fill: ${COLOR.parentOnDark}; } }</style>\n`,
-}))
-
-const px16 = png(pixelSvg(16)), px32 = png(pixelSvg(32))
+const px16 = png(avatar, 16), px32 = png(avatar, 32), px48 = png(avatar, 48)
 await out(PUBLIC, 'icon-16x16.png', px16)
 await out(PUBLIC, 'icon-32x32.png', px32)
-const px48 = png(markSvg({ parent: COLOR.parent, child: COLOR.child, px: 48, title: false }))
 await out(PUBLIC, 'favicon.ico', ico([{ size: 16, data: px16 }, { size: 32, data: px32 }, { size: 48, data: px48 }]))
 
-await out(PUBLIC, 'apple-touch-icon.png', png(iconSvg(180, 0.62, COLOR.ivory)))
-// Zone sûre maskable : cercle de 80 % du côté ; un carré de 55 % y tient (diagonale ≈ 78 %).
-await out(PUBLIC, 'icon-192x192.png', png(iconSvg(192, 0.55, COLOR.ivory)))
-await out(PUBLIC, 'icon-512x512.png', png(iconSvg(512, 0.55, COLOR.ivory)))
+// Carré plein : iOS et les icônes maskable découpent eux-mêmes. Zone sûre
+// maskable = cercle de 80 % du côté (rayon 205 sur 512) ; les coins du nom
+// en sont à 176 : il y tient entier sans réduction.
+const square = avatarSvg({ rx: 0 })
+await out(PUBLIC, 'apple-touch-icon.png', png(square, 180))
+await out(PUBLIC, 'icon-192x192.png', png(square, 192))
+await out(PUBLIC, 'icon-512x512.png', png(square, 512))
 
 // ── Kit de marque (--pack <dir>) ─────────────────────────────────────────
 const packIdx = process.argv.indexOf('--pack')
@@ -136,60 +140,19 @@ if (packIdx > -1) {
   const dir = process.argv[packIdx + 1]
   if (!dir) throw new Error('--pack : dossier de sortie manquant')
   await mkdir(dir, { recursive: true })
-  const pad = MARK_CLEARSPACE
-  const variants = {
-    'pxlc-logo': [COLOR.parent, COLOR.child],
-    'pxlc-logo-fond-sombre': [COLOR.parentOnDark, COLOR.child],
-    'pxlc-logo-mono-encre': [COLOR.ink, COLOR.ink],
-    'pxlc-logo-mono-blanc': [COLOR.white, COLOR.white],
-  }
-  for (const [name, [parent, child]] of Object.entries(variants)) {
-    const svg = markSvg({ parent, child, pad })
-    await out(dir, `${name}.svg`, svg)
-    await out(dir, `${name}-1024.png`, png(svg, 1024))
-  }
-
-  // Lockup : logo + « PXLC » (texte vectorisé). Proportions du composant Lockup
-  // du design system : nom à 62 % du logo, espace de 33 %.
-  const font = await readFile(join(ROOT, 'src/assets/og-fonts/PlusJakartaSans-Bold.ttf'))
-  const M = 200
-  const lockup = async (parent, text) => {
-    const tree = {
-      type: 'div',
-      props: {
-        style: { display: 'flex', alignItems: 'center', gap: `${M * 0.33}px`, width: '100%', height: '100%' },
-        children: [
-          {
-            type: 'svg',
-            props: {
-              width: M, height: M, viewBox: '0 0 100 100',
-              children: [
-                { type: 'rect', props: { x: MARK_PARENT.x, y: MARK_PARENT.y, width: MARK_PARENT.size, height: MARK_PARENT.size, rx: MARK_PARENT.rx, fill: parent } },
-                { type: 'rect', props: { x: MARK_CHILD.x, y: MARK_CHILD.y, width: MARK_CHILD.size, height: MARK_CHILD.size, rx: MARK_CHILD.rx, fill: COLOR.child } },
-              ],
-            },
-          },
-          { type: 'span', props: { style: { fontFamily: 'Plus Jakarta Sans', fontWeight: 700, fontSize: `${M * 0.62}px`, letterSpacing: '-0.035em', color: text, lineHeight: 1 }, children: 'PXLC' } },
-        ],
-      },
-    }
-    const raw = await satori(tree, { width: 900, height: M, fonts: [{ name: 'Plus Jakarta Sans', data: font, weight: 700, style: 'normal' }] })
-    // Recadre sur le dessin réel + zone de protection (un demi petit carré du logo).
-    const bbox = new Resvg(raw).getBBox()
-    const cs = (M / 100) * pad
-    const x = bbox.x - cs, y = -cs, w = bbox.x + bbox.width + cs - x, h = M + 2 * cs
-    return raw.replace(/<svg([^>]*)width="900" height="200" viewBox="0 0 900 200"/,
-      `<svg$1width="${n(w)}" height="${n(h)}" viewBox="${n(x)} ${n(y)} ${n(w)} ${n(h)}" role="img" aria-label="PXLC"`)
-  }
-  for (const [name, parent, text] of [
-    ['pxlc-lockup', COLOR.parent, COLOR.ink],
-    ['pxlc-lockup-fond-sombre', COLOR.parentOnDark, COLOR.ivory],
-  ]) {
-    const svg = await lockup(parent, text)
-    if (!svg.includes('aria-label="PXLC"')) throw new Error('lockup : recadrage du SVG satori impossible')
+  for (const [variant, colors] of Object.entries(THEMES)) {
+    const name = variant === 'clair' ? 'pxlc-logo' : variant === 'sombre' ? 'pxlc-logo-fond-sombre' : `pxlc-logo-${variant}`
+    const svg = logotypeSvg(colors)
     await out(dir, `${name}.svg`, svg)
     await out(dir, `${name}-2000.png`, png(svg, 2000))
   }
+  for (const [name, fill] of [['pxlc-nom', INK], ['pxlc-nom-fond-sombre', WHITE]]) {
+    const svg = nameSvg(fill)
+    await out(dir, `${name}.svg`, svg)
+    await out(dir, `${name}-1024.png`, png(svg, 1024))
+  }
+  await out(dir, 'pxlc-avatar.svg', avatar)
+  await out(dir, 'pxlc-avatar-1024.png', png(avatar, 1024))
 }
 
 console.log(`build-logo : ${written.length} fichiers\n  ${written.join('\n  ')}`)

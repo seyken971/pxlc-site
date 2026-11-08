@@ -86,7 +86,7 @@ Aussi dans design.md, mais bloquants — vérifier chaque texte généré ou mod
 
 ## Garde-fous non négociables (visuel)
 
-- Coral (`#FF5E3A`) ≤ 5 % des pixels par page ou image — exception : le logo lui-même (son petit carré en occupe environ 9 %), qu’on ne redimensionne jamais pour tenir la règle ; elle vaut pour tout le reste.
+- Coral (`#FF5E3A`) ≤ 5 % des pixels par page ou image — exception : le logotype lui-même (le mot « enfants »), qu’on ne redimensionne jamais pour tenir la règle ; elle vaut pour tout le reste.
 - Jamais de texte blanc sur fond coral.
 - Pas de gradients. Un seul CTA primaire par section.
 
@@ -118,10 +118,11 @@ Les scripts sont listés dans `package.json` ; ce qui ne s'en déduit pas :
   communes depuis geo.api.gouv.fr, rendus au build en SVG par `CommuneMap`) —
   manuel, réseau requis.
 - `npm run logo` — régénère les fichiers du logo de `public/` (`logo.svg`,
-  `favicon.svg`, `favicon.ico`, icônes PNG) depuis `src/lib/mark-geometry.ts`,
-  source unique aussi lue par `PxlcMark` et la carte OG ; ne jamais les
+  `favicon.svg`, `favicon.ico`, icônes PNG) depuis `src/lib/logo-geometry.ts`,
+  source unique (tracés du logotype) aussi lue par `PxlcMark`, `PxlcLogotype`
+  et la carte OG ; ne jamais les
   retoucher à la main. `-- --pack <dossier>` écrit en plus le kit de marque à
-  diffuser (logo et logo + nom, clair, sombre, une couleur). Manuel,
+  diffuser (logotype clair, sombre et une couleur, nom seul, avatar). Manuel,
   fichiers committés.
 - Liens externes : workflow hebdomadaire `.github/workflows/links.yml`
   (lychee sur le build, config `lychee.toml`), non bloquant, rapport dans le

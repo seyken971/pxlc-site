@@ -1,29 +1,26 @@
 ---
 /**
- * Logo et nom « PXLC » côte à côte, en lien vers l'accueil. Le petit carré
- * corail du logo tient lieu de point : pas de point typographique.
+ * Le logotype PXLC complet en lien vers l'accueil. Sur une surface
+ * toujours sombre (pied de page, menu mobile), color-scheme: dark donne
+ * la version fond sombre : aucune prop à passer.
  * @usage En-tête, pied de page, menu mobile, page 404.
- * @a11y Un seul lien nommé « PXLC — accueil » ; le logo interne est
+ * @a11y Un seul lien nommé « PXLC — accueil » ; le logotype interne est
  * decorative pour ne pas annoncer la marque deux fois.
  */
-import PxlcMark from './PxlcMark.astro'
+import PxlcLogotype from './PxlcLogotype.astro'
 
 interface Props {
-  /** Gabarit : logo 36, 40 ou 56 px ; nom 22 ou 34 px. */
+  /** Gabarit : hauteur du logotype 44, 56 ou 72 px. */
   size?: 'sm' | 'md' | 'lg'
   /** Destination du lien. */
   href?: string
-  /** Surface toujours sombre (footer, menu mobile) : parent en cyan. */
-  onDark?: boolean
   /** Classes ajoutées au lien (placement dans le parent). */
   class?: string
 }
-const { size = 'sm', href = '/', onDark = false, class: className } = Astro.props
-const markSize = size === 'lg' ? 56 : size === 'md' ? 40 : 36
-const nameSize = size === 'lg' ? 34 : 22
+const { size = 'sm', href = '/', class: className } = Astro.props
+const height = size === 'lg' ? 72 : size === 'md' ? 56 : 44
 ---
 
 <a class:list={['lockup', className]} href={href} aria-label="PXLC — accueil">
-  <PxlcMark size={markSize} onDark={onDark} decorative class="lockup__mark" />
-  <span class="lockup__name" style={`font-size: ${nameSize}px`}>PXLC</span>
+  <PxlcLogotype size={height} decorative class="lockup__logo" />
 </a>
