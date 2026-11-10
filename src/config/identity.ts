@@ -26,7 +26,7 @@ export const IDENTITY = {
   // Francisco), rendez-vous « Premier échange » de 20 min.
   bookingUrl: 'https://pxlc.fr/rdv/',
   bookingUrlDisplay: 'pxlc.fr/rdv',
-  bookingTarget: 'https://cal.com/pxlc-gp/rdv',
+  bookingTarget: 'https://cal.com/azebus/rdv',
   address: {
     street: '8 Résidence la familiale, rue Man Manigard Alfred, Dugazon',
     postalCode: '97139',
