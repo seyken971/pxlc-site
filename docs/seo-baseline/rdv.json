@@ -1,16 +1,16 @@
 {
   "route": "/rdv/",
-  "title": "Redirecting to: https://cal.com/pxlc-gp/rdv",
+  "title": "Redirecting to: https://cal.com/azebus/rdv",
   "lang": null,
   "links": {
     "canonical": [
       {
-        "href": "https://cal.com/pxlc-gp/rdv"
+        "href": "https://cal.com/azebus/rdv"
       }
     ]
   },
   "metas": {
-    "http-equiv:refresh": "0;url=https://cal.com/pxlc-gp/rdv",
+    "http-equiv:refresh": "0;url=https://cal.com/azebus/rdv",
     "robots": "noindex"
   },
   "jsonLd": []
