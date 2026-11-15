@@ -16,8 +16,9 @@
  * Light (« et les écrans »), vectorisés : aucune police à charger. La
  * hiérarchie porte le message — l'humain, en gras et en couleur, passe
  * avant le numérique, en léger et en gris. Tracés copiés tels quels des
- * fichiers du design system (Claude, « PXLC Design System »,
- * assets/logo.svg et assets/logo-nom.svg) : ne jamais les retoucher ni
+ * fichiers du design system (ancien projet Claude Design « PXLC Design
+ * System », assets/logo.svg et assets/logo-nom.svg ; copie de travail
+ * actuelle : l'artifact du même nom, lien dans CLAUDE.md) : ne jamais les retoucher ni
  * retaper le logo dans une police. Seule exception, validée par Andy
  * (15/11/2026) : « et les écrans » agrandi de 1,3234 (ligne de base et bord
  * gauche fixes) pour remplir la largeur de la colonne comme « parents » ;
