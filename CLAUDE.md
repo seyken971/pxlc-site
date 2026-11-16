@@ -30,6 +30,12 @@ Le contexte de positionnement et de stratégie vit dans `CLAUDE.local.md`
 
 @design-rules.md
 
+- Copie de travail partagée hors dépôt : l'artifact Claude « PXLC Design
+  System » (https://claude.ai/artifact/MaAk98oP4NWz69KsCjRT73, type Design
+  System, recréé le 15/11/2026 depuis ce dépôt ; l'ancien projet Claude
+  Design n'est plus suivi). Le dépôt reste la source : toute évolution de
+  jetons, de logo ou de règle se reporte dans l'artifact.
+
 - `design.md` (tokens, palette, classes CSS : la référence complète) et
   `design-rules.md` (les règles brand seules, importées ci-dessus) sont
   **générés** par `scripts/export-design.mjs` — ne jamais les éditer à la
