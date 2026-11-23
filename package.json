@@ -47,7 +47,7 @@
     "axe-core": "^4.13.0",
     "chrome-launcher": "^1.2.3",
     "d3-geo": "^3.1.2",
-    "eslint": "^10.14.0",
+    "eslint": "^10.15.0",
     "eslint-plugin-astro": "^3.1.0",
     "globals": "^17.14.0",
     "jsdom": "^31.0.0",
@@ -59,6 +59,6 @@
     "topojson-server": "^3.0.1",
     "topojson-simplify": "^3.0.3",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.2"
+    "typescript-eslint": "^8.73.0"
   }
 }
