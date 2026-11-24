@@ -26,16 +26,21 @@
 }
 
 /* ── Entrée au chargement ─────────────────────────────────── */
-/* Cascade du hero : chaque enfant de .enter monte de 12 px en fondu,
-   décalé via --i. Animation CSS pure : sans JS, le contenu s'affiche. */
-.enter > * { animation: rise var(--dur-enter) var(--ease-out) both; animation-delay: calc(var(--i, 0) * var(--dur-stagger)); }
+/* Cascade du hero : chaque enfant de .enter monte de 12 px, décalé via --i.
+   Sans fondu : le titre et le chapeau sont les candidats LCP de la page, et
+   Chrome ignore un élément peint à opacity 0 — un fondu d'entrée rendait le
+   LCP aléatoire, voire absent (NO_LCP dans PageSpeed, 11/2026). `translate`
+   ne compte ni dans le LCP ni dans le CLS. */
+@keyframes settle { from { translate: 0 12px; } }
+.enter > * { animation: settle var(--dur-enter) var(--ease-out) both; animation-delay: calc(var(--i, 0) * var(--dur-stagger)); }
 .enter > :nth-child(2) { --i: 1; }
 .enter > :nth-child(3) { --i: 2; }
 .enter > :nth-child(4) { --i: 3; }
 .enter > :nth-child(5) { --i: 4; }
 .enter > :nth-child(n + 6) { --i: 5; }
+/* Mouvement réduit : rien à animer, le contenu est déjà visible. */
 @media (prefers-reduced-motion: reduce) {
-  .enter > * { animation-name: fade-in; }
+  .enter > * { animation-name: none; }
 }
 
 /* ── Reset & globals ─────────────────────────────────────── */
@@ -502,13 +507,9 @@ main[tabindex="-1"]:focus { outline: none; }
 /* Photo : un seul traitement sur tout le site, le cadre décalé (écho du
    pixel, derrière la photo) et la petite marque en coin. La largeur est
    bornée (48vh de large = 60vh de haut au format 4/5) plutôt que la
-   hauteur, pour que le cadre épouse toujours la photo. Suit la cascade du
-   texte (.enter) en fondu, sans déplacement. */
-.hero__media {
-  position: relative; width: min(100%, 48vh);
-  animation: fade-in var(--dur-enter) var(--ease-out) both;
-  animation-delay: calc(2 * var(--dur-stagger));
-}
+   hauteur, pour que le cadre épouse toujours la photo. Pas d'animation
+   d'entrée : la photo peut être le candidat LCP (voir .enter). */
+.hero__media { position: relative; width: min(100%, 48vh); }
 .hero__media::before {
   content: ""; position: absolute; inset: 0;
   transform: translate(12px, 12px);
